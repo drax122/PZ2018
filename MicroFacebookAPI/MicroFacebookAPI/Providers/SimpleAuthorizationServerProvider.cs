@@ -49,7 +49,7 @@ namespace MicroFacebookAPI.Providers
                             context.Validated(ticket);
                         }
                         else
-                        {
+                        { 
                             // This is just a work around to overcome an unknown internal bug. 
                             // In future releases of Owin, you may remove this.
                             context.SetError("Invalid credentials", "Provided username or password is incorrect.");
