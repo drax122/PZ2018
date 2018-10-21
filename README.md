@@ -21,16 +21,16 @@ Stos technologiczny projektu: MSSQL, C#/.NET, Angular6, Socket.io
 
 Podział & zakres obowiązków w projekcie:
 Backend : Mateusz Drywa
--> Zaprojektowanie i wdrożenie relacyjnej bazy danych MSSQL
--> Zaprojektowanie i wdrożenie RESTful API pozwalającego na kontakt z bazą danych z poziomu aplikacji webowej
-    -> Autoryzacja użytkowników oparta o tokeny. 
-    -> Zapis/odczyt danych oraz ich transfer z/do bazy danych w formacie JSON.
--> Zapewnienie spójności danych w całym systemie.
--> Pomoc przy rozwijaniu middleware dla aplikacji webowej.
+- Zaprojektowanie i wdrożenie relacyjnej bazy danych MSSQL
+- Zaprojektowanie i wdrożenie RESTful API pozwalającego na kontakt z bazą danych z poziomu aplikacji webowej
+    - Autoryzacja użytkowników oparta o tokeny. 
+    - Zapis/odczyt danych oraz ich transfer z/do bazy danych w formacie JSON.
+- Zapewnienie spójności danych w całym systemie.
+- Pomoc przy rozwijaniu middleware dla aplikacji webowej.
 
 Frontend : Martyna Pyszyńska
--> Rozwój aplikacji webowej tzw. middleware odpowiadającego za kontakt aplikacji z RESTful API oraz przekazywaniem danych do klienta
--> Kontrola wprowadzanych danych (walidacja)
--> Zaprojektowanie i wdrożenie wyglądu aplikacji webowej
+- Rozwój aplikacji webowej tzw. middleware odpowiadającego za kontakt aplikacji z RESTful API oraz przekazywaniem danych do klienta
+- Kontrola wprowadzanych danych (walidacja)
+- Zaprojektowanie i wdrożenie wyglądu aplikacji webowej
 
 
