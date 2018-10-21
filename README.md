@@ -20,6 +20,7 @@ Zakres projektu obejmuje podstawowe funkcjonalności dotępne w portalu "Faceboo
 Stos technologiczny projektu: MSSQL, C#/.NET, Angular6, Socket.io
 
 Podział & zakres obowiązków w projekcie:
+
 Backend : Mateusz Drywa
 - Zaprojektowanie i wdrożenie relacyjnej bazy danych MSSQL
 - Zaprojektowanie i wdrożenie RESTful API pozwalającego na kontakt z bazą danych z poziomu aplikacji webowej
