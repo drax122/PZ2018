@@ -1,4 +1,5 @@
-﻿using MicroFacebookAPI.Providers;
+﻿using MicroFacebookAPI.OwinMiddlewareProvider;
+using MicroFacebookAPI.Providers;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
@@ -22,13 +23,14 @@ namespace MicroFacebookAPI
                 AllowInsecureHttp = true,
                 TokenEndpointPath = new PathString("/authenticate"),
                 AccessTokenExpireTimeSpan = TimeSpan.FromMinutes(20),
-                Provider = new SimpleAuthorizationServerProvider()
+                Provider = new SimpleAuthorizationServerProvider(),
+                RefreshTokenProvider = new TokenRefreshProvider()
             };
 
             app.UseOAuthBearerTokens(OAuthOptions);
             app.UseOAuthAuthorizationServer(OAuthOptions);
             app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions());
-
+           
             HttpConfiguration config = new HttpConfiguration();
             WebApiConfig.Register(config);
         }

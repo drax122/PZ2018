@@ -6,6 +6,12 @@
     <edmx:Diagrams>
       <Diagram DiagramId="0d12aca73d82423685560e8b71d79d6c" Name="Diagram1">
         <EntityTypeShape EntityType="MicroFBModel.Users" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MicroFBModel.Friends" Width="1.5" PointX="2.75" PointY="0.75" />
+        <AssociationConnector Association="MicroFBModel.FK__Friends__FriendI__060DEAE8" />
+        <AssociationConnector Association="MicroFBModel.FK__Friends__UserId__0519C6AF" />
+        <EntityTypeShape EntityType="MicroFBModel.Client_RefreshTokens" Width="1.5" PointX="13.875" PointY="0.5" />
+        <EntityTypeShape EntityType="MicroFBModel.RestfullAPI_Clients" Width="1.5" PointX="11.625" PointY="0.5" />
+        <AssociationConnector Association="MicroFBModel.FK__Client_Re__Clien__1BFD2C07" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -198,6 +198,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationTypes\AppTypes.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -205,6 +206,13 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="CustomErrorProvider\ErrorMessage.cs" />
+    <Compile Include="DataManager\DataManagerService.cs" />
+    <Compile Include="DataModel\Client_RefreshTokens.cs">
+      <DependentUpon>MicroFB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\Friends.cs">
+      <DependentUpon>MicroFB.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataModel\MicroFB.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -220,12 +228,17 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MicroFB.edmx</DependentUpon>
     </Compile>
+    <Compile Include="DataModel\RestfullAPI_Clients.cs">
+      <DependentUpon>MicroFB.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataModel\Users.cs">
       <DependentUpon>MicroFB.tt</DependentUpon>
     </Compile>
+    <Compile Include="OwinMiddlewareProvider\AuthenticationMiddleware.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ContextHelper.cs" />
     <Compile Include="Providers\SimpleAuthorizationServerProvider.cs" />
+    <Compile Include="Providers\TokenRefreshProvider.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>

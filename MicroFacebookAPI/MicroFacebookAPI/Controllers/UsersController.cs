@@ -27,6 +27,8 @@ namespace MicroFacebookAPI.Controllers
         [ResponseType(typeof(Users))]
         public IHttpActionResult GetUsers(int id)
         {
+            var XD = this.Request;
+            var XD2 = this.RequestContext;
             Users users = db.Users.Find(id);
             if (users == null)
             {

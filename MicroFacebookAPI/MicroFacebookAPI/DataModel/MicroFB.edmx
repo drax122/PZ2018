@@ -4,7 +4,32 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="MicroFBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="MicroFBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Client_RefreshTokens">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="300" Nullable="false" />
+          <Property Name="ClientId" Type="int" Nullable="false" />
+          <Property Name="IssuedUtc" Type="datetime" Nullable="false" />
+          <Property Name="ExpiresUtc" Type="datetime" Nullable="false" />
+          <Property Name="ProtectedTicket" Type="varchar(max)" Nullable="false" />
+          <Property Name="RefreshToken" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="RestfullAPI_Clients">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Secret" Type="varchar(max)" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="200" />
+          <Property Name="ApplicationType" Type="int" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="RefreshTokenLifeTime" Type="int" Nullable="false" />
+          <Property Name="AllowedOrigin" Type="varchar(max)" />
+          <Property Name="ClientId" Type="varchar(max)" />
+        </EntityType>
         <EntityType Name="Users">
           <Key>
             <PropertyRef Name="Id" />
@@ -23,11 +48,70 @@
           <Property Name="BuildingNumber" Type="int" />
           <Property Name="Description" Type="varchar(max)" />
         </EntityType>
+        <EntityType Name="Friends">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="FriendId" Type="int" Nullable="false" />
+          <Property Name="IsObserving" Type="bit" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Client_Re__Clien__1BFD2C07">
+          <End Role="RestfullAPI_Clients" Type="Self.RestfullAPI_Clients" Multiplicity="1" />
+          <End Role="Client_RefreshTokens" Type="Self.Client_RefreshTokens" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RestfullAPI_Clients">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Client_RefreshTokens">
+              <PropertyRef Name="ClientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Friends__FriendI__060DEAE8">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Friends" Type="Self.Friends" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Friends">
+              <PropertyRef Name="FriendId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Friends__UserId__0519C6AF">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Friends" Type="Self.Friends" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Friends">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="MicroFBModelStoreContainer">
+          <EntitySet Name="Client_RefreshTokens" EntityType="Self.Client_RefreshTokens" Schema="Security" store:Type="Tables" />
+          <EntitySet Name="RestfullAPI_Clients" EntityType="Self.RestfullAPI_Clients" Schema="Security" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="Security" store:Type="Tables" />
+          <EntitySet Name="Friends" EntityType="Self.Friends" Schema="Users" store:Type="Tables" />
+          <AssociationSet Name="FK__Client_Re__Clien__1BFD2C07" Association="Self.FK__Client_Re__Clien__1BFD2C07">
+            <End Role="RestfullAPI_Clients" EntitySet="RestfullAPI_Clients" />
+            <End Role="Client_RefreshTokens" EntitySet="Client_RefreshTokens" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Friends__FriendI__060DEAE8" Association="Self.FK__Friends__FriendI__060DEAE8">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Friends" EntitySet="Friends" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Friends__UserId__0519C6AF" Association="Self.FK__Friends__UserId__0519C6AF">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Friends" EntitySet="Friends" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MicroFBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -48,10 +132,101 @@
           <Property Name="Street" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="BuildingNumber" Type="Int32" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Friends" Relationship="MicroFBModel.FK__Friends__FriendI__060DEAE8" FromRole="Users" ToRole="Friends" />
+          <NavigationProperty Name="Friends1" Relationship="MicroFBModel.FK__Friends__UserId__0519C6AF" FromRole="Users" ToRole="Friends" />
         </EntityType>
         <EntityContainer Name="MicroFBEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Users" EntityType="Self.Users" />
+          <EntitySet Name="Friends" EntityType="MicroFBModel.Friends" />
+          <AssociationSet Name="FK__Friends__FriendI__060DEAE8" Association="MicroFBModel.FK__Friends__FriendI__060DEAE8">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Friends" EntitySet="Friends" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Friends__UserId__0519C6AF" Association="MicroFBModel.FK__Friends__UserId__0519C6AF">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Friends" EntitySet="Friends" />
+          </AssociationSet>
+          <EntitySet Name="Client_RefreshTokens" EntityType="MicroFBModel.Client_RefreshTokens" />
+          <EntitySet Name="RestfullAPI_Clients" EntityType="MicroFBModel.RestfullAPI_Clients" />
+          <AssociationSet Name="FK__Client_Re__Clien__1BFD2C07" Association="MicroFBModel.FK__Client_Re__Clien__1BFD2C07">
+            <End Role="RestfullAPI_Clients" EntitySet="RestfullAPI_Clients" />
+            <End Role="Client_RefreshTokens" EntitySet="Client_RefreshTokens" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="Friends">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="FriendId" Type="Int32" Nullable="false" />
+          <Property Name="IsObserving" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Users" Relationship="MicroFBModel.FK__Friends__FriendI__060DEAE8" FromRole="Friends" ToRole="Users" />
+          <NavigationProperty Name="Users1" Relationship="MicroFBModel.FK__Friends__UserId__0519C6AF" FromRole="Friends" ToRole="Users" />
+        </EntityType>
+        <Association Name="FK__Friends__FriendI__060DEAE8">
+          <End Type="MicroFBModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="MicroFBModel.Friends" Role="Friends" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Friends">
+              <PropertyRef Name="FriendId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Friends__UserId__0519C6AF">
+          <End Type="MicroFBModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="MicroFBModel.Friends" Role="Friends" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Friends">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Client_RefreshTokens">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="ClientId" Type="Int32" Nullable="false" />
+          <Property Name="IssuedUtc" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ExpiresUtc" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ProtectedTicket" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="RestfullAPI_Clients" Relationship="MicroFBModel.FK__Client_Re__Clien__1BFD2C07" FromRole="Client_RefreshTokens" ToRole="RestfullAPI_Clients" />
+          <Property Name="RefreshToken" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="RestfullAPI_Clients">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Secret" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="ApplicationType" Type="Int32" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="RefreshTokenLifeTime" Type="Int32" Nullable="false" />
+          <Property Name="AllowedOrigin" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Client_RefreshTokens" Relationship="MicroFBModel.FK__Client_Re__Clien__1BFD2C07" FromRole="RestfullAPI_Clients" ToRole="Client_RefreshTokens" />
+          <Property Name="ClientId" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK__Client_Re__Clien__1BFD2C07">
+          <End Type="MicroFBModel.RestfullAPI_Clients" Role="RestfullAPI_Clients" Multiplicity="1" />
+          <End Type="MicroFBModel.Client_RefreshTokens" Role="Client_RefreshTokens" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RestfullAPI_Clients">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Client_RefreshTokens">
+              <PropertyRef Name="ClientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -74,6 +249,43 @@
                 <ScalarProperty Name="Street" ColumnName="Street" />
                 <ScalarProperty Name="BuildingNumber" ColumnName="BuildingNumber" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Friends">
+            <EntityTypeMapping TypeName="MicroFBModel.Friends">
+              <MappingFragment StoreEntitySet="Friends">
+                <ScalarProperty Name="IsObserving" ColumnName="IsObserving" />
+                <ScalarProperty Name="FriendId" ColumnName="FriendId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Client_RefreshTokens">
+            <EntityTypeMapping TypeName="MicroFBModel.Client_RefreshTokens">
+              <MappingFragment StoreEntitySet="Client_RefreshTokens">
+                <ScalarProperty Name="RefreshToken" ColumnName="RefreshToken" />
+                <ScalarProperty Name="ProtectedTicket" ColumnName="ProtectedTicket" />
+                <ScalarProperty Name="ExpiresUtc" ColumnName="ExpiresUtc" />
+                <ScalarProperty Name="IssuedUtc" ColumnName="IssuedUtc" />
+                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RestfullAPI_Clients">
+            <EntityTypeMapping TypeName="MicroFBModel.RestfullAPI_Clients">
+              <MappingFragment StoreEntitySet="RestfullAPI_Clients">
+                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+                <ScalarProperty Name="AllowedOrigin" ColumnName="AllowedOrigin" />
+                <ScalarProperty Name="RefreshTokenLifeTime" ColumnName="RefreshTokenLifeTime" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="ApplicationType" ColumnName="ApplicationType" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Secret" ColumnName="Secret" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

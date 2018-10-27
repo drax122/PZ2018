@@ -26,5 +26,8 @@ namespace MicroFacebookAPI.DataModel
         }
     
         public virtual DbSet<Users> Users { get; set; }
+        public virtual DbSet<Friends> Friends { get; set; }
+        public virtual DbSet<Client_RefreshTokens> Client_RefreshTokens { get; set; }
+        public virtual DbSet<RestfullAPI_Clients> RestfullAPI_Clients { get; set; }
     }
 }
