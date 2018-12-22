@@ -85,7 +85,48 @@ ALTER TABLE [Users].[Friends]  WITH CHECK ADD FOREIGN KEY([UserId])
 REFERENCES [Security].[Users] ([Id])
 GO
 
-
-
-
+create table dbo.Groups(
+Id int identity(1,1) primary key,
+Name varchar(255) not null,
+OwnerId int not null references Security.Users(Id),
+Description varchar(3000)
+)
+go
+create table dbo.GroupUsers(
+Id int identity(1,1) primary key,
+GroupId int not null references dbo.Groups(Id),
+UserId int not null references Security.Users(Id)
+)
+go
+create table dbo.GroupPosts(
+Id int identity(1,1) primary key,
+AuthorId int not null references Security.Users(Id),
+GroupId int not null references dbo.Groups(Id),
+Content varchar(max) not null
+)
+go
+create table dbo.UserPosts(
+Id int identity(1,1) primary key,
+AuthorId int not null references Security.Users(Id),
+Content varchar(max) not null,
+)
+go
+create table dbo.UserFollows(
+Id int identity(1,1) primary key,
+UserId int not null references Security.Users(Id),
+FollowedUserId int references Security.Users(Id)
+)
+go
+create table dbo.UserConversations(
+Id int identity(1,1) primary key,
+UserId int not null references Security.Users(Id),
+FriendId int not null references Security.Users(Id),
+)
+go
+create table dbo.ConversationMessages(
+Id int identity(1,1) primary key,
+ConversationId int not null references dbo.UserConversations(Id),
+AuthorId int not null references Security.Users(Id),
+Message varchar(max) not null
+)
 
