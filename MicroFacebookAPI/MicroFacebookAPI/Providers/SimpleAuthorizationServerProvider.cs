@@ -3,6 +3,7 @@ using MicroFacebookAPI.DataManager;
 using MicroFacebookAPI.DataModel;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.OAuth;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -105,7 +106,10 @@ namespace MicroFacebookAPI.Providers
                                 },
                                 {
                                      "role", "user"
-                                },                                
+                                },
+                                {
+                                    "User", JsonConvert.SerializeObject(user)
+                                },
                              });
                             var ticket = new AuthenticationTicket(identity, props);
                             context.Validated(ticket);

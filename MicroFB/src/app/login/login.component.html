@@ -1,0 +1,7 @@
+<form #loginForm="ngForm" (ngSubmit)="logIn()">
+<input id="email" name="email" type="text" placeholder="Login" [(ngModel)]="userModel.username"/>
+<input id="password" name="pwd" type="password" placeholder="Password" [(ngModel)]="userModel.password">
+<input type="submit" value="Zaloguj">
+</form>
+<br/>
+{{ErrorMessage}}

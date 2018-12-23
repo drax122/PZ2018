@@ -234,7 +234,6 @@
     <Compile Include="DataModel\Users.cs">
       <DependentUpon>MicroFB.tt</DependentUpon>
     </Compile>
-    <Compile Include="OwinMiddlewareProvider\AuthenticationMiddleware.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ContextHelper.cs" />
     <Compile Include="Providers\SimpleAuthorizationServerProvider.cs" />

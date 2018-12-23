@@ -8,6 +8,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
+using MicroFacebookAPI.DataManager;
 using MicroFacebookAPI.DataModel;
 
 namespace MicroFacebookAPI.Controllers
@@ -15,12 +16,27 @@ namespace MicroFacebookAPI.Controllers
     public class UsersController : ApiController
     {
         private MicroFBEntities db = new MicroFBEntities();
-
+        private DataManagerService ds = new DataManagerService();
         // GET: api/Users
         [Authorize]
         public IQueryable<Users> GetUsers()
         {
             return db.Users;
+        }
+
+        [HttpPost]
+        [Route("api/users/registeruser")]
+        public IHttpActionResult RegisterUser([FromBody]Users user)
+        {
+            try
+            {
+                ds.CreateUser(user);
+                return Json(user);
+            }
+            catch(Exception ex)
+            {
+                return InternalServerError(ex);
+            }
         }
 
         // GET: api/Users/5
@@ -34,7 +50,6 @@ namespace MicroFacebookAPI.Controllers
             {
                 return NotFound();
             }
-
             return Json(users);
         }
 

@@ -18,6 +18,19 @@ namespace MicroFacebookAPI.DataManager
             }
         }
 
+        public Users CreateUser(Users user)
+        {
+            using (var ctx = new MicroFBEntities())
+            {
+                ctx.Users.Add(user);
+                ctx.SaveChanges();
+                return user;
+            }
+        }
+
+
+
+
         public async Task<bool> AddRefreshToken(Client_RefreshTokens token)
         {
             using (var ctx = new MicroFBEntities())
