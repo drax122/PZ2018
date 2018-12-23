@@ -17,9 +17,14 @@ export class AuthService {
   get isLoggedIn(){
     return JSON.parse(localStorage.getItem('loggedIn') || this.loggedInStatus);
   }
+  logOut(){
+    this.setLoggedIn(false);
+    localStorage.clear();
+    
+  }
 
   Register(user : UserDetails, callback){
-    return this.http.post('/api/users/RegisterUser', 
+    this.http.post('/api/users/RegisterUser', 
     JSON.stringify(user),
     {
       headers: new HttpHeaders().set('Content-Type', 'application/json')
@@ -47,7 +52,7 @@ export class AuthService {
     .set('client_secret', "smile")
 
 
-    return this.http.post('/api/authenticate', 
+    this.http.post('/api/authenticate', 
     body.toString(),
     {
       headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')
