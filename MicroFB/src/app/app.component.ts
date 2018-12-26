@@ -12,8 +12,8 @@ export class AppComponent {
   constructor(private Auth: AuthService, private router: Router) 
   {
   }
-  get isLoggedIn(){
-    return this.Auth.isLoggedIn;
+  get LoggedIn(){
+    return this.Auth.IsLogged;
   }
 
 

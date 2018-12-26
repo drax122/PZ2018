@@ -11,7 +11,7 @@ import {UserDetails } from '../Models/user-details';
 })
 export class RegisterComponent implements OnInit {
 
-  registerModel = new UserDetails('','','','','',new Date(),'','','','','');
+  registerModel = new UserDetails(new Object());
 
   constructor(private data: DataProviderService, private Auth: AuthService, private router: Router) 
   {

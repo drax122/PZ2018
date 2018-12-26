@@ -1,26 +1,90 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams, HttpErrorResponse} from '@angular/common/http';
 import { UserDetails } from './Models/user-details';
+import { Observable, of } from 'rxjs';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
+import { Router } from '@angular/router';
+import { routerNgProbeToken } from '@angular/router/src/router_module';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private loggedInStatus = JSON.parse(localStorage.getItem('loggedIn') || 'false');
+  
+  get IsLogged(){
+    return JSON.parse(localStorage.getItem("loggedIn")) || false;
+  }
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router : Router) { }
+
+  RefreshToken(){
+    let refresh_token = localStorage.getItem("refreshtoken");
+    const body = new HttpParams()
+    .set('refresh_token', refresh_token)
+    .set('grant_type', "refresh_token")
+    .set('client_id', "Angular")
+    .set('client_secret', "smile")
+
+    return this.http.post('/api/authenticate', 
+    body.toString(),
+    {
+      headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')
+    });
+  }
 
   setLoggedIn(value: boolean){
-    this.loggedInStatus = value;
-    localStorage.setItem('loggedIn', 'true');
+    localStorage.setItem('loggedIn', value.toString());
   }
-  get isLoggedIn(){
-    return JSON.parse(localStorage.getItem('loggedIn') || this.loggedInStatus);
+  isLoggedIn():Observable<boolean>{    
+    if(JSON.parse(localStorage.getItem('loggedIn')))
+    {
+      // CHECK IF TOKEN IS VALID AND NOT EXPRIRED - IF EXPIRED REFRESH TOKEN - IF CANT REDIRECT TO LOGIN
+      let now = new Date();
+      let tokenExpriesIn = localStorage.getItem("expiresIn");
+      let tokenExpireDate = new Date(Date.parse(localStorage.getItem("expiresAt")));
+      console.log(now);
+      console.log(tokenExpireDate);
+
+      if(now <= tokenExpireDate){
+        // TOKEN JEST NIEWAZNY SPROBOJ ODSWIEZYC
+        return this.RefreshToken().map(
+          (res: Response) =>
+          {       
+
+            console.log(res.status)
+            let obj = JSON.parse(JSON.stringify(res));
+            
+            localStorage.setItem('UserId', (JSON.parse(obj.User)).Id);
+            localStorage.setItem('token', obj.access_token);
+            localStorage.setItem('refreshtoken', obj.refresh_token);
+            localStorage.setItem('expiresAt', obj[".expires"]);
+            localStorage.setItem('expiresIn', obj["expires_in"]);
+            this.setLoggedIn(true);
+            return true;
+          }
+        ).catch(this.errorHanlder)
+      }
+      else
+      {
+        this.setLoggedIn(false);
+        return of(true);
+      }
+    }
+    else 
+    {
+      this.setLoggedIn(false);
+      return of(false);
+    }
+  }
+  errorHanlder(error : HttpErrorResponse){
+    this.setLoggedIn(false);
+    return of(false);
   }
   logOut(){
-    this.setLoggedIn(false);
     localStorage.clear();
-    
+    this.setLoggedIn(false);
+    this.router.navigate["/"];
   }
 
   Register(user : UserDetails, callback){
@@ -42,8 +106,6 @@ export class AuthService {
   }
 
   loginUser(email, password, callback){
-    console.log(email);
-    console.log(password);
     const body = new HttpParams()
     .set('username', email)
     .set('password', password)
@@ -56,7 +118,6 @@ export class AuthService {
     body.toString(),
     {
       headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')
-    
     }).subscribe(data => {
       let obj = JSON.parse(JSON.stringify(data));
       console.dir(obj);
@@ -64,7 +125,8 @@ export class AuthService {
       localStorage.setItem('UserId', (JSON.parse(obj.User)).Id);
       localStorage.setItem('token', obj.access_token);
       localStorage.setItem('refreshtoken', obj.refresh_token);
-      
+      localStorage.setItem('expiresAt', obj[".expires"]);
+      localStorage.setItem('expiresIn', obj["expires_in"]);
       callback(obj.UserDisplayName);
       
       },

@@ -12,4 +12,10 @@ export class DataProviderService {
   {
 
   }
+  getUserData(Id){
+    return this.http.get("/api/Users/"+Id);
+  }
+
+
+
 }

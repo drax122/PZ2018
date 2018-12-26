@@ -33,8 +33,4 @@ export class LoginComponent implements OnInit {
       }
     });
   }
-  logOut(){
-    this.Auth.setLoggedIn(false);
-    localStorage.clear();
-  }
 }

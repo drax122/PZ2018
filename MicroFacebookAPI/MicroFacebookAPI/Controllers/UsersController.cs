@@ -40,12 +40,13 @@ namespace MicroFacebookAPI.Controllers
         }
 
         // GET: api/Users/5
+        [Authorize]
         [ResponseType(typeof(Users))]
-        public IHttpActionResult GetUsers(int id)
+        public IHttpActionResult GetUsers(int Id)
         {
             var XD = this.Request;
             var XD2 = this.RequestContext;
-            Users users = db.Users.Find(id);
+            Users users = db.Users.Find(Id);
             if (users == null)
             {
                 return NotFound();
