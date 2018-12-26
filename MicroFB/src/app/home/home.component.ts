@@ -15,25 +15,35 @@ export class HomeComponent implements OnInit {
 
   constructor(private auth:AuthService, private router: Router, private DataSource : DataProviderService) 
   { 
-      this.getUserData();
+     
+  }
+  get LoggedIn()
+  {
+    return this.auth.IsLogged;
   }
 
-  logout(){
+  logout()
+  {
     this.auth.logOut();
-    this.router.navigate(['/home']);
+    this.router.navigate(['']);
   }
-  getUserData(){
+  getUserData()
+  {
     const id = localStorage.getItem("UserId");
-    this.DataSource.getUserData(id).subscribe( (data) => {
+    this.DataSource.getUserData(id).subscribe( (data) => 
+    {
       this.loadUserData(data);
     });
   }
-  loadUserData(data){
-    console.dir("XD");
-    if(data){
+  loadUserData(data)
+  {
+    if(data)
+    {
       this.UserData = new UserDetails(data)
     }
   }
-  ngOnInit() {
+  ngOnInit()
+  {
+    this.getUserData();
   }
 }

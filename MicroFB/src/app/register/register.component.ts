@@ -20,7 +20,8 @@ export class RegisterComponent implements OnInit {
   }
 
   RegisterUser(){
-     this.Auth.Register(this.registerModel, (callback) => {
+     this.Auth.Register(this.registerModel, (callback) => 
+     {
           
      });   
   }
