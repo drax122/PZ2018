@@ -203,7 +203,11 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\GroupsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MessagesController.cs" />
+    <Compile Include="Controllers\NotificationsController.cs" />
+    <Compile Include="Controllers\PostsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="CustomErrorProvider\ErrorMessage.cs" />
     <Compile Include="DataManager\DataManagerService.cs" />
@@ -211,6 +215,9 @@
       <DependentUpon>MicroFB.tt</DependentUpon>
     </Compile>
     <Compile Include="DataModel\Friends.cs">
+      <DependentUpon>MicroFB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\FriendsView.cs">
       <DependentUpon>MicroFB.tt</DependentUpon>
     </Compile>
     <Compile Include="DataModel\MicroFB.Context.cs">

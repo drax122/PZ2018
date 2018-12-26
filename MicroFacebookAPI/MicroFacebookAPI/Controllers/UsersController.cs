@@ -17,13 +17,49 @@ namespace MicroFacebookAPI.Controllers
     {
         private MicroFBEntities db = new MicroFBEntities();
         private DataManagerService ds = new DataManagerService();
-        // GET: api/Users
+
+        #region GET METHODS        
         [Authorize]
-        public IQueryable<Users> GetUsers()
+        [ResponseType(typeof(Users))]
+        [Route("api/users/getusers")]
+        public IHttpActionResult GetUsers(int Id)
         {
-            return db.Users;
+            Users users = db.Users.Where(x => x.Id == Id).FirstOrDefault();
+            if (users == null)
+            {
+                return NotFound();
+            }
+            return Json(users);
         }
 
+        [Authorize]
+        [ResponseType(typeof(Users))]
+        [Route("api/users/getfriends")]
+        public IHttpActionResult GetFriends(int userId)
+        {
+            var users = db.FriendsView.Where(x => x.UserId == userId).ToList();
+            if (users == null)
+            {
+                return NotFound();
+            }
+            return Json(users);
+        }
+
+        [Authorize]
+        [ResponseType(typeof(Users))]
+        [Route("api/users/search")]
+        public IHttpActionResult Search(string phrase)
+        {
+            var users = db.Users.Where(x=> 
+                x.FirstName.Contains(phrase)
+                || x.LastName.Contains(phrase)
+                || x.MiddleName.Contains(phrase)
+                || x.PhoneNumber.Contains(phrase)).ToList();
+            return Json(users);
+        }
+        #endregion
+
+        #region POST METHODS / SAVING DATA
         [HttpPost]
         [Route("api/users/registeruser")]
         public IHttpActionResult RegisterUser([FromBody]Users user)
@@ -39,99 +75,96 @@ namespace MicroFacebookAPI.Controllers
             }
         }
 
-        // GET: api/Users/5
+
+
         [Authorize]
-        [ResponseType(typeof(Users))]
-        public IHttpActionResult GetUsers(int Id)
+        [HttpPost]
+        [Route("api/users/makefriend")]
+        public IHttpActionResult MakeFriend(int userId, int friendId)
         {
-            var XD = this.Request;
-            var XD2 = this.RequestContext;
-            Users users = db.Users.Find(Id);
-            if (users == null)
-            {
-                return NotFound();
-            }
-            return Json(users);
-        }
-
-        // PUT: api/Users/5
-        [ResponseType(typeof(void))]
-        public IHttpActionResult PutUsers(int id, Users users)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != users.Id)
-            {
-                return BadRequest();
-            }
-
-            db.Entry(users).State = EntityState.Modified;
-
             try
             {
+                var tmp = new Friends
+                {
+                    UserId = userId,
+                    FriendId = friendId,
+                    IsObserving = true,
+                };
+                var tmp2 = new Friends
+                {
+                    UserId = friendId,
+                    FriendId = userId,
+                    IsObserving = true,
+                };
+                db.Friends.AddRange(new[] { tmp, tmp2 });
                 db.SaveChanges();
+                return Ok();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception ex)
             {
-                if (!UsersExists(id))
-                {
-                    return NotFound();
+                return InternalServerError(ex);
+            }
+        }
+        [Authorize]
+        [HttpPost]
+        [Route("api/users/unmakefriend")]
+        public IHttpActionResult UnmakeFriend(int userId, int friendId)
+        {
+            try
+            {
+                var friend = db.Friends.Where(x => (x.UserId == userId && x.FriendId == friendId) || (x.UserId == friendId  && x.FriendId == userId));
+                if (friend.Any())
+                {                 
+                    db.Friends.RemoveRange(friend);
+                    db.SaveChanges();
                 }
-                else
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+        [Authorize]
+        [HttpPost]
+        [Route("api/users/unfollowfriend")]
+        public IHttpActionResult UnfollowFriend(int userId, int friendId)
+        {
+            try
+            {
+                var friend = db.Friends.Where(x => x.UserId == userId && x.FriendId == friendId).FirstOrDefault();
+                if (friend != null)
                 {
-                    throw;
+                    friend.IsObserving = false;
+                    db.SaveChanges();
                 }
+                return Ok();
             }
-
-            return StatusCode(HttpStatusCode.NoContent);
-        }
-
-        // POST: api/Users
-        [ResponseType(typeof(Users))]
-        public IHttpActionResult PostUsers(Users users)
-        {
-            if (!ModelState.IsValid)
+            catch (Exception ex)
             {
-                return BadRequest(ModelState);
+                return InternalServerError(ex);
             }
-
-            db.Users.Add(users);
-            db.SaveChanges();
-
-            return CreatedAtRoute("DefaultApi", new { id = users.Id }, users);
         }
-
-        // DELETE: api/Users/5
-        [ResponseType(typeof(Users))]
-        public IHttpActionResult DeleteUsers(int id)
+        [Authorize]
+        [HttpPost]
+        [Route("api/users/Followfriend")]
+        public IHttpActionResult FollowFriend(int userId, int friendId)
         {
-            Users users = db.Users.Find(id);
-            if (users == null)
+            try
             {
-                return NotFound();
+                var friend = db.Friends.Where(x => x.UserId == userId && x.FriendId == friendId).FirstOrDefault();
+                if (friend != null)
+                {
+                    friend.IsObserving = true;
+                    db.SaveChanges();
+                }
+                return Ok();
             }
-
-            db.Users.Remove(users);
-            db.SaveChanges();
-
-            return Ok(users);
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
+            catch (Exception ex)
             {
-                db.Dispose();
+                return InternalServerError(ex);
             }
-            base.Dispose(disposing);
         }
-
-        private bool UsersExists(int id)
-        {
-            return db.Users.Count(e => e.Id == id) > 0;
-        }
+        #endregion
     }
 }

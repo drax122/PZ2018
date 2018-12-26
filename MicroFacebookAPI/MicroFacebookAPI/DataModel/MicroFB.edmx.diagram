@@ -12,6 +12,7 @@
         <EntityTypeShape EntityType="MicroFBModel.Client_RefreshTokens" Width="1.5" PointX="13.875" PointY="0.5" />
         <EntityTypeShape EntityType="MicroFBModel.RestfullAPI_Clients" Width="1.5" PointX="11.625" PointY="0.5" />
         <AssociationConnector Association="MicroFBModel.FK__Client_Re__Clien__1BFD2C07" />
+        <EntityTypeShape EntityType="MicroFBModel.FriendsView" Width="1.5" PointX="3.375" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

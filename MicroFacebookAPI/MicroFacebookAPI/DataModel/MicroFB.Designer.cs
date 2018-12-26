@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\Users\draxeer\Source\Repos\MicroFacebookAPI\MicroFacebookAPI\DataModel\MicroFB.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Users\draxeer\Desktop\PZ2018\PZ2018\MicroFacebookAPI\MicroFacebookAPI\DataModel\MicroFB.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

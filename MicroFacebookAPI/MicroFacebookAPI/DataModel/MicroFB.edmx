@@ -57,6 +57,18 @@
           <Property Name="FriendId" Type="int" Nullable="false" />
           <Property Name="IsObserving" Type="bit" Nullable="false" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'MicroFB.dbo.FriendsView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="FriendsView">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="FriendId" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="FriendId" Type="int" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="LastName" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
         <Association Name="FK__Client_Re__Clien__1BFD2C07">
           <End Role="RestfullAPI_Clients" Type="Self.RestfullAPI_Clients" Multiplicity="1" />
           <End Role="Client_RefreshTokens" Type="Self.Client_RefreshTokens" Multiplicity="*" />
@@ -98,6 +110,14 @@
           <EntitySet Name="RestfullAPI_Clients" EntityType="Self.RestfullAPI_Clients" Schema="Security" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="Security" store:Type="Tables" />
           <EntitySet Name="Friends" EntityType="Self.Friends" Schema="Users" store:Type="Tables" />
+          <EntitySet Name="FriendsView" EntityType="Self.FriendsView" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [FriendsView].[UserId] AS [UserId], 
+    [FriendsView].[FriendId] AS [FriendId], 
+    [FriendsView].[FirstName] AS [FirstName], 
+    [FriendsView].[LastName] AS [LastName]
+    FROM [dbo].[FriendsView] AS [FriendsView]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK__Client_Re__Clien__1BFD2C07" Association="Self.FK__Client_Re__Clien__1BFD2C07">
             <End Role="RestfullAPI_Clients" EntitySet="RestfullAPI_Clients" />
             <End Role="Client_RefreshTokens" EntitySet="Client_RefreshTokens" />
@@ -152,6 +172,7 @@
             <End Role="RestfullAPI_Clients" EntitySet="RestfullAPI_Clients" />
             <End Role="Client_RefreshTokens" EntitySet="Client_RefreshTokens" />
           </AssociationSet>
+          <EntitySet Name="FriendsView" EntityType="MicroFBModel.FriendsView" />
         </EntityContainer>
         <EntityType Name="Friends">
           <Key>
@@ -227,6 +248,16 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="FriendsView">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="FriendId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="FriendId" Type="Int32" Nullable="false" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -286,6 +317,16 @@
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Secret" ColumnName="Secret" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FriendsView">
+            <EntityTypeMapping TypeName="MicroFBModel.FriendsView">
+              <MappingFragment StoreEntitySet="FriendsView">
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="FriendId" ColumnName="FriendId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

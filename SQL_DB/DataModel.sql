@@ -129,4 +129,21 @@ ConversationId int not null references dbo.UserConversations(Id),
 AuthorId int not null references Security.Users(Id),
 Message varchar(max) not null
 )
+go
+insert into [Security].[RestfullAPI_Clients]
+  values('smile', 'AngularFBApp', 0, 1, 14400, '*', 'Angular')
+go
+create view dbo.FriendsView
+  as 
+  select
+	Me.Id as 'UserId',
+	friend.Id as 'FriendId',
+	friend.FirstName as 'FirstName',
+	friend.LastName as 'LastName'
+	from Users.Friends f
+	join Security.Users Me on f.UserId = Me.Id
+	join Security.Users friend on f.FriendId = friend.Id
+go
+
+
 
