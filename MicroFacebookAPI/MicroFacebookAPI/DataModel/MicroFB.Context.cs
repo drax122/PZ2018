@@ -30,5 +30,16 @@ namespace MicroFacebookAPI.DataModel
         public virtual DbSet<Client_RefreshTokens> Client_RefreshTokens { get; set; }
         public virtual DbSet<RestfullAPI_Clients> RestfullAPI_Clients { get; set; }
         public virtual DbSet<FriendsView> FriendsView { get; set; }
+        public virtual DbSet<ConversationMessages> ConversationMessages { get; set; }
+        public virtual DbSet<FriendInvitations> FriendInvitations { get; set; }
+        public virtual DbSet<GroupPosts> GroupPosts { get; set; }
+        public virtual DbSet<Groups> Groups { get; set; }
+        public virtual DbSet<GroupUsers> GroupUsers { get; set; }
+        public virtual DbSet<Notifications> Notifications { get; set; }
+        public virtual DbSet<UserConversations> UserConversations { get; set; }
+        public virtual DbSet<UserFollows> UserFollows { get; set; }
+        public virtual DbSet<UserPosts> UserPosts { get; set; }
+        public virtual DbSet<PostsView> PostsView { get; set; }
+        public virtual DbSet<ConversationMessagesView> ConversationMessagesView { get; set; }
     }
 }

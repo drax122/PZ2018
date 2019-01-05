@@ -87,7 +87,6 @@ export class AuthService {
   {
     localStorage.clear();
     this.setLoggedIn(false);
-    this.router.navigate["/login"];
   }
 
   Register(user : UserDetails, callback)
@@ -118,7 +117,6 @@ export class AuthService {
     .set('grant_type', "password")
     .set('client_id', "Angular")
     .set('client_secret', "smile")
-
     
     this.http.post('/api/authenticate', 
     body.toString(),

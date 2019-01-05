@@ -75,28 +75,56 @@ namespace MicroFacebookAPI.Controllers
             }
         }
 
-
-
         [Authorize]
         [HttpPost]
         [Route("api/users/makefriend")]
-        public IHttpActionResult MakeFriend(int userId, int friendId)
+        public IHttpActionResult MakeFriend(int InvitationId, bool accept)
         {
             try
             {
-                var tmp = new Friends
+                var inv = db.FriendInvitations.Where(x => x.Id == InvitationId).FirstOrDefault();
+                if (accept)
                 {
-                    UserId = userId,
-                    FriendId = friendId,
-                    IsObserving = true,
-                };
-                var tmp2 = new Friends
+                   
+                    var tmp = new Friends
+                    {
+                        UserId = inv.UserId,
+                        FriendId = inv.TargetPersonId,
+                        IsObserving = true,
+                    };
+                    var tmp2 = new Friends
+                    {
+                        UserId = inv.TargetPersonId,
+                        FriendId = inv.UserId,
+                        IsObserving = true,
+                    };
+                    
+                    var conv = new UserConversations
+                    {
+                        FriendId = tmp.FriendId,
+                        UserId = tmp.UserId,                        
+                    };
+                    // PRZYJACIELE W BAZIE
+                    db.Friends.AddRange(new[] { tmp, tmp2 });
+                    // ZALÓŻ KONWERSACJĘ JESLI NIGDY NIE ISTNIAŁA
+                    var check = db.UserConversations.Where(x => (x.FriendId == conv.FriendId && x.UserId == conv.UserId) || (x.FriendId == conv.UserId && x.UserId == conv.FriendId));
+                    if (!check.Any())
+                    {
+                        db.UserConversations.Add(conv);
+                    }
+                }
+                else // Nie przyjął zaproszenia - usuń zaproszenie + dodaj powiadomienie na użytkownika, który je wysłał
                 {
-                    UserId = friendId,
-                    FriendId = userId,
-                    IsObserving = true,
-                };
-                db.Friends.AddRange(new[] { tmp, tmp2 });
+                    var not = new Notifications
+                    {
+                        SourcePersonId = inv.TargetPersonId,
+                        TargetPersonId = inv.UserId,
+                        Description = "Odrzucono zaproszenie do grona znajomych.",
+                        Type = 1,
+                    };
+                    db.Notifications.Add(not);
+                    db.FriendInvitations.Remove(inv);
+                }
                 db.SaveChanges();
                 return Ok();
             }
@@ -114,7 +142,8 @@ namespace MicroFacebookAPI.Controllers
             {
                 var friend = db.Friends.Where(x => (x.UserId == userId && x.FriendId == friendId) || (x.UserId == friendId  && x.FriendId == userId));
                 if (friend.Any())
-                {                 
+                {                
+                    // Nie usuwam konwersacji, bo w razie gdy znów będą przyjacielami - będą mieli historię.
                     db.Friends.RemoveRange(friend);
                     db.SaveChanges();
                 }

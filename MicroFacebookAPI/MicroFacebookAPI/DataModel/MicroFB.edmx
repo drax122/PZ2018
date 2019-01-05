@@ -5,6 +5,84 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="MicroFBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ConversationMessages">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ConversationId" Type="int" Nullable="false" />
+          <Property Name="AuthorId" Type="int" Nullable="false" />
+          <Property Name="Message" Type="varchar(max)" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FriendInvitations">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="TargetPersonId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="GroupPosts">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AuthorId" Type="int" Nullable="false" />
+          <Property Name="GroupId" Type="int" Nullable="false" />
+          <Property Name="Content" Type="varchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Groups">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="OwnerId" Type="int" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="3000" />
+        </EntityType>
+        <EntityType Name="GroupUsers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GroupId" Type="int" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Notifications">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SourcePersonId" Type="int" Nullable="false" />
+          <Property Name="TargetPersonId" Type="int" Nullable="false" />
+          <Property Name="Type" Type="int" Nullable="false" />
+          <Property Name="Description" Type="varchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserConversations">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="FriendId" Type="int" />
+        </EntityType>
+        <EntityType Name="UserFollows">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="FollowedUserId" Type="int" />
+        </EntityType>
+        <EntityType Name="UserPosts">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AuthorId" Type="int" Nullable="false" />
+          <Property Name="Content" Type="varchar(max)" Nullable="false" />
+        </EntityType>
         <EntityType Name="Client_RefreshTokens">
           <Key>
             <PropertyRef Name="Id" />
@@ -58,16 +136,53 @@
           <Property Name="IsObserving" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6002: The table/view 'MicroFB.dbo.ConversationMessagesView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ConversationMessagesView">
+          <Key>
+            <PropertyRef Name="AuthorId" />
+            <PropertyRef Name="ConversationId" />
+            <PropertyRef Name="Message" />
+            <PropertyRef Name="FirstName" />
+            <PropertyRef Name="LastName" />
+            <PropertyRef Name="Date" />
+          </Key>
+          <Property Name="AuthorId" Type="int" Nullable="false" />
+          <Property Name="ConversationId" Type="int" Nullable="false" />
+          <Property Name="Message" Type="varchar(max)" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="LastName" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'MicroFB.dbo.FriendsView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="FriendsView">
           <Key>
             <PropertyRef Name="UserId" />
             <PropertyRef Name="FriendId" />
+            
+            
           </Key>
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="FriendId" Type="int" Nullable="false" />
           <Property Name="FirstName" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="LastName" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="ConversationId" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'MicroFB.dbo.PostsView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="PostsView">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="AuthorId" />
+            <PropertyRef Name="AuthorFirstName" />
+            <PropertyRef Name="AuthorLastName" />
+            <PropertyRef Name="Content" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="AuthorId" Type="int" Nullable="false" />
+          <Property Name="AuthorFirstName" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="AuthorLastName" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Content" Type="varchar(max)" Nullable="false" />
         </EntityType>
         <Association Name="FK__Client_Re__Clien__1BFD2C07">
           <End Role="RestfullAPI_Clients" Type="Self.RestfullAPI_Clients" Multiplicity="1" />
@@ -78,6 +193,54 @@ warning 6002: The table/view 'MicroFB.dbo.FriendsView' does not have a primary k
             </Principal>
             <Dependent Role="Client_RefreshTokens">
               <PropertyRef Name="ClientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Conversat__Autho__5812160E">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="ConversationMessages" Type="Self.ConversationMessages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ConversationMessages">
+              <PropertyRef Name="AuthorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Conversat__Conve__59063A47">
+          <End Role="UserConversations" Type="Self.UserConversations" Multiplicity="1" />
+          <End Role="ConversationMessages" Type="Self.ConversationMessages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserConversations">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ConversationMessages">
+              <PropertyRef Name="ConversationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__FriendInv__Targe__49C3F6B7">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="FriendInvitations" Type="Self.FriendInvitations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FriendInvitations">
+              <PropertyRef Name="TargetPersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__FriendInv__UserI__48CFD27E">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="FriendInvitations" Type="Self.FriendInvitations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FriendInvitations">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -105,22 +268,211 @@ warning 6002: The table/view 'MicroFB.dbo.FriendsView' does not have a primary k
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__GroupPost__Autho__2B3F6F97">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="GroupPosts" Type="Self.GroupPosts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="GroupPosts">
+              <PropertyRef Name="AuthorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__GroupPost__Group__2C3393D0">
+          <End Role="Groups" Type="Self.Groups" Multiplicity="1" />
+          <End Role="GroupPosts" Type="Self.GroupPosts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Groups">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="GroupPosts">
+              <PropertyRef Name="GroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Groups__OwnerId__20C1E124">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Groups" Type="Self.Groups" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Groups">
+              <PropertyRef Name="OwnerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__GroupUser__Group__25869641">
+          <End Role="Groups" Type="Self.Groups" Multiplicity="0..1" />
+          <End Role="GroupUsers" Type="Self.GroupUsers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Groups">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="GroupUsers">
+              <PropertyRef Name="GroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__GroupUser__UserI__267ABA7A">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="GroupUsers" Type="Self.GroupUsers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="GroupUsers">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Notificat__Sourc__4F7CD00D">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Notifications" Type="Self.Notifications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Notifications">
+              <PropertyRef Name="SourcePersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Notificat__Targe__5070F446">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Notifications" Type="Self.Notifications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Notifications">
+              <PropertyRef Name="TargetPersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserConve__Frien__3C69FB99">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="UserConversations" Type="Self.UserConversations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserConversations">
+              <PropertyRef Name="FriendId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserConve__UserI__3B75D760">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="UserConversations" Type="Self.UserConversations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserConversations">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserFollo__Follo__36B12243">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="UserFollows" Type="Self.UserFollows" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserFollows">
+              <PropertyRef Name="FollowedUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserFollo__UserI__35BCFE0A">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="UserFollows" Type="Self.UserFollows" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserFollows">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserPosts__Autho__30F848ED">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="UserPosts" Type="Self.UserPosts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserPosts">
+              <PropertyRef Name="AuthorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="MicroFBModelStoreContainer">
+          <EntitySet Name="ConversationMessages" EntityType="Self.ConversationMessages" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FriendInvitations" EntityType="Self.FriendInvitations" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GroupPosts" EntityType="Self.GroupPosts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Groups" EntityType="Self.Groups" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GroupUsers" EntityType="Self.GroupUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Notifications" EntityType="Self.Notifications" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserConversations" EntityType="Self.UserConversations" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserFollows" EntityType="Self.UserFollows" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserPosts" EntityType="Self.UserPosts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Client_RefreshTokens" EntityType="Self.Client_RefreshTokens" Schema="Security" store:Type="Tables" />
           <EntitySet Name="RestfullAPI_Clients" EntityType="Self.RestfullAPI_Clients" Schema="Security" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="Security" store:Type="Tables" />
           <EntitySet Name="Friends" EntityType="Self.Friends" Schema="Users" store:Type="Tables" />
+          <EntitySet Name="ConversationMessagesView" EntityType="Self.ConversationMessagesView" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ConversationMessagesView].[AuthorId] AS [AuthorId], 
+    [ConversationMessagesView].[ConversationId] AS [ConversationId], 
+    [ConversationMessagesView].[Message] AS [Message], 
+    [ConversationMessagesView].[FirstName] AS [FirstName], 
+    [ConversationMessagesView].[LastName] AS [LastName], 
+    [ConversationMessagesView].[Date] AS [Date]
+    FROM [dbo].[ConversationMessagesView] AS [ConversationMessagesView]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="FriendsView" EntityType="Self.FriendsView" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [FriendsView].[UserId] AS [UserId], 
     [FriendsView].[FriendId] AS [FriendId], 
     [FriendsView].[FirstName] AS [FirstName], 
-    [FriendsView].[LastName] AS [LastName]
+    [FriendsView].[LastName] AS [LastName], 
+    [FriendsView].[ConversationId] AS [ConversationId]
     FROM [dbo].[FriendsView] AS [FriendsView]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="PostsView" EntityType="Self.PostsView" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [PostsView].[Id] AS [Id], 
+    [PostsView].[AuthorId] AS [AuthorId], 
+    [PostsView].[AuthorFirstName] AS [AuthorFirstName], 
+    [PostsView].[AuthorLastName] AS [AuthorLastName], 
+    [PostsView].[Content] AS [Content]
+    FROM [dbo].[PostsView] AS [PostsView]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK__Client_Re__Clien__1BFD2C07" Association="Self.FK__Client_Re__Clien__1BFD2C07">
             <End Role="RestfullAPI_Clients" EntitySet="RestfullAPI_Clients" />
             <End Role="Client_RefreshTokens" EntitySet="Client_RefreshTokens" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Conversat__Autho__5812160E" Association="Self.FK__Conversat__Autho__5812160E">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="ConversationMessages" EntitySet="ConversationMessages" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Conversat__Conve__59063A47" Association="Self.FK__Conversat__Conve__59063A47">
+            <End Role="UserConversations" EntitySet="UserConversations" />
+            <End Role="ConversationMessages" EntitySet="ConversationMessages" />
+          </AssociationSet>
+          <AssociationSet Name="FK__FriendInv__Targe__49C3F6B7" Association="Self.FK__FriendInv__Targe__49C3F6B7">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="FriendInvitations" EntitySet="FriendInvitations" />
+          </AssociationSet>
+          <AssociationSet Name="FK__FriendInv__UserI__48CFD27E" Association="Self.FK__FriendInv__UserI__48CFD27E">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="FriendInvitations" EntitySet="FriendInvitations" />
           </AssociationSet>
           <AssociationSet Name="FK__Friends__FriendI__060DEAE8" Association="Self.FK__Friends__FriendI__060DEAE8">
             <End Role="Users" EntitySet="Users" />
@@ -129,6 +481,54 @@ warning 6002: The table/view 'MicroFB.dbo.FriendsView' does not have a primary k
           <AssociationSet Name="FK__Friends__UserId__0519C6AF" Association="Self.FK__Friends__UserId__0519C6AF">
             <End Role="Users" EntitySet="Users" />
             <End Role="Friends" EntitySet="Friends" />
+          </AssociationSet>
+          <AssociationSet Name="FK__GroupPost__Autho__2B3F6F97" Association="Self.FK__GroupPost__Autho__2B3F6F97">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="GroupPosts" EntitySet="GroupPosts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__GroupPost__Group__2C3393D0" Association="Self.FK__GroupPost__Group__2C3393D0">
+            <End Role="Groups" EntitySet="Groups" />
+            <End Role="GroupPosts" EntitySet="GroupPosts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Groups__OwnerId__20C1E124" Association="Self.FK__Groups__OwnerId__20C1E124">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Groups" EntitySet="Groups" />
+          </AssociationSet>
+          <AssociationSet Name="FK__GroupUser__Group__25869641" Association="Self.FK__GroupUser__Group__25869641">
+            <End Role="Groups" EntitySet="Groups" />
+            <End Role="GroupUsers" EntitySet="GroupUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__GroupUser__UserI__267ABA7A" Association="Self.FK__GroupUser__UserI__267ABA7A">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="GroupUsers" EntitySet="GroupUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Notificat__Sourc__4F7CD00D" Association="Self.FK__Notificat__Sourc__4F7CD00D">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Notifications" EntitySet="Notifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Notificat__Targe__5070F446" Association="Self.FK__Notificat__Targe__5070F446">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Notifications" EntitySet="Notifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserConve__Frien__3C69FB99" Association="Self.FK__UserConve__Frien__3C69FB99">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserConversations" EntitySet="UserConversations" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserConve__UserI__3B75D760" Association="Self.FK__UserConve__UserI__3B75D760">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserConversations" EntitySet="UserConversations" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserFollo__Follo__36B12243" Association="Self.FK__UserFollo__Follo__36B12243">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserFollows" EntitySet="UserFollows" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserFollo__UserI__35BCFE0A" Association="Self.FK__UserFollo__UserI__35BCFE0A">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserFollows" EntitySet="UserFollows" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserPosts__Autho__30F848ED" Association="Self.FK__UserPosts__Autho__30F848ED">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserPosts" EntitySet="UserPosts" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -154,6 +554,19 @@ warning 6002: The table/view 'MicroFB.dbo.FriendsView' does not have a primary k
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Friends" Relationship="MicroFBModel.FK__Friends__FriendI__060DEAE8" FromRole="Users" ToRole="Friends" />
           <NavigationProperty Name="Friends1" Relationship="MicroFBModel.FK__Friends__UserId__0519C6AF" FromRole="Users" ToRole="Friends" />
+          <NavigationProperty Name="ConversationMessages" Relationship="MicroFBModel.FK__Conversat__Autho__4222D4EF" FromRole="Users" ToRole="ConversationMessages" />
+          <NavigationProperty Name="FriendInvitations" Relationship="MicroFBModel.FK__FriendInv__Targe__49C3F6B7" FromRole="Users" ToRole="FriendInvitations" />
+          <NavigationProperty Name="FriendInvitations1" Relationship="MicroFBModel.FK__FriendInv__UserI__48CFD27E" FromRole="Users" ToRole="FriendInvitations" />
+          <NavigationProperty Name="GroupPosts" Relationship="MicroFBModel.FK__GroupPost__Autho__2B3F6F97" FromRole="Users" ToRole="GroupPosts" />
+          <NavigationProperty Name="Groups" Relationship="MicroFBModel.FK__Groups__OwnerId__20C1E124" FromRole="Users" ToRole="Groups" />
+          <NavigationProperty Name="GroupUsers" Relationship="MicroFBModel.FK__GroupUser__UserI__267ABA7A" FromRole="Users" ToRole="GroupUsers" />
+          <NavigationProperty Name="Notifications" Relationship="MicroFBModel.FK__Notificat__Sourc__4F7CD00D" FromRole="Users" ToRole="Notifications" />
+          <NavigationProperty Name="Notifications1" Relationship="MicroFBModel.FK__Notificat__Targe__5070F446" FromRole="Users" ToRole="Notifications" />
+          <NavigationProperty Name="UserConversations" Relationship="MicroFBModel.FK__UserConve__Frien__3C69FB99" FromRole="Users" ToRole="UserConversations" />
+          <NavigationProperty Name="UserConversations1" Relationship="MicroFBModel.FK__UserConve__UserI__3B75D760" FromRole="Users" ToRole="UserConversations" />
+          <NavigationProperty Name="UserFollows" Relationship="MicroFBModel.FK__UserFollo__Follo__36B12243" FromRole="Users" ToRole="UserFollows" />
+          <NavigationProperty Name="UserFollows1" Relationship="MicroFBModel.FK__UserFollo__UserI__35BCFE0A" FromRole="Users" ToRole="UserFollows" />
+          <NavigationProperty Name="UserPosts" Relationship="MicroFBModel.FK__UserPosts__Autho__30F848ED" FromRole="Users" ToRole="UserPosts" />
         </EntityType>
         <EntityContainer Name="MicroFBEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Users" EntityType="Self.Users" />
@@ -173,6 +586,81 @@ warning 6002: The table/view 'MicroFB.dbo.FriendsView' does not have a primary k
             <End Role="Client_RefreshTokens" EntitySet="Client_RefreshTokens" />
           </AssociationSet>
           <EntitySet Name="FriendsView" EntityType="MicroFBModel.FriendsView" />
+          <EntitySet Name="ConversationMessages" EntityType="MicroFBModel.ConversationMessages" />
+          <EntitySet Name="FriendInvitations" EntityType="MicroFBModel.FriendInvitations" />
+          <EntitySet Name="GroupPosts" EntityType="MicroFBModel.GroupPosts" />
+          <EntitySet Name="Groups" EntityType="MicroFBModel.Groups" />
+          <EntitySet Name="GroupUsers" EntityType="MicroFBModel.GroupUsers" />
+          <EntitySet Name="Notifications" EntityType="MicroFBModel.Notifications" />
+          <EntitySet Name="UserConversations" EntityType="MicroFBModel.UserConversations" />
+          <EntitySet Name="UserFollows" EntityType="MicroFBModel.UserFollows" />
+          <EntitySet Name="UserPosts" EntityType="MicroFBModel.UserPosts" />
+          <AssociationSet Name="FK__Conversat__Autho__4222D4EF" Association="MicroFBModel.FK__Conversat__Autho__4222D4EF">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="ConversationMessages" EntitySet="ConversationMessages" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Conversat__Conve__412EB0B6" Association="MicroFBModel.FK__Conversat__Conve__412EB0B6">
+            <End Role="UserConversations" EntitySet="UserConversations" />
+            <End Role="ConversationMessages" EntitySet="ConversationMessages" />
+          </AssociationSet>
+          <AssociationSet Name="FK__FriendInv__Targe__49C3F6B7" Association="MicroFBModel.FK__FriendInv__Targe__49C3F6B7">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="FriendInvitations" EntitySet="FriendInvitations" />
+          </AssociationSet>
+          <AssociationSet Name="FK__FriendInv__UserI__48CFD27E" Association="MicroFBModel.FK__FriendInv__UserI__48CFD27E">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="FriendInvitations" EntitySet="FriendInvitations" />
+          </AssociationSet>
+          <AssociationSet Name="FK__GroupPost__Autho__2B3F6F97" Association="MicroFBModel.FK__GroupPost__Autho__2B3F6F97">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="GroupPosts" EntitySet="GroupPosts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__GroupPost__Group__2C3393D0" Association="MicroFBModel.FK__GroupPost__Group__2C3393D0">
+            <End Role="Groups" EntitySet="Groups" />
+            <End Role="GroupPosts" EntitySet="GroupPosts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Groups__OwnerId__20C1E124" Association="MicroFBModel.FK__Groups__OwnerId__20C1E124">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Groups" EntitySet="Groups" />
+          </AssociationSet>
+          <AssociationSet Name="FK__GroupUser__Group__25869641" Association="MicroFBModel.FK__GroupUser__Group__25869641">
+            <End Role="Groups" EntitySet="Groups" />
+            <End Role="GroupUsers" EntitySet="GroupUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__GroupUser__UserI__267ABA7A" Association="MicroFBModel.FK__GroupUser__UserI__267ABA7A">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="GroupUsers" EntitySet="GroupUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Notificat__Sourc__4F7CD00D" Association="MicroFBModel.FK__Notificat__Sourc__4F7CD00D">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Notifications" EntitySet="Notifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Notificat__Targe__5070F446" Association="MicroFBModel.FK__Notificat__Targe__5070F446">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Notifications" EntitySet="Notifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserConve__Frien__3C69FB99" Association="MicroFBModel.FK__UserConve__Frien__3C69FB99">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserConversations" EntitySet="UserConversations" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserConve__UserI__3B75D760" Association="MicroFBModel.FK__UserConve__UserI__3B75D760">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserConversations" EntitySet="UserConversations" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserFollo__Follo__36B12243" Association="MicroFBModel.FK__UserFollo__Follo__36B12243">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserFollows" EntitySet="UserFollows" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserFollo__UserI__35BCFE0A" Association="MicroFBModel.FK__UserFollo__UserI__35BCFE0A">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserFollows" EntitySet="UserFollows" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserPosts__Autho__30F848ED" Association="MicroFBModel.FK__UserPosts__Autho__30F848ED">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserPosts" EntitySet="UserPosts" />
+          </AssociationSet>
+          <EntitySet Name="PostsView" EntityType="MicroFBModel.PostsView" />
+          <EntitySet Name="ConversationMessagesView" EntityType="MicroFBModel.ConversationMessagesView" />
         </EntityContainer>
         <EntityType Name="Friends">
           <Key>
@@ -257,6 +745,326 @@ warning 6002: The table/view 'MicroFB.dbo.FriendsView' does not have a primary k
           <Property Name="FriendId" Type="Int32" Nullable="false" />
           <Property Name="FirstName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="LastName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ConversationId" Type="Int32" />
+        </EntityType>
+        <EntityType Name="ConversationMessages">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ConversationId" Type="Int32" Nullable="false" />
+          <Property Name="AuthorId" Type="Int32" Nullable="false" />
+          <Property Name="Message" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Users" Relationship="MicroFBModel.FK__Conversat__Autho__4222D4EF" FromRole="ConversationMessages" ToRole="Users" />
+          <NavigationProperty Name="UserConversations" Relationship="MicroFBModel.FK__Conversat__Conve__412EB0B6" FromRole="ConversationMessages" ToRole="UserConversations" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="FriendInvitations">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="TargetPersonId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Users" Relationship="MicroFBModel.FK__FriendInv__Targe__49C3F6B7" FromRole="FriendInvitations" ToRole="Users" />
+          <NavigationProperty Name="Users1" Relationship="MicroFBModel.FK__FriendInv__UserI__48CFD27E" FromRole="FriendInvitations" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="GroupPosts">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AuthorId" Type="Int32" Nullable="false" />
+          <Property Name="GroupId" Type="Int32" Nullable="false" />
+          <Property Name="Content" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Users" Relationship="MicroFBModel.FK__GroupPost__Autho__2B3F6F97" FromRole="GroupPosts" ToRole="Users" />
+          <NavigationProperty Name="Groups" Relationship="MicroFBModel.FK__GroupPost__Group__2C3393D0" FromRole="GroupPosts" ToRole="Groups" />
+        </EntityType>
+        <EntityType Name="Groups">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="OwnerId" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="3000" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="GroupPosts" Relationship="MicroFBModel.FK__GroupPost__Group__2C3393D0" FromRole="Groups" ToRole="GroupPosts" />
+          <NavigationProperty Name="Users" Relationship="MicroFBModel.FK__Groups__OwnerId__20C1E124" FromRole="Groups" ToRole="Users" />
+          <NavigationProperty Name="GroupUsers" Relationship="MicroFBModel.FK__GroupUser__Group__25869641" FromRole="Groups" ToRole="GroupUsers" />
+        </EntityType>
+        <EntityType Name="GroupUsers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GroupId" Type="Int32" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Groups" Relationship="MicroFBModel.FK__GroupUser__Group__25869641" FromRole="GroupUsers" ToRole="Groups" />
+          <NavigationProperty Name="Users" Relationship="MicroFBModel.FK__GroupUser__UserI__267ABA7A" FromRole="GroupUsers" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Notifications">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SourcePersonId" Type="Int32" Nullable="false" />
+          <Property Name="TargetPersonId" Type="Int32" Nullable="false" />
+          <Property Name="Type" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Users" Relationship="MicroFBModel.FK__Notificat__Sourc__4F7CD00D" FromRole="Notifications" ToRole="Users" />
+          <NavigationProperty Name="Users1" Relationship="MicroFBModel.FK__Notificat__Targe__5070F446" FromRole="Notifications" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="UserConversations">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="FriendId" Type="Int32" />
+          <NavigationProperty Name="ConversationMessages" Relationship="MicroFBModel.FK__Conversat__Conve__412EB0B6" FromRole="UserConversations" ToRole="ConversationMessages" />
+          <NavigationProperty Name="Users" Relationship="MicroFBModel.FK__UserConve__Frien__3C69FB99" FromRole="UserConversations" ToRole="Users" />
+          <NavigationProperty Name="Users1" Relationship="MicroFBModel.FK__UserConve__UserI__3B75D760" FromRole="UserConversations" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="UserFollows">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="FollowedUserId" Type="Int32" />
+          <NavigationProperty Name="Users" Relationship="MicroFBModel.FK__UserFollo__Follo__36B12243" FromRole="UserFollows" ToRole="Users" />
+          <NavigationProperty Name="Users1" Relationship="MicroFBModel.FK__UserFollo__UserI__35BCFE0A" FromRole="UserFollows" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="UserPosts">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AuthorId" Type="Int32" Nullable="false" />
+          <Property Name="Content" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Users" Relationship="MicroFBModel.FK__UserPosts__Autho__30F848ED" FromRole="UserPosts" ToRole="Users" />
+        </EntityType>
+        <Association Name="FK__Conversat__Autho__4222D4EF">
+          <End Type="MicroFBModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="MicroFBModel.ConversationMessages" Role="ConversationMessages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ConversationMessages">
+              <PropertyRef Name="AuthorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Conversat__Conve__412EB0B6">
+          <End Type="MicroFBModel.UserConversations" Role="UserConversations" Multiplicity="1" />
+          <End Type="MicroFBModel.ConversationMessages" Role="ConversationMessages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserConversations">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ConversationMessages">
+              <PropertyRef Name="ConversationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__FriendInv__Targe__49C3F6B7">
+          <End Type="MicroFBModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="MicroFBModel.FriendInvitations" Role="FriendInvitations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FriendInvitations">
+              <PropertyRef Name="TargetPersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__FriendInv__UserI__48CFD27E">
+          <End Type="MicroFBModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="MicroFBModel.FriendInvitations" Role="FriendInvitations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FriendInvitations">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__GroupPost__Autho__2B3F6F97">
+          <End Type="MicroFBModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="MicroFBModel.GroupPosts" Role="GroupPosts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="GroupPosts">
+              <PropertyRef Name="AuthorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__GroupPost__Group__2C3393D0">
+          <End Type="MicroFBModel.Groups" Role="Groups" Multiplicity="1" />
+          <End Type="MicroFBModel.GroupPosts" Role="GroupPosts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Groups">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="GroupPosts">
+              <PropertyRef Name="GroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Groups__OwnerId__20C1E124">
+          <End Type="MicroFBModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="MicroFBModel.Groups" Role="Groups" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Groups">
+              <PropertyRef Name="OwnerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__GroupUser__Group__25869641">
+          <End Type="MicroFBModel.Groups" Role="Groups" Multiplicity="0..1" />
+          <End Type="MicroFBModel.GroupUsers" Role="GroupUsers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Groups">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="GroupUsers">
+              <PropertyRef Name="GroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__GroupUser__UserI__267ABA7A">
+          <End Type="MicroFBModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="MicroFBModel.GroupUsers" Role="GroupUsers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="GroupUsers">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Notificat__Sourc__4F7CD00D">
+          <End Type="MicroFBModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="MicroFBModel.Notifications" Role="Notifications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Notifications">
+              <PropertyRef Name="SourcePersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Notificat__Targe__5070F446">
+          <End Type="MicroFBModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="MicroFBModel.Notifications" Role="Notifications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Notifications">
+              <PropertyRef Name="TargetPersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserConve__Frien__3C69FB99">
+          <End Type="MicroFBModel.Users" Role="Users" Multiplicity="0..1" />
+          <End Type="MicroFBModel.UserConversations" Role="UserConversations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserConversations">
+              <PropertyRef Name="FriendId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserConve__UserI__3B75D760">
+          <End Type="MicroFBModel.Users" Role="Users" Multiplicity="0..1" />
+          <End Type="MicroFBModel.UserConversations" Role="UserConversations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserConversations">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserFollo__Follo__36B12243">
+          <End Type="MicroFBModel.Users" Role="Users" Multiplicity="0..1" />
+          <End Type="MicroFBModel.UserFollows" Role="UserFollows" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserFollows">
+              <PropertyRef Name="FollowedUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserFollo__UserI__35BCFE0A">
+          <End Type="MicroFBModel.Users" Role="Users" Multiplicity="0..1" />
+          <End Type="MicroFBModel.UserFollows" Role="UserFollows" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserFollows">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserPosts__Autho__30F848ED">
+          <End Type="MicroFBModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="MicroFBModel.UserPosts" Role="UserPosts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserPosts">
+              <PropertyRef Name="AuthorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="PostsView">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="AuthorId" />
+            <PropertyRef Name="AuthorFirstName" />
+            <PropertyRef Name="AuthorLastName" />
+            <PropertyRef Name="Content" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="AuthorId" Type="Int32" Nullable="false" />
+          <Property Name="AuthorFirstName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="AuthorLastName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Content" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="ConversationMessagesView">
+          <Key>
+            <PropertyRef Name="AuthorId" />
+            <PropertyRef Name="ConversationId" />
+            <PropertyRef Name="Message" />
+            <PropertyRef Name="FirstName" />
+            <PropertyRef Name="LastName" />
+            <PropertyRef Name="Date" />
+          </Key>
+          <Property Name="AuthorId" Type="Int32" Nullable="false" />
+          <Property Name="ConversationId" Type="Int32" Nullable="false" />
+          <Property Name="Message" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -323,10 +1131,121 @@ warning 6002: The table/view 'MicroFB.dbo.FriendsView' does not have a primary k
           <EntitySetMapping Name="FriendsView">
             <EntityTypeMapping TypeName="MicroFBModel.FriendsView">
               <MappingFragment StoreEntitySet="FriendsView">
+                <ScalarProperty Name="ConversationId" ColumnName="ConversationId" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="FriendId" ColumnName="FriendId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ConversationMessages">
+            <EntityTypeMapping TypeName="MicroFBModel.ConversationMessages">
+              <MappingFragment StoreEntitySet="ConversationMessages">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="AuthorId" ColumnName="AuthorId" />
+                <ScalarProperty Name="ConversationId" ColumnName="ConversationId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FriendInvitations">
+            <EntityTypeMapping TypeName="MicroFBModel.FriendInvitations">
+              <MappingFragment StoreEntitySet="FriendInvitations">
+                <ScalarProperty Name="TargetPersonId" ColumnName="TargetPersonId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GroupPosts">
+            <EntityTypeMapping TypeName="MicroFBModel.GroupPosts">
+              <MappingFragment StoreEntitySet="GroupPosts">
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="GroupId" ColumnName="GroupId" />
+                <ScalarProperty Name="AuthorId" ColumnName="AuthorId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Groups">
+            <EntityTypeMapping TypeName="MicroFBModel.Groups">
+              <MappingFragment StoreEntitySet="Groups">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="OwnerId" ColumnName="OwnerId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GroupUsers">
+            <EntityTypeMapping TypeName="MicroFBModel.GroupUsers">
+              <MappingFragment StoreEntitySet="GroupUsers">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="GroupId" ColumnName="GroupId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Notifications">
+            <EntityTypeMapping TypeName="MicroFBModel.Notifications">
+              <MappingFragment StoreEntitySet="Notifications">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="TargetPersonId" ColumnName="TargetPersonId" />
+                <ScalarProperty Name="SourcePersonId" ColumnName="SourcePersonId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserConversations">
+            <EntityTypeMapping TypeName="MicroFBModel.UserConversations">
+              <MappingFragment StoreEntitySet="UserConversations">
+                <ScalarProperty Name="FriendId" ColumnName="FriendId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserFollows">
+            <EntityTypeMapping TypeName="MicroFBModel.UserFollows">
+              <MappingFragment StoreEntitySet="UserFollows">
+                <ScalarProperty Name="FollowedUserId" ColumnName="FollowedUserId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserPosts">
+            <EntityTypeMapping TypeName="MicroFBModel.UserPosts">
+              <MappingFragment StoreEntitySet="UserPosts">
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="AuthorId" ColumnName="AuthorId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PostsView">
+            <EntityTypeMapping TypeName="MicroFBModel.PostsView">
+              <MappingFragment StoreEntitySet="PostsView">
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="AuthorLastName" ColumnName="AuthorLastName" />
+                <ScalarProperty Name="AuthorFirstName" ColumnName="AuthorFirstName" />
+                <ScalarProperty Name="AuthorId" ColumnName="AuthorId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ConversationMessagesView">
+            <EntityTypeMapping TypeName="MicroFBModel.ConversationMessagesView">
+              <MappingFragment StoreEntitySet="ConversationMessagesView">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="ConversationId" ColumnName="ConversationId" />
+                <ScalarProperty Name="AuthorId" ColumnName="AuthorId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -127,7 +127,8 @@ create table dbo.ConversationMessages(
 Id int identity(1,1) primary key,
 ConversationId int not null references dbo.UserConversations(Id),
 AuthorId int not null references Security.Users(Id),
-Message varchar(max) not null
+Message varchar(max) not null,
+Date DATETIME not null,
 )
 go
 insert into [Security].[RestfullAPI_Clients]
@@ -154,11 +155,38 @@ create view dbo.FriendsView
 	Me.Id as 'UserId',
 	friend.Id as 'FriendId',
 	friend.FirstName as 'FirstName',
-	friend.LastName as 'LastName'
+	friend.LastName as 'LastName',
+	isnull(c.Id, c1.Id) as 'ConversationId' 
 	from Users.Friends f
 	join Security.Users Me on f.UserId = Me.Id
 	join Security.Users friend on f.FriendId = friend.Id
+	left join dbo.UserConversations c on c.FriendId = Me.Id and c.UserId = friend.Id
+	left join dbo.UserConversations c1 on c1.UserId = Me.Id and c1.FriendId = Me.Id
 go
+
+create view dbo.ConversationMessagesView
+as 
+select 
+	m.AuthorId as AuthorId,
+	m.ConversationId as ConversationId,
+	m.Message as 'Message',
+	u.FirstName as 'FirstName',
+	u.LastName as 'LastName',
+	m.Date as 'Date'
+ from dbo.ConversationMessages m
+join Security.Users u on m.AuthorId = u.Id
+
+create view dbo.PostsView
+as
+select 
+	posts.Id as Id,
+	posts.AuthorId as AuthorId,
+	u.FirstName as AuthorFirstName,
+	u.LastName as AuthorLastName,
+	posts.Content as Content
+ from 
+	dbo.UserPosts posts
+	join Security.Users u on u.Id = posts.AuthorId
 
 
 
