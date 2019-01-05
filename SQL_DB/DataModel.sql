@@ -133,6 +133,21 @@ go
 insert into [Security].[RestfullAPI_Clients]
   values('smile', 'AngularFBApp', 0, 1, 14400, '*', 'Angular')
 go
+
+create table dbo.FriendInvitations(
+	Id int identity(1,1) primary key,
+	UserId int not null references Security.Users(Id),
+	TargetPersonId int not null references Security.Users(Id)
+)
+go
+create table dbo.Notifications(
+Id int identity(1,1) primary key,
+SourcePersonId int not null references Security.Users(Id),
+TargetPersonId int not null references Security.Users(Id),
+Type int not null,
+Description varchar(max) not null
+)
+
 create view dbo.FriendsView
   as 
   select
