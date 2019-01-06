@@ -5,12 +5,15 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { RegisterComponent } from './register/register.component';
 
+
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { AuthService } from './auth.service';
 import { AuthGuard } from './auth.guard';
 import { InterceptorService } from './interceptor.service';
+import { SocketService } from './DataServices/socket.service';
+import { WebsocketService } from './websocket.service';
 
 
 @NgModule({
@@ -29,6 +32,8 @@ import { InterceptorService } from './interceptor.service';
   providers: 
   [
     AuthService, 
+    SocketService,
+    WebsocketService,
     AuthGuard, 
     {
       provide: HTTP_INTERCEPTORS,

@@ -18,7 +18,7 @@ namespace MicroFacebookAPI.Controllers
         #region GET METHODS        
         [Authorize]
         [ResponseType(typeof(ConversationMessages))]
-        [Route("api/messages/getmessages")]
+        [Route("api/messages/getmessages/{ConversationId}")]
         public IHttpActionResult GetMessages(int ConversationId)
         {
             var messages = db.ConversationMessagesView.Where(x => x.ConversationId == ConversationId).OrderByDescending(x => x.Date);

@@ -22,7 +22,7 @@ namespace MicroFacebookAPI.Controllers
         #region GET METHODS        
         [Authorize]
         [ResponseType(typeof(UserPosts))]
-        [Route("api/posts/getboard")]
+        [Route("api/posts/getboard/{UserId}")]
         public IHttpActionResult GetBoard(int UserId)
         {
             var observedFriendsIds = db.Friends.Where(x => x.UserId == UserId && x.IsObserving).Select(z => z.FriendId);
@@ -32,7 +32,7 @@ namespace MicroFacebookAPI.Controllers
         }
         [Authorize]
         [ResponseType(typeof(UserPosts))]
-        [Route("api/posts/getuserboard")]
+        [Route("api/posts/getuserboard/{UserId}")]
         public IHttpActionResult GetUserBoard(int UserId)
         {
             var board = db.PostsView.Where(x => x.AuthorId == UserId);

@@ -21,7 +21,7 @@ namespace MicroFacebookAPI.Controllers
         #region GET METHODS        
         [Authorize]
         [ResponseType(typeof(Users))]
-        [Route("api/users/getusers")]
+        [Route("api/users/getusers/{Id}")]
         public IHttpActionResult GetUsers(int Id)
         {
             Users users = db.Users.Where(x => x.Id == Id).FirstOrDefault();
@@ -34,7 +34,7 @@ namespace MicroFacebookAPI.Controllers
 
         [Authorize]
         [ResponseType(typeof(Users))]
-        [Route("api/users/getfriends")]
+        [Route("api/users/getfriends/{userId}")]
         public IHttpActionResult GetFriends(int userId)
         {
             var users = db.FriendsView.Where(x => x.UserId == userId).ToList();
@@ -47,16 +47,27 @@ namespace MicroFacebookAPI.Controllers
 
         [Authorize]
         [ResponseType(typeof(Users))]
-        [Route("api/users/search")]
+        [Route("api/users/search/{phrase}")]
         public IHttpActionResult Search(string phrase)
         {
             var users = db.Users.Where(x=> 
-                x.FirstName.Contains(phrase)
+                   x.FirstName.Contains(phrase)
                 || x.LastName.Contains(phrase)
                 || x.MiddleName.Contains(phrase)
                 || x.PhoneNumber.Contains(phrase)).ToList();
             return Json(users);
         }
+
+
+        [Authorize]
+        [ResponseType(typeof(FriendInvitations))]
+        [Route("api/users/getinvitations/{Id}")]
+        public IHttpActionResult GetInvitations(int Id)
+        {
+            var invs = db.FriendInvitations.Where(x => x.TargetPersonId == Id);
+            return Json(invs);
+        }
+
         #endregion
 
         #region POST METHODS / SAVING DATA
@@ -85,7 +96,6 @@ namespace MicroFacebookAPI.Controllers
                 var inv = db.FriendInvitations.Where(x => x.Id == InvitationId).FirstOrDefault();
                 if (accept)
                 {
-                   
                     var tmp = new Friends
                     {
                         UserId = inv.UserId,

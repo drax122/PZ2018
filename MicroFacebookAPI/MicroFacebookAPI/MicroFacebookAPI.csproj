@@ -214,10 +214,28 @@
     <Compile Include="DataModel\Client_RefreshTokens.cs">
       <DependentUpon>MicroFB.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataModel\ConversationMessages.cs">
+      <DependentUpon>MicroFB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\ConversationMessagesView.cs">
+      <DependentUpon>MicroFB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\FriendInvitations.cs">
+      <DependentUpon>MicroFB.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataModel\Friends.cs">
       <DependentUpon>MicroFB.tt</DependentUpon>
     </Compile>
     <Compile Include="DataModel\FriendsView.cs">
+      <DependentUpon>MicroFB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\GroupPosts.cs">
+      <DependentUpon>MicroFB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\Groups.cs">
+      <DependentUpon>MicroFB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\GroupUsers.cs">
       <DependentUpon>MicroFB.tt</DependentUpon>
     </Compile>
     <Compile Include="DataModel\MicroFB.Context.cs">
@@ -235,7 +253,22 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MicroFB.edmx</DependentUpon>
     </Compile>
+    <Compile Include="DataModel\Notifications.cs">
+      <DependentUpon>MicroFB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\PostsView.cs">
+      <DependentUpon>MicroFB.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataModel\RestfullAPI_Clients.cs">
+      <DependentUpon>MicroFB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\UserConversations.cs">
+      <DependentUpon>MicroFB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\UserFollows.cs">
+      <DependentUpon>MicroFB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\UserPosts.cs">
       <DependentUpon>MicroFB.tt</DependentUpon>
     </Compile>
     <Compile Include="DataModel\Users.cs">
