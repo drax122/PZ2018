@@ -138,7 +138,8 @@ go
 create table dbo.FriendInvitations(
 	Id int identity(1,1) primary key,
 	UserId int not null references Security.Users(Id),
-	TargetPersonId int not null references Security.Users(Id)
+	TargetPersonId int not null references Security.Users(Id),
+	Status int not null,
 )
 go
 alter table dbo.FriendInvitations
