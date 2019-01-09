@@ -22,6 +22,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="TargetPersonId" Type="int" Nullable="false" />
+          <Property Name="Status" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="GroupPosts">
           <Key>
@@ -154,6 +155,24 @@ warning 6002: The table/view 'MicroFB.dbo.ConversationMessagesView' does not hav
           <Property Name="Date" Type="datetime" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6002: The table/view 'MicroFB.dbo.FriendInvitationsView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="FriendInvitationsView">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="TargetPersonId" />
+            <PropertyRef Name="Status" />
+            <PropertyRef Name="FirstName" />
+            <PropertyRef Name="LastName" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="TargetPersonId" Type="int" Nullable="false" />
+          <Property Name="Status" Type="int" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="LastName" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'MicroFB.dbo.FriendsView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="FriendsView">
           <Key>
@@ -183,6 +202,30 @@ warning 6002: The table/view 'MicroFB.dbo.PostsView' does not have a primary key
           <Property Name="AuthorFirstName" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="AuthorLastName" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="Content" Type="varchar(max)" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'MicroFB.dbo.UsersView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="UsersView">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Username" />
+            <PropertyRef Name="Password" />
+            <PropertyRef Name="FirstName" />
+            <PropertyRef Name="LastName" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Username" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Password" Type="varchar(max)" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="MiddleName" Type="varchar" MaxLength="255" />
+          <Property Name="LastName" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="DateOfBirth" Type="date" />
+          <Property Name="Email" Type="varchar" MaxLength="200" />
+          <Property Name="PhoneNumber" Type="varchar" MaxLength="200" />
+          <Property Name="City" Type="varchar" MaxLength="200" />
+          <Property Name="Street" Type="varchar" MaxLength="200" />
+          <Property Name="BuildingNumber" Type="int" />
+          <Property Name="Description" Type="varchar(max)" />
         </EntityType>
         <Association Name="FK__Client_Re__Clien__1BFD2C07">
           <End Role="RestfullAPI_Clients" Type="Self.RestfullAPI_Clients" Multiplicity="1" />
@@ -436,6 +479,16 @@ warning 6002: The table/view 'MicroFB.dbo.PostsView' does not have a primary key
     [ConversationMessagesView].[Date] AS [Date]
     FROM [dbo].[ConversationMessagesView] AS [ConversationMessagesView]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="FriendInvitationsView" EntityType="Self.FriendInvitationsView" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [FriendInvitationsView].[Id] AS [Id], 
+    [FriendInvitationsView].[UserId] AS [UserId], 
+    [FriendInvitationsView].[TargetPersonId] AS [TargetPersonId], 
+    [FriendInvitationsView].[Status] AS [Status], 
+    [FriendInvitationsView].[FirstName] AS [FirstName], 
+    [FriendInvitationsView].[LastName] AS [LastName]
+    FROM [dbo].[FriendInvitationsView] AS [FriendInvitationsView]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="FriendsView" EntityType="Self.FriendsView" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [FriendsView].[UserId] AS [UserId], 
@@ -453,6 +506,23 @@ warning 6002: The table/view 'MicroFB.dbo.PostsView' does not have a primary key
     [PostsView].[AuthorLastName] AS [AuthorLastName], 
     [PostsView].[Content] AS [Content]
     FROM [dbo].[PostsView] AS [PostsView]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="UsersView" EntityType="Self.UsersView" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [UsersView].[Id] AS [Id], 
+    [UsersView].[Username] AS [Username], 
+    [UsersView].[Password] AS [Password], 
+    [UsersView].[FirstName] AS [FirstName], 
+    [UsersView].[MiddleName] AS [MiddleName], 
+    [UsersView].[LastName] AS [LastName], 
+    [UsersView].[DateOfBirth] AS [DateOfBirth], 
+    [UsersView].[Email] AS [Email], 
+    [UsersView].[PhoneNumber] AS [PhoneNumber], 
+    [UsersView].[City] AS [City], 
+    [UsersView].[Street] AS [Street], 
+    [UsersView].[BuildingNumber] AS [BuildingNumber], 
+    [UsersView].[Description] AS [Description]
+    FROM [dbo].[UsersView] AS [UsersView]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK__Client_Re__Clien__1BFD2C07" Association="Self.FK__Client_Re__Clien__1BFD2C07">
             <End Role="RestfullAPI_Clients" EntitySet="RestfullAPI_Clients" />
@@ -661,6 +731,8 @@ warning 6002: The table/view 'MicroFB.dbo.PostsView' does not have a primary key
           </AssociationSet>
           <EntitySet Name="PostsView" EntityType="MicroFBModel.PostsView" />
           <EntitySet Name="ConversationMessagesView" EntityType="MicroFBModel.ConversationMessagesView" />
+          <EntitySet Name="FriendInvitationsView" EntityType="MicroFBModel.FriendInvitationsView" />
+          <EntitySet Name="UsersView" EntityType="MicroFBModel.UsersView" />
         </EntityContainer>
         <EntityType Name="Friends">
           <Key>
@@ -768,6 +840,7 @@ warning 6002: The table/view 'MicroFB.dbo.PostsView' does not have a primary key
           <Property Name="TargetPersonId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Users" Relationship="MicroFBModel.FK__FriendInv__Targe__49C3F6B7" FromRole="FriendInvitations" ToRole="Users" />
           <NavigationProperty Name="Users1" Relationship="MicroFBModel.FK__FriendInv__UserI__48CFD27E" FromRole="FriendInvitations" ToRole="Users" />
+          <Property Name="Status" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="GroupPosts">
           <Key>
@@ -1066,6 +1139,44 @@ warning 6002: The table/view 'MicroFB.dbo.PostsView' does not have a primary key
           <Property Name="LastName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
+        <EntityType Name="FriendInvitationsView">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="TargetPersonId" />
+            <PropertyRef Name="Status" />
+            <PropertyRef Name="FirstName" />
+            <PropertyRef Name="LastName" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="TargetPersonId" Type="Int32" Nullable="false" />
+          <Property Name="Status" Type="Int32" Nullable="false" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="UsersView">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Username" />
+            <PropertyRef Name="Password" />
+            <PropertyRef Name="FirstName" />
+            <PropertyRef Name="LastName" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="MiddleName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="DateOfBirth" Type="DateTime" Precision="0" />
+          <Property Name="Email" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Street" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="BuildingNumber" Type="Int32" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1153,6 +1264,7 @@ warning 6002: The table/view 'MicroFB.dbo.PostsView' does not have a primary key
           <EntitySetMapping Name="FriendInvitations">
             <EntityTypeMapping TypeName="MicroFBModel.FriendInvitations">
               <MappingFragment StoreEntitySet="FriendInvitations">
+                <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="TargetPersonId" ColumnName="TargetPersonId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -1246,6 +1358,37 @@ warning 6002: The table/view 'MicroFB.dbo.PostsView' does not have a primary key
                 <ScalarProperty Name="Message" ColumnName="Message" />
                 <ScalarProperty Name="ConversationId" ColumnName="ConversationId" />
                 <ScalarProperty Name="AuthorId" ColumnName="AuthorId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FriendInvitationsView">
+            <EntityTypeMapping TypeName="MicroFBModel.FriendInvitationsView">
+              <MappingFragment StoreEntitySet="FriendInvitationsView">
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="TargetPersonId" ColumnName="TargetPersonId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UsersView">
+            <EntityTypeMapping TypeName="MicroFBModel.UsersView">
+              <MappingFragment StoreEntitySet="UsersView">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="BuildingNumber" ColumnName="BuildingNumber" />
+                <ScalarProperty Name="Street" ColumnName="Street" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

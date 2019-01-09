@@ -12,14 +12,13 @@ namespace MicroFacebookAPI.DataModel
     using System;
     using System.Collections.Generic;
     
-    public partial class FriendInvitations
+    public partial class FriendInvitationsView
     {
         public int Id { get; set; }
         public int UserId { get; set; }
         public int TargetPersonId { get; set; }
         public int Status { get; set; }
-    
-        public virtual Users Users { get; set; }
-        public virtual Users Users1 { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
     }
 }

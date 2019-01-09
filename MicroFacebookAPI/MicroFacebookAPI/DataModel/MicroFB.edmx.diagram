@@ -40,6 +40,8 @@
         <AssociationConnector Association="MicroFBModel.FK__UserPosts__Autho__30F848ED" />
         <EntityTypeShape EntityType="MicroFBModel.PostsView" Width="1.5" PointX="13.375" PointY="4" />
         <EntityTypeShape EntityType="MicroFBModel.ConversationMessagesView" Width="1.5" PointX="13.375" PointY="6.125" />
+        <EntityTypeShape EntityType="MicroFBModel.FriendInvitationsView" Width="1.5" PointX="11.75" PointY="6.125" />
+        <EntityTypeShape EntityType="MicroFBModel.UsersView" Width="1.5" PointX="3.375" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -18,7 +18,8 @@ namespace MicroFacebookAPI.Controllers
         #region GET METHODS        
         [Authorize]
         [ResponseType(typeof(Notifications))]
-        [Route("api/notifications/getusernotificatiosn/{UserId}")]
+        [HttpGet]
+        [Route("api/notifications/getusernotifications/{UserId}")]
         public IHttpActionResult GetUserNotifications(int UserId)
         {
             var nots = db.Notifications.Where(x => x.TargetPersonId == UserId);

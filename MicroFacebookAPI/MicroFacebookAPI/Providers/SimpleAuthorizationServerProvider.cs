@@ -90,6 +90,7 @@ namespace MicroFacebookAPI.Providers
                     if (users != null)
                     {
                         var user = users.Where(u => u.Username == context.UserName && u.Password == context.Password).FirstOrDefault();
+                        var udisplay = db.UsersView.Where(x => x.Id == user.Id).FirstOrDefault();
                         if (user != null)
                         {
                             identity.AddClaim(new Claim(ClaimTypes.Name, user.Username));
@@ -108,7 +109,7 @@ namespace MicroFacebookAPI.Providers
                                      "role", "user"
                                 },
                                 {
-                                    "User", JsonConvert.SerializeObject(user)
+                                    "User", JsonConvert.SerializeObject(udisplay)
                                 },
                              });
                             var ticket = new AuthenticationTicket(identity, props);

@@ -141,6 +141,9 @@ create table dbo.FriendInvitations(
 	TargetPersonId int not null references Security.Users(Id)
 )
 go
+alter table dbo.FriendInvitations
+add Status int not null default(0)
+go
 create table dbo.Notifications(
 Id int identity(1,1) primary key,
 SourcePersonId int not null references Security.Users(Id),
@@ -175,6 +178,7 @@ select
 	m.Date as 'Date'
  from dbo.ConversationMessages m
 join Security.Users u on m.AuthorId = u.Id
+go
 
 create view dbo.PostsView
 as
@@ -188,5 +192,19 @@ select
 	dbo.UserPosts posts
 	join Security.Users u on u.Id = posts.AuthorId
 
+go
+
+create view dbo.FriendInvitationsView
+as
+select 
+inv.*,
+u.FirstName,
+u.LastName
+from dbo.FriendInvitations inv
+join Security.Users u on inv.UserId = u.Id
+go
 
 
+create view dbo.UsersView 
+as 
+select * from Security.Users

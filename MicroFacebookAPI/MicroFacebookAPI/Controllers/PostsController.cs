@@ -22,6 +22,7 @@ namespace MicroFacebookAPI.Controllers
         #region GET METHODS        
         [Authorize]
         [ResponseType(typeof(UserPosts))]
+        [HttpGet]
         [Route("api/posts/getboard/{UserId}")]
         public IHttpActionResult GetBoard(int UserId)
         {
@@ -32,6 +33,7 @@ namespace MicroFacebookAPI.Controllers
         }
         [Authorize]
         [ResponseType(typeof(UserPosts))]
+        [HttpGet]
         [Route("api/posts/getuserboard/{UserId}")]
         public IHttpActionResult GetUserBoard(int UserId)
         {
