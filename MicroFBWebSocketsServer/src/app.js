@@ -18,19 +18,16 @@ io.on("connection", socket => {
 
     });
     socket.on("IMIN", UserId =>{
+        onlineUsers.push({ "socketID" : socket.id, "UserId" : UserId});
         io.emit("UserLoggedIn", UserId);
         io.to(socket.id).emit("UsersOnline", onlineUsers);
-        onlineUsers.push({ "socketID" : socket.id, "UserId" : UserId});
 
         console.log("User joined: " + socket.id);
     });
     socket.on("IMOUT", data =>{ // data - UserId
         console.dir(data);
-        var i = onlineUsers.filter(obj => {
-            return obj.UserId === data
-        });
         io.emit("UserLoggedOut", data);
-        console.log("User out : "+ socket.id + " / " + i.UserId);
+        console.log("User out : "+ socket.id + " / " + data);
         onlineUsers = onlineUsers.filter(function(elem){
             return elem.UserId !== data;
         });
@@ -41,7 +38,7 @@ io.on("connection", socket => {
             return obj.socketID === socket.id
         });
         if(i.length > 0){
-            io.emit("UserLoggedOut", i.UserId);
+            io.emit("UserLoggedOut", i.pop().UserId);
             onlineUsers = onlineUsers.filter(function(elem){
                 return elem.socketID != socket.id;
             });

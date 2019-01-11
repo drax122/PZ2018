@@ -3,6 +3,7 @@ import { Friend } from '../Models/friend';
 import { UserDataServiceService } from '../DataServices/user-data-service.service';
 import { SocketService } from '../DataServices/socket.service';
 import { Router } from '@angular/router';
+import { FriendsListService } from '../DataServices/friends-list.service';
 
 @Component({
   selector: 'app-friends-list',
@@ -11,36 +12,20 @@ import { Router } from '@angular/router';
 })
 export class FriendsListComponent implements OnInit {
   FriendsList : Array<Friend> = [];
-  FriendsStatusList : Array<any> = [];
+  
 
   constructor( 
     private UserDataService : UserDataServiceService, 
+    private FriendsListService : FriendsListService,
     private SocketService : SocketService, 
     private router: Router) 
   {
-    this.loadFriends();
-    // Nasłuchiwanie na eventy z socketservera dotyczące tego komponentu
-    // data to Id nowego ziomka - muszę go pobrać i dopisać do listy
+
     this.SocketService.Invitations.subscribe(data =>{ 
       console.log("Ziomuś zaakceptował zapro : " + data);
-    });
-    // odbiera event UsersOnline -- przy zalogowaniu serwer socketów emituje nam pełną listę zalogowanych użytkowników - porównać z naszą listą znajomych i jazda
-    this.SocketService.Status.subscribe(data=> { 
-        this.FriendsStatusList.push(data);
-        console.log("Otrzymano listę statusów : ");
-        console.dir( this.FriendsStatusList);
-    });
-    // odbiera event UserLoggedIn przekazując w data UserId -- jeśli UserId jest w mojej liście znajomych zmień jego status zalogowania
-    this.SocketService.Connect.subscribe(data=> {
-        console.log("Ziomek się zalogował :" + data);
-        this.FriendsStatusList.push({"UserId" : data});
-    });
-    // odbiera event UserLoggedOut ...
-    this.SocketService.Disconnect.subscribe(data=>{
-      console.log("Ziomek się wylogował: "+ data);
-      this.FriendsStatusList = this.FriendsStatusList.filter(obj=> {
-        return obj.UserId !== data; 
-      });
+      this.UserDataService.getFriend(data).subscribe(f=>{
+        this.FriendsListService.addFriend(f);
+      })
     });
   }
 
@@ -48,29 +33,23 @@ export class FriendsListComponent implements OnInit {
     this.router.navigate(['/profile', User.Id]);
   }
 
-
-  loadFriends(){
-    const id = localStorage.getItem("UserId");
-    this.UserDataService.getUserFriends(id).subscribe(
-      (data) => {
-        this.FriendsList = data;
-        console.log("FriendsList:");
-        console.log(this.FriendsList);
-      }
-    )
-  }
   loadFriend(FriendId){
     const id = localStorage.getItem("UserId");
-    this.UserDataService.getUserFriends(id).subscribe(
+    this.UserDataService.getFriend(id).subscribe(
       (data) => {
-        this.FriendsList = data;
-        console.log("FriendsList:");
-        console.log(this.FriendsList);
+        this.FriendsListService.addFriend(data);
       }
     )
   }
+
   ngOnInit() {
+    const id = localStorage.getItem("UserId");
+    this.FriendsListService.loadFriendsList(id);
 
-
+    this.FriendsListService.FriendList.subscribe(fl =>{
+      this.FriendsList = fl;
+      console.log("Komponent listy znajomych załadował do pamięci listę znajomych.");
+      console.dir(fl);
+    });
   }
 }

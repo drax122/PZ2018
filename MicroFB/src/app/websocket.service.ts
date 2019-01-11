@@ -18,12 +18,13 @@ export class WebsocketService {
   connect(): Rx.Subject<MessageEvent>{
       let observable = new Observable(observer => {
           this.socket.on('UserLoggedIn', (data) =>{
+          console.log("User logged in data:" + data);
           observer.next(data);
         })
       });
       let observer = {
         next: (data: Object) => {
-          this.socket.emit('IMIN', JSON.stringify(data));
+          this.socket.emit('IMIN', data);
         },
       };
       return Rx.Subject.create(observer, observable);
@@ -37,7 +38,7 @@ export class WebsocketService {
     let observer = {
       next: (data: Object) => {
         console.log(data);
-        this.socket.emit('IMOUT', JSON.stringify(data));
+        this.socket.emit('IMOUT', data);
       },
     };
     return Rx.Subject.create(observer, observable);

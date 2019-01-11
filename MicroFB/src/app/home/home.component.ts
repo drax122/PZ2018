@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Inject } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 import { UserDetails } from '../Models/user-details';
@@ -23,14 +23,15 @@ export class HomeComponent implements OnInit {
   @ViewChild('friendsList') friendListComp:FriendsListComponent;
   @ViewChild('board') postsComp:PostsComponent;
 
-
-  constructor(private auth:AuthService, private router: Router,
+  constructor(
+     private auth:AuthService, private router: Router,
      private SocketService : SocketService,
      private UserDataService : UserDataServiceService,
      private NotificationsService : NotificationsServiceService
      ) 
   { 
     this.getUserData();
+    this.SocketService.Imonline(parseInt(localStorage.getItem("UserId")));
   }
   get LoggedIn()
   {
@@ -97,6 +98,6 @@ export class HomeComponent implements OnInit {
 
   ngOnInit()
   {
-    this.SocketService.Imonline(parseInt(localStorage.getItem("UserId")));
+    
   }
 }

@@ -13,4 +13,5 @@ export class Friend {
         this.LastName = obj.LastName;
         this.ConversationId = obj.ConversationId;
     }
+
 }

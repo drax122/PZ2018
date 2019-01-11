@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, forwardRef } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import {Invitation } from '../Models/Invitation';
 import { Post } from '../Models/post';
+import { HomeComponent } from '../home/home.component';
 
 
 @Injectable({
@@ -16,6 +17,10 @@ export class PostsService {
   }
   getFriendBoard(UserId) : Observable<Post[]>{
     return this.http.get<Array<Post>>("/api/posts/getuserboard/"+UserId);
+  }
+
+  getPost(PostId): Observable<Post>{
+    return this.http.get<Post>("/api/posts/getpost/"+PostId);
   }
 
   savePost(post : Post){ // Zwraca Id nowego posta, o którym warto powiadomić znajomych.

@@ -5,6 +5,7 @@ import { UserSearch } from '../Models/user-search';
 import {Invitation } from '../Models/Invitation';
 import { Friend } from '../Models/friend';
 import { Observable, BehaviorSubject } from 'rxjs';
+import { User } from '../Models/user';
 
 
 @Injectable({
@@ -13,17 +14,17 @@ import { Observable, BehaviorSubject } from 'rxjs';
 export class UserDataServiceService {
   constructor(private http: HttpClient) { }
 
-  getUserData(Id){
-    return this.http.get<UserDetails>("/api/users/getusers/"+Id);
+  getUserData(Id) : Observable<UserDetails>{
+    return this.http.get<UserDetails>("/api/users/getusers/"+Id).map(res=> new UserDetails(res));
   }
-  getUserFriends(Id) : Observable<Friend[]>{
-    return this.http.get<Array<Friend>>("/api/users/getfriends/"+Id);
+  getUserFriends(Id) : Observable<Array<Friend>>{
+    return this.http.get<Friend[]>("/api/users/getfriends/"+Id).map((entries : any[]) => entries.map((e)=> new Friend(e)));
   }
-  getFriend(UserId) : Observable<Friend[]>{
-    return this.http.get<Array<Friend>>("/api/users/getusers/"+UserId);
+  getFriend(UserId) : Observable<Friend>{
+    return this.http.get<Friend>("/api/users/getusers/"+UserId).map((res:Friend) => new Friend(res));
   }
   getUserFriendInvitations(Id) : Observable<Invitation[]>{
-    return this.http.get<Array<Invitation>>("/api/users/getinvitations/"+Id);
+    return this.http.get<Array<Invitation>>("/api/users/getinvitations/"+Id).map((entries:any[])=> entries.map(e => new Invitation(e)));
   }
   searchUsers(searchphrase) : Observable<UserSearch[]>{
     return this.http.get<Array<UserSearch>>('/api/users/search',
@@ -31,7 +32,7 @@ export class UserDataServiceService {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
       params: { phrase : searchphrase }
      }, 
-     );
+     ).map((entrise:UserSearch[])=> entrise.map(e=> new UserSearch(e)));
   }
 
   inviteUser(UserId, targetUserId){
