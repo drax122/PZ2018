@@ -14,7 +14,8 @@ import { SocketService } from './DataServices/socket.service';
 import { WebsocketService } from './websocket.service';
 import { FriendsListComponent } from './friends-list/friends-list.component';
 import { SearchEngineComponent } from './search-engine/search-engine.component';
-
+import { PostsComponent } from './posts/posts.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,8 @@ import { SearchEngineComponent } from './search-engine/search-engine.component';
     HomeComponent,
     FriendsListComponent,
     SearchEngineComponent,
+    PostsComponent,
+    UserProfileComponent,
   ],
   imports: [
     BrowserModule,

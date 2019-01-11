@@ -16,11 +16,11 @@ export class UserDataServiceService {
   getUserData(Id){
     return this.http.get<UserDetails>("/api/users/getusers/"+Id);
   }
-  getUserBoard(Id){
-    return this.http.get("/api/posts/getboard/"+Id);
-  }
   getUserFriends(Id) : Observable<Friend[]>{
     return this.http.get<Array<Friend>>("/api/users/getfriends/"+Id);
+  }
+  getFriend(UserId) : Observable<Friend[]>{
+    return this.http.get<Array<Friend>>("/api/users/getusers/"+UserId);
   }
   getUserFriendInvitations(Id) : Observable<Invitation[]>{
     return this.http.get<Array<Invitation>>("/api/users/getinvitations/"+Id);

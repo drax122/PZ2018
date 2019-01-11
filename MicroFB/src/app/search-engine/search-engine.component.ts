@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserDataServiceService } from '../DataServices/user-data-service.service';
 import { UserSearch } from '../Models/user-search';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-search-engine',
@@ -10,7 +11,7 @@ import { UserSearch } from '../Models/user-search';
 export class SearchEngineComponent implements OnInit {
   SearchPhrase = "";
   SearchResults : Array<UserSearch> = [];
-  constructor(private UserDataService : UserDataServiceService,) { }
+  constructor(private UserDataService : UserDataServiceService, private router: Router ) { }
 
   updateSearchString(e){
     console.log(e);
@@ -27,6 +28,10 @@ export class SearchEngineComponent implements OnInit {
       console.log("SearchResults");
       console.dir(this.SearchResults);
     });
+  }
+
+  onShowProfile(User:UserSearch){
+    this.router.navigate(['/profile', User.Id]);
   }
 
   inviteUser(TargetUserId){

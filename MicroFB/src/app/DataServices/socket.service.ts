@@ -6,30 +6,40 @@ import { WebsocketService } from '../websocket.service';
   providedIn: 'root'
 })
 export class SocketService {
-  connect : Subject<any>; // Logujemy się - powiadamiamy innych, i dostajemy listę zalogowanych
-  status : Subject<any>; // ktoś się zalogował - przychodzi nam jego ID i możemy się wylogować za pomocą next here
+  Connect : Subject<any>; // Logujemy się - powiadamiamy innych, i dostajemy listę zalogowanych
+  Disconnect : Subject<any>; // wylogujemy się - powiadamiamy innych
+  Status : Subject<any>; // ktoś się zalogował - przychodzi nam jego ID i możemy się wylogować za pomocą next here
   Messages : Subject<any>; // chcemy wysłać wiadomość/otrzymujemy nową wiadomość
+  Invitations : Subject<any>; // wysyłamy/odbioramy wiadomość o tym, że użytkownik zaakceptował zaproszenie
 
   constructor(private ws: WebsocketService) {
-    this.connect = <Subject<any>>ws.connect().map((response:any): any =>{
+    this.Connect = <Subject<any>>ws.connect().map((response:any): any =>{
       return response;
     });
-    this.status = <Subject<any>>ws.status().map((response:any): any =>{
+    this.Status = <Subject<any>>ws.status().map((response:any): any =>{
       return response;
     });
     this.Messages = <Subject<any>>ws.Messages().map((response:any): any =>{
       return response;
     });
+    this.Invitations = <Subject<any>>ws.Invitations().map((response:any): any =>{
+      return response;
+    });
+    this.Disconnect = <Subject<any>>ws.disconnect().map((response:any): any =>{
+      return response;
+    });
+  }
+
+  AcceptInvitation(Invitation){
+    this.Invitations.next(Invitation);
   }
   Imonline(UserId){
-    this.connect.next(UserId);
+    this.Connect.next(UserId);
   }
   Logout(UserId){
-    this.status.next(UserId);
+    this.Disconnect.next(UserId);
   }
   SendMsg(msg){
     this.Messages.next(msg);
   }
-  
-  
 }

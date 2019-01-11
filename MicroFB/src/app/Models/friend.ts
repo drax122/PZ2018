@@ -2,7 +2,7 @@ export class Friend {
     public Id: number; // UserId of our friend - needed everywhere to contact API
     public ConversationId: number;
     public FirstName: string;
-    public LastName: number;
+    public LastName: string;
     public Status: number; // 0 - OFFLINE, 1 - ONLINE
 
     constructor(obj : any)

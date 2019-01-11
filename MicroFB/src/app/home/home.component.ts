@@ -7,6 +7,7 @@ import { NotificationsServiceService } from '../DataServices/notifications-servi
 import { SocketService } from '../DataServices/socket.service';
 import { Invitation } from '../Models/Invitation';
 import { FriendsListComponent } from '../friends-list/friends-list.component';
+import { PostsComponent } from '../posts/posts.component';
 
 @Component({
   selector: 'app-home',
@@ -18,7 +19,10 @@ export class HomeComponent implements OnInit {
   UserData = new UserDetails(new Object());
   Invitations : Array<Invitation> = [];
   Notifications = {};
+  
   @ViewChild('friendsList') friendListComp:FriendsListComponent;
+  @ViewChild('board') postsComp:PostsComponent;
+
 
   constructor(private auth:AuthService, private router: Router,
      private SocketService : SocketService,
@@ -35,7 +39,7 @@ export class HomeComponent implements OnInit {
 
   logout()
   {
-    this.SocketService.Logout(localStorage.getItem("UserId"));
+    this.SocketService.Logout(parseInt(localStorage.getItem("UserId")));
     this.auth.logOut();
     this.router.navigate(['']);
   }
@@ -72,16 +76,27 @@ export class HomeComponent implements OnInit {
     )
   }
 
-  acceptInvitation(Inv : Invitation, accept){ // accept - "True" or "False" jako string lub obiekt js
+  acceptInvitation(InvitationId, accept){ // accept - "True" or "False" jako string lub obiekt js
+    // Znajdź zaproszenie po Id
+    var Inv = this.Invitations.filter(obj=> {
+      return obj.Id === InvitationId;
+    })
+    // Wyślij info do serwera, zapisz do bazy - przy zwrotce poinformuj socket server, że drugi typ, o ile jest online musi dodać do listy nowego ziomka :x
     this.UserDataService.acceptInvitation(Inv, accept).subscribe(()=>{
-      this.friendListComp.loadFriends();
-      // TO DO
-      // Powiadomić socket server o zaakceptowaniu zaproszenia i wymusić odświeżenie listy znajomych u drugiego typa jeśli jest online
+      if(accept === true){
+        this.friendListComp.loadFriend(Inv.pop().UserId);
+        this.SocketService.AcceptInvitation(Inv.pop());
+      }
     });
+    // Usuń zaproszenie z załadowanej listy zaproszeń
+    this.Invitations = this.Invitations.filter(o =>{
+      return o.Id != Inv.pop().Id;
+    })
   }
+
 
   ngOnInit()
   {
-    this.SocketService.Imonline(localStorage.getItem("UserId"));
+    this.SocketService.Imonline(parseInt(localStorage.getItem("UserId")));
   }
 }

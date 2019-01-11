@@ -83,6 +83,9 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="AuthorId" Type="int" Nullable="false" />
           <Property Name="Content" Type="varchar(max)" Nullable="false" />
+          <Property Name="TargetUserId" Type="int" />
+          <Property Name="PostDate" Type="datetime" Nullable="false" />
+          <Property Name="PrimaryPostId" Type="int" />
         </EntityType>
         <EntityType Name="Client_RefreshTokens">
           <Key>
@@ -193,15 +196,23 @@ warning 6002: The table/view 'MicroFB.dbo.PostsView' does not have a primary key
           <Key>
             <PropertyRef Name="Id" />
             <PropertyRef Name="AuthorId" />
+            <PropertyRef Name="PostDate" />
             <PropertyRef Name="AuthorFirstName" />
             <PropertyRef Name="AuthorLastName" />
             <PropertyRef Name="Content" />
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="AuthorId" Type="int" Nullable="false" />
+          <Property Name="TargetUserId" Type="int" />
+          <Property Name="PostDate" Type="datetime" Nullable="false" />
           <Property Name="AuthorFirstName" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="AuthorLastName" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="TargetUserFirstName" Type="varchar" MaxLength="255" />
+          <Property Name="TargetUserLastName" Type="varchar" MaxLength="255" />
           <Property Name="Content" Type="varchar(max)" Nullable="false" />
+          <Property Name="PrimaryPostAuthorFirstName" Type="varchar" MaxLength="255" />
+          <Property Name="PrimaryPostAuthorLastName" Type="varchar" MaxLength="255" />
+          <Property Name="PrimaryPostDate" Type="datetime" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'MicroFB.dbo.UsersView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -443,7 +454,7 @@ warning 6002: The table/view 'MicroFB.dbo.UsersView' does not have a primary key
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__UserPosts__Autho__30F848ED">
+        <Association Name="FK__UserPosts__Autho__6EF57B66">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="UserPosts" Type="Self.UserPosts" Multiplicity="*" />
           <ReferentialConstraint>
@@ -452,6 +463,30 @@ warning 6002: The table/view 'MicroFB.dbo.UsersView' does not have a primary key
             </Principal>
             <Dependent Role="UserPosts">
               <PropertyRef Name="AuthorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserPosts__Prima__6FE99F9F">
+          <End Role="UserPosts" Type="Self.UserPosts" Multiplicity="0..1" />
+          <End Role="UserPosts1" Type="Self.UserPosts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserPosts">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserPosts1">
+              <PropertyRef Name="PrimaryPostId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserPosts__Targe__70DDC3D8">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="UserPosts" Type="Self.UserPosts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserPosts">
+              <PropertyRef Name="TargetUserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -502,9 +537,16 @@ warning 6002: The table/view 'MicroFB.dbo.UsersView' does not have a primary key
             <DefiningQuery>SELECT 
     [PostsView].[Id] AS [Id], 
     [PostsView].[AuthorId] AS [AuthorId], 
+    [PostsView].[TargetUserId] AS [TargetUserId], 
+    [PostsView].[PostDate] AS [PostDate], 
     [PostsView].[AuthorFirstName] AS [AuthorFirstName], 
     [PostsView].[AuthorLastName] AS [AuthorLastName], 
-    [PostsView].[Content] AS [Content]
+    [PostsView].[TargetUserFirstName] AS [TargetUserFirstName], 
+    [PostsView].[TargetUserLastName] AS [TargetUserLastName], 
+    [PostsView].[Content] AS [Content], 
+    [PostsView].[PrimaryPostAuthorFirstName] AS [PrimaryPostAuthorFirstName], 
+    [PostsView].[PrimaryPostAuthorLastName] AS [PrimaryPostAuthorLastName], 
+    [PostsView].[PrimaryPostDate] AS [PrimaryPostDate]
     FROM [dbo].[PostsView] AS [PostsView]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="UsersView" EntityType="Self.UsersView" store:Type="Views" store:Schema="dbo">
@@ -596,7 +638,15 @@ warning 6002: The table/view 'MicroFB.dbo.UsersView' does not have a primary key
             <End Role="Users" EntitySet="Users" />
             <End Role="UserFollows" EntitySet="UserFollows" />
           </AssociationSet>
-          <AssociationSet Name="FK__UserPosts__Autho__30F848ED" Association="Self.FK__UserPosts__Autho__30F848ED">
+          <AssociationSet Name="FK__UserPosts__Autho__6EF57B66" Association="Self.FK__UserPosts__Autho__6EF57B66">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserPosts" EntitySet="UserPosts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserPosts__Prima__6FE99F9F" Association="Self.FK__UserPosts__Prima__6FE99F9F">
+            <End Role="UserPosts" EntitySet="UserPosts" />
+            <End Role="UserPosts1" EntitySet="UserPosts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserPosts__Targe__70DDC3D8" Association="Self.FK__UserPosts__Targe__70DDC3D8">
             <End Role="Users" EntitySet="Users" />
             <End Role="UserPosts" EntitySet="UserPosts" />
           </AssociationSet>
@@ -636,8 +686,9 @@ warning 6002: The table/view 'MicroFB.dbo.UsersView' does not have a primary key
           <NavigationProperty Name="UserConversations1" Relationship="MicroFBModel.FK__UserConve__UserI__3B75D760" FromRole="Users" ToRole="UserConversations" />
           <NavigationProperty Name="UserFollows" Relationship="MicroFBModel.FK__UserFollo__Follo__36B12243" FromRole="Users" ToRole="UserFollows" />
           <NavigationProperty Name="UserFollows1" Relationship="MicroFBModel.FK__UserFollo__UserI__35BCFE0A" FromRole="Users" ToRole="UserFollows" />
-          <NavigationProperty Name="UserPosts" Relationship="MicroFBModel.FK__UserPosts__Autho__30F848ED" FromRole="Users" ToRole="UserPosts" />
-        </EntityType>
+          <NavigationProperty Name="UserPosts" Relationship="MicroFBModel.FK__UserPosts__Autho__6EF57B66" FromRole="Users" ToRole="UserPosts" />
+          <NavigationProperty Name="UserPosts1" Relationship="MicroFBModel.FK__UserPosts__Targe__70DDC3D8" FromRole="Users" ToRole="UserPosts" />
+          </EntityType>
         <EntityContainer Name="MicroFBEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Users" EntityType="Self.Users" />
           <EntitySet Name="Friends" EntityType="MicroFBModel.Friends" />
@@ -664,7 +715,6 @@ warning 6002: The table/view 'MicroFB.dbo.UsersView' does not have a primary key
           <EntitySet Name="Notifications" EntityType="MicroFBModel.Notifications" />
           <EntitySet Name="UserConversations" EntityType="MicroFBModel.UserConversations" />
           <EntitySet Name="UserFollows" EntityType="MicroFBModel.UserFollows" />
-          <EntitySet Name="UserPosts" EntityType="MicroFBModel.UserPosts" />
           <AssociationSet Name="FK__Conversat__Autho__4222D4EF" Association="MicroFBModel.FK__Conversat__Autho__4222D4EF">
             <End Role="Users" EntitySet="Users" />
             <End Role="ConversationMessages" EntitySet="ConversationMessages" />
@@ -725,14 +775,23 @@ warning 6002: The table/view 'MicroFB.dbo.UsersView' does not have a primary key
             <End Role="Users" EntitySet="Users" />
             <End Role="UserFollows" EntitySet="UserFollows" />
           </AssociationSet>
-          <AssociationSet Name="FK__UserPosts__Autho__30F848ED" Association="MicroFBModel.FK__UserPosts__Autho__30F848ED">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="UserPosts" EntitySet="UserPosts" />
-          </AssociationSet>
           <EntitySet Name="PostsView" EntityType="MicroFBModel.PostsView" />
           <EntitySet Name="ConversationMessagesView" EntityType="MicroFBModel.ConversationMessagesView" />
           <EntitySet Name="FriendInvitationsView" EntityType="MicroFBModel.FriendInvitationsView" />
           <EntitySet Name="UsersView" EntityType="MicroFBModel.UsersView" />
+          <EntitySet Name="UserPosts" EntityType="MicroFBModel.UserPosts" />
+          <AssociationSet Name="FK__UserPosts__Autho__6EF57B66" Association="MicroFBModel.FK__UserPosts__Autho__6EF57B66">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserPosts" EntitySet="UserPosts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserPosts__Prima__6FE99F9F" Association="MicroFBModel.FK__UserPosts__Prima__6FE99F9F">
+            <End Role="UserPosts" EntitySet="UserPosts" />
+            <End Role="UserPosts1" EntitySet="UserPosts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserPosts__Targe__70DDC3D8" Association="MicroFBModel.FK__UserPosts__Targe__70DDC3D8">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserPosts" EntitySet="UserPosts" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Friends">
           <Key>
@@ -907,15 +966,6 @@ warning 6002: The table/view 'MicroFB.dbo.UsersView' does not have a primary key
           <Property Name="FollowedUserId" Type="Int32" />
           <NavigationProperty Name="Users" Relationship="MicroFBModel.FK__UserFollo__Follo__36B12243" FromRole="UserFollows" ToRole="Users" />
           <NavigationProperty Name="Users1" Relationship="MicroFBModel.FK__UserFollo__UserI__35BCFE0A" FromRole="UserFollows" ToRole="Users" />
-        </EntityType>
-        <EntityType Name="UserPosts">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="AuthorId" Type="Int32" Nullable="false" />
-          <Property Name="Content" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Users" Relationship="MicroFBModel.FK__UserPosts__Autho__30F848ED" FromRole="UserPosts" ToRole="Users" />
         </EntityType>
         <Association Name="FK__Conversat__Autho__4222D4EF">
           <End Type="MicroFBModel.Users" Role="Users" Multiplicity="1" />
@@ -1097,18 +1147,6 @@ warning 6002: The table/view 'MicroFB.dbo.UsersView' does not have a primary key
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__UserPosts__Autho__30F848ED">
-          <End Type="MicroFBModel.Users" Role="Users" Multiplicity="1" />
-          <End Type="MicroFBModel.UserPosts" Role="UserPosts" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="UserPosts">
-              <PropertyRef Name="AuthorId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="PostsView">
           <Key>
             <PropertyRef Name="Id" />
@@ -1116,12 +1154,20 @@ warning 6002: The table/view 'MicroFB.dbo.UsersView' does not have a primary key
             <PropertyRef Name="AuthorFirstName" />
             <PropertyRef Name="AuthorLastName" />
             <PropertyRef Name="Content" />
+            <PropertyRef Name="PostDate" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" />
           <Property Name="AuthorId" Type="Int32" Nullable="false" />
           <Property Name="AuthorFirstName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="AuthorLastName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="Content" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="TargetUserId" Type="Int32" />
+          <Property Name="TargetUserFirstName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="TargetUserLastName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="PostDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PrimaryPostAuthorFirstName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="PrimaryPostAuthorLastName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="PrimaryPostDate" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="ConversationMessagesView">
           <Key>
@@ -1177,6 +1223,57 @@ warning 6002: The table/view 'MicroFB.dbo.UsersView' does not have a primary key
           <Property Name="BuildingNumber" Type="Int32" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="UserPosts">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AuthorId" Type="Int32" Nullable="false" />
+          <Property Name="Content" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="TargetUserId" Type="Int32" />
+          <Property Name="PostDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PrimaryPostId" Type="Int32" />
+          <NavigationProperty Name="Users" Relationship="MicroFBModel.FK__UserPosts__Autho__6EF57B66" FromRole="UserPosts" ToRole="Users" />
+          <NavigationProperty Name="UserPosts1" Relationship="MicroFBModel.FK__UserPosts__Prima__6FE99F9F" FromRole="UserPosts" ToRole="UserPosts1" />
+          <NavigationProperty Name="UserPosts2" Relationship="MicroFBModel.FK__UserPosts__Prima__6FE99F9F" FromRole="UserPosts1" ToRole="UserPosts" />
+          <NavigationProperty Name="Users1" Relationship="MicroFBModel.FK__UserPosts__Targe__70DDC3D8" FromRole="UserPosts" ToRole="Users" />
+        </EntityType>
+        <Association Name="FK__UserPosts__Autho__6EF57B66">
+          <End Type="MicroFBModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="MicroFBModel.UserPosts" Role="UserPosts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserPosts">
+              <PropertyRef Name="AuthorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserPosts__Prima__6FE99F9F">
+          <End Type="MicroFBModel.UserPosts" Role="UserPosts" Multiplicity="0..1" />
+          <End Type="MicroFBModel.UserPosts" Role="UserPosts1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserPosts">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserPosts1">
+              <PropertyRef Name="PrimaryPostId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserPosts__Targe__70DDC3D8">
+          <End Type="MicroFBModel.Users" Role="Users" Multiplicity="0..1" />
+          <End Type="MicroFBModel.UserPosts" Role="UserPosts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserPosts">
+              <PropertyRef Name="TargetUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1329,18 +1426,16 @@ warning 6002: The table/view 'MicroFB.dbo.UsersView' does not have a primary key
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="UserPosts">
-            <EntityTypeMapping TypeName="MicroFBModel.UserPosts">
-              <MappingFragment StoreEntitySet="UserPosts">
-                <ScalarProperty Name="Content" ColumnName="Content" />
-                <ScalarProperty Name="AuthorId" ColumnName="AuthorId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="PostsView">
             <EntityTypeMapping TypeName="MicroFBModel.PostsView">
               <MappingFragment StoreEntitySet="PostsView">
+                <ScalarProperty Name="PrimaryPostDate" ColumnName="PrimaryPostDate" />
+                <ScalarProperty Name="PrimaryPostAuthorLastName" ColumnName="PrimaryPostAuthorLastName" />
+                <ScalarProperty Name="PrimaryPostAuthorFirstName" ColumnName="PrimaryPostAuthorFirstName" />
+                <ScalarProperty Name="PostDate" ColumnName="PostDate" />
+                <ScalarProperty Name="TargetUserLastName" ColumnName="TargetUserLastName" />
+                <ScalarProperty Name="TargetUserFirstName" ColumnName="TargetUserFirstName" />
+                <ScalarProperty Name="TargetUserId" ColumnName="TargetUserId" />
                 <ScalarProperty Name="Content" ColumnName="Content" />
                 <ScalarProperty Name="AuthorLastName" ColumnName="AuthorLastName" />
                 <ScalarProperty Name="AuthorFirstName" ColumnName="AuthorFirstName" />
@@ -1392,7 +1487,19 @@ warning 6002: The table/view 'MicroFB.dbo.UsersView' does not have a primary key
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-        </EntityContainerMapping>
+          <EntitySetMapping Name="UserPosts">
+            <EntityTypeMapping TypeName="MicroFBModel.UserPosts">
+              <MappingFragment StoreEntitySet="UserPosts">
+                <ScalarProperty Name="PrimaryPostId" ColumnName="PrimaryPostId" />
+                <ScalarProperty Name="PostDate" ColumnName="PostDate" />
+                <ScalarProperty Name="TargetUserId" ColumnName="TargetUserId" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="AuthorId" ColumnName="AuthorId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

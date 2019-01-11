@@ -265,6 +265,7 @@
     <Compile Include="DataModel\RestfullAPI_Clients.cs">
       <DependentUpon>MicroFB.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataModel\SharedPost.cs" />
     <Compile Include="DataModel\UserConversations.cs">
       <DependentUpon>MicroFB.tt</DependentUpon>
     </Compile>

@@ -19,5 +19,12 @@ namespace MicroFacebookAPI.DataModel
         public string AuthorFirstName { get; set; }
         public string AuthorLastName { get; set; }
         public string Content { get; set; }
+        public Nullable<int> TargetUserId { get; set; }
+        public string TargetUserFirstName { get; set; }
+        public string TargetUserLastName { get; set; }
+        public System.DateTime PostDate { get; set; }
+        public string PrimaryPostAuthorFirstName { get; set; }
+        public string PrimaryPostAuthorLastName { get; set; }
+        public Nullable<System.DateTime> PrimaryPostDate { get; set; }
     }
 }

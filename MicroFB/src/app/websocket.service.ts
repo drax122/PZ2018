@@ -17,7 +17,7 @@ export class WebsocketService {
 
   connect(): Rx.Subject<MessageEvent>{
       let observable = new Observable(observer => {
-          this.socket.on('UsersOnline', (data) =>{
+          this.socket.on('UserLoggedIn', (data) =>{
           observer.next(data);
         })
       });
@@ -28,20 +28,34 @@ export class WebsocketService {
       };
       return Rx.Subject.create(observer, observable);
   }
-
-  status(): Rx.Subject<MessageEvent>{
+  disconnect(): Rx.Subject<MessageEvent>{
     let observable = new Observable(observer => {
-        this.socket.on('UserLoggedIn', (data) =>{
+        this.socket.on('UserLoggedOut', (data) =>{
         observer.next(data);
       })
     });
     let observer = {
       next: (data: Object) => {
+        console.log(data);
         this.socket.emit('IMOUT', JSON.stringify(data));
       },
     };
     return Rx.Subject.create(observer, observable);
-}
+  } 
+
+  status(): Rx.Subject<MessageEvent>{
+    let observable = new Observable(observer => {
+        this.socket.on('UsersOnline', (data) =>{
+        observer.next(data);
+      })
+    });
+    let observer = {
+      next: (data: Object) => {
+        
+      },
+    };
+    return Rx.Subject.create(observer, observable);
+  }
 
   Messages(): Rx.Subject<MessageEvent>{
     let observable = new Observable(observer => {
@@ -55,6 +69,20 @@ export class WebsocketService {
       },
     };
     return Rx.Subject.create(observer, observable);
+}
+
+Invitations(): Rx.Subject<MessageEvent>{
+  let observable = new Observable(observer => {
+      this.socket.on('AcceptedInvitaiton', (data) =>{
+      observer.next(data);
+    })
+  });
+  let observer = {
+    next: (data: Object) => {
+      this.socket.emit('AcceptInv', JSON.stringify(data));
+    },
+  };
+  return Rx.Subject.create(observer, observable);
 }
 
   

@@ -13,22 +13,33 @@ namespace MicroFacebookAPI.Controllers
     {
         private MicroFBEntities db = new MicroFBEntities();
         // TO DO:
-        // 1. Pobierz posty, które znajdują się na mojej tablicy
-        // 2. Utwórz nowy post
-        // 3. Udostępnij post na swojej tablicy
         // 4. Polub/odlub post
         // 5. Usuń post
 
-        #region GET METHODS        
+        #region GET METHODS    
+        [Authorize]
+        [ResponseType(typeof(UserPosts))]
+        [HttpGet]
+        [Route("api/posts/getpost/{postId}")]
+        public IHttpActionResult GetPost(int postId)
+        {
+            // Pobieram posty moje / wpisane na moją tablicę / posty znajomych / posty udostępnione przeze mnie
+            var post = db.PostsView.Where(x => x.Id == postId).FirstOrDefault();
+            return Json(post);
+        }
+        
         [Authorize]
         [ResponseType(typeof(UserPosts))]
         [HttpGet]
         [Route("api/posts/getboard/{UserId}")]
-        public IHttpActionResult GetBoard(int UserId)
+        public IHttpActionResult GetBoard(int UserId) 
         {
+            // Pobieram posty moje / wpisane na moją tablicę / posty znajomych / posty udostępnione przeze mnie
             var observedFriendsIds = db.Friends.Where(x => x.UserId == UserId && x.IsObserving).Select(z => z.FriendId);
+            var board = db.PostsView.Where(x => (x.AuthorId == UserId || observedFriendsIds.Contains(x.AuthorId)) || x.TargetUserId == UserId).ToList();
 
-            var board = db.PostsView.Where(x => x.AuthorId == UserId || observedFriendsIds.Contains(x.AuthorId));
+            board = board.OrderByDescending(x => x.PostDate).ToList();
+
             return Json(board);
         }
         [Authorize]
@@ -42,6 +53,7 @@ namespace MicroFacebookAPI.Controllers
         }
         #endregion
         #region POST - SAVING DATA
+        [Authorize]
         [HttpPost]
         [Route("api/posts/savepost")]
         public IHttpActionResult SavePost([FromBody]UserPosts p)
@@ -58,7 +70,30 @@ namespace MicroFacebookAPI.Controllers
                     db.UserPosts.Add(p);
                 }
                 db.SaveChanges();
-                return Json(p);
+                return Json(p.Id);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+        [Authorize]
+        [HttpPost]
+        [Route("api/posts/sharepost")]
+        public IHttpActionResult SharePost(int UserId,int PostId)
+        {
+            try
+            {
+                var post = db.UserPosts.Where(x => x.Id == PostId).FirstOrDefault();
+                var newPost = new UserPosts();
+                newPost.AuthorId = UserId;
+                newPost.Content = post.Content;
+                newPost.PostDate = DateTime.Now;
+                newPost.PrimaryPostId = PostId;
+                db.UserPosts.Add(newPost);
+                db.SaveChanges();
+
+                return Ok(newPost.Id);
             }
             catch (Exception ex)
             {
