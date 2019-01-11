@@ -2,7 +2,7 @@ export class UserDetails {
 
     public Username: string;
     public Email: string;
-    public Password: string;
+    //public Password: string;
     public FirstName: string;
     public LastName: string;
     public DateOfBirth: Date;
@@ -16,7 +16,7 @@ export class UserDetails {
     {
         this.Username = obj.Username;
         this.Email = obj.Email;
-        this.Password = obj.Password;
+        //this.Password = obj.Password;
         this.FirstName = obj.FirstName;
         this.LastName = obj.LastName;
         this.DateOfBirth = obj.DateOfBirth;

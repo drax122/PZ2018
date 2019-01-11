@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Friend } from '../Models/friend';
 import { UserDataServiceService } from '../DataServices/user-data-service.service';
 import { SocketService } from '../DataServices/socket.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-friends-list',
@@ -12,12 +13,13 @@ export class FriendsListComponent implements OnInit {
   FriendsList : Array<Friend> = [];
   FriendsStatusList : Array<any> = [];
 
-  constructor( private UserDataService : UserDataServiceService, private SocketService : SocketService) 
+  constructor( 
+    private UserDataService : UserDataServiceService, 
+    private SocketService : SocketService, 
+    private router: Router) 
   {
     this.loadFriends();
-
     // Nasłuchiwanie na eventy z socketservera dotyczące tego komponentu
-
     // data to Id nowego ziomka - muszę go pobrać i dopisać do listy
     this.SocketService.Invitations.subscribe(data =>{ 
       console.log("Ziomuś zaakceptował zapro : " + data);
@@ -42,6 +44,11 @@ export class FriendsListComponent implements OnInit {
     });
   }
 
+  onShowProfile(User:Friend){
+    this.router.navigate(['/profile', User.Id]);
+  }
+
+
   loadFriends(){
     const id = localStorage.getItem("UserId");
     this.UserDataService.getUserFriends(id).subscribe(
@@ -62,10 +69,8 @@ export class FriendsListComponent implements OnInit {
       }
     )
   }
-
   ngOnInit() {
 
 
   }
-
 }
