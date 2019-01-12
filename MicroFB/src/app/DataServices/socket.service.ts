@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { WebsocketService } from '../websocket.service';
+import { Post } from '../Models/post';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,7 @@ export class SocketService {
   Status : Subject<any>; // ktoś się zalogował - przychodzi nam jego ID i możemy się wylogować za pomocą next here
   Messages : Subject<any>; // chcemy wysłać wiadomość/otrzymujemy nową wiadomość
   Invitations : Subject<any>; // wysyłamy/odbioramy wiadomość o tym, że użytkownik zaakceptował zaproszenie
+  Posts : Subject<any>;
 
   constructor(private ws: WebsocketService) {
     this.Connect = <Subject<any>>ws.connect().map((response:any): any =>{
@@ -28,6 +30,13 @@ export class SocketService {
     this.Disconnect = <Subject<any>>ws.disconnect().map((response:any): any =>{
       return response;
     });
+    this.Posts = <Subject<any>>ws.Posts().map((response:any): any =>{
+      return response;
+    });
+  }
+
+  SendNewPost(Post:Post){
+    this.Posts.next({"PostId": Post.Id, "UserId": Post.AuthorId});
   }
 
   AcceptInvitation(Invitation){

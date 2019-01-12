@@ -31,6 +31,18 @@ io.on("connection", socket => {
             return elem.UserId !== data;
         });
     });
+    socket.on("SendPost", data => {
+        io.emit("NewPost", data);
+    });
+    socket.on("SendMessage", data =>{
+        var i = onlineUsers.filter(obj => {
+            return obj.UserId === data.UserId;
+        });
+        if(i){
+            io.to(i.socketID).emit("NewMessage");
+        }
+    });
+    
     socket.on("disconnect", ()=> {
         var i = onlineUsers.filter(obj => {
             return obj.socketID === socket.id

@@ -19,5 +19,6 @@ namespace MicroFacebookAPI.DataModel
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public Nullable<int> ConversationId { get; set; }
+        public bool Observing { get; set; }
     }
 }

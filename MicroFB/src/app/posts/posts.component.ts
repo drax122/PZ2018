@@ -27,7 +27,6 @@ export class PostsComponent implements OnInit {
     });
     // TO DO
     // SOCKETY Z NOWYMI POSTAMI ZNAJOMYCH/MOIMI I ICH POBIERANIEM
-    
 
   }
 
@@ -43,7 +42,7 @@ export class PostsComponent implements OnInit {
 
   getPost(PostId){
     this.postsService.getPost(PostId).subscribe(post=>{
-      console.log("GOT NEW POST FROM DB");
+      console.log("GOT NEW POST FROM DB BC SOCKET INFORMED ME OF IT AND IM OBSERVIN THIS USER");
       this.BoardData.push(post);
     })
   }
@@ -55,9 +54,17 @@ export class PostsComponent implements OnInit {
   ngOnInit() {
     this.FriendsListService.FriendList.subscribe(fl =>{
       this.FriendsList = fl;
-      console.log("Komponent postów załadował do pamięci listę znajomych");
-      console.dir(fl);
+    });
+    this.socketService.Posts.subscribe(data => {
+      if(data.UserId){
+      var control = this.FriendsList.filter(obj=> {return obj.Id === data.UserId});
+        if(control.length > 0 ){
+          var friend = control.pop();
+          if(friend.Observing === 1){ // Jeśli go obserwuję pobierz post 
+            this.getPost(data.PostId);
+          }
+        }
+      }
     });
   }
-
 }

@@ -13,10 +13,7 @@ export class LoginComponent implements OnInit {
   userModel = new User('','');
   ErrorMessage = '';
 
-  constructor(private data: DataProviderService, private Auth: AuthService, private router: Router)
-
   constructor(private Auth: AuthService, private router: Router) 
-
   {
   }
 
