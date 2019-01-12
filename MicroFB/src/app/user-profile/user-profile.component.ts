@@ -11,7 +11,7 @@ import { FriendsListService } from '../DataServices/friends-list.service';
 })
 export class UserProfileComponent implements OnInit {
   UserDetails : UserDetails = new UserDetails({});
-  _IsFriend : boolean;
+  _IsFriend : boolean; // JESLI TRUE - WYSWIETL SZCZEGOLY I JEGO TABLICE // JESLI FALSE WYSWIETL OKROJONE DANE I GUZIK ZAPROS DO ZNAJOMYCH
 
   constructor(private userdataService : UserDataServiceService, private route : ActivatedRoute, private friendslistService : FriendsListService) 
   { 
@@ -27,7 +27,7 @@ export class UserProfileComponent implements OnInit {
       console.dir(data);
       this.UserDetails = data;
     })
-    var control = this.friendslistService.FriendList.subscribe(x=>{
+    this.friendslistService.FriendList.subscribe(x=>{
       var control = x.filter(obj => {return obj.Id == Id});
       if(control.length === 1){
         this._IsFriend = true;

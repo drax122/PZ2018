@@ -29,10 +29,10 @@ export class PostsComponent implements OnInit {
 
   }
 
-  saveNewPost(msg){
+  saveNewPost(e){
     var post = new Post({});
     post.AuthorId = this.getUserId;
-    post.Content = msg;
+    post.Content = e.target[0].value;
 
     this.postsService.savePost(post).subscribe(PostId => {
         this.getPost(PostId);

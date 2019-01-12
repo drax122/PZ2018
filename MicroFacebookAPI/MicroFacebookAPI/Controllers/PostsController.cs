@@ -60,6 +60,7 @@ namespace MicroFacebookAPI.Controllers
         {
             try
             {
+                p.PostDate = DateTime.Now;
                 if(p.Id != 0) // edit
                 {
                     var pdb = db.UserPosts.Where(x => x.Id == p.Id).FirstOrDefault();

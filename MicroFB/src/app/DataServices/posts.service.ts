@@ -23,6 +23,7 @@ export class PostsService {
     return this.http.get<Post>("/api/posts/getpost/"+PostId).map((res:Post) => new Post(res));
   }
   savePost(post : Post){ // Zwraca Id nowego posta, o którym warto powiadomić znajomych.
+    console.dir(post);
     return this.http.post("/api/posts/savepost", JSON.stringify(post));
   }
   editPost(post : Post){ // Dunno czy warto powiadamiać znajomych o edycji posta na żywo?
