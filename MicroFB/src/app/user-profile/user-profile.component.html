@@ -1,5 +1,47 @@
-Jest kumpel : {{_IsFriend}}
-<div *ngIf="_IsFriend===false"> TROLOLO </div>
-<app-friends-list>
 
-</app-friends-list>
+
+<div class="profil">
+  <div class="informations">
+    <div class="information">
+      <div class="information-header row">
+        <div class="col-sm-4">
+
+          <img class="information-header-photo" src="https://dhqbrvplips7x.cloudfront.net/webchat/1.0.23/agent-e202505f.png" alt="">
+
+
+        </div>
+        <div class="post-header-name col-sm-4">
+          <div>{{UserDetails.FirstName}} {{UserDetails.LastName}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button (click)="invite()">INVITE</button>
+  </div>
+
+
+
+  <div class="posts-container">
+
+  <div class="posts">
+
+    <div class="post" *ngFor= "let post of BoardData">
+      <div class="post-header row">
+        <div class="col-sm-4">
+          <img class="post-header-avatar" src="https://dhqbrvplips7x.cloudfront.net/webchat/1.0.23/agent-e202505f.png" alt="" width="25px;">
+        </div>
+        <div class="post-header-author col-sm-4">
+          <div>{{ post.AuthorFirstName }} {{ post.AuthorLastName }}</div>
+        </div>
+      </div>
+      <div class="post-header-timestamp col-sm-4" >
+          {{ post.PostDate | date: 'd/M/yy, h:mm a' }}
+        </div>
+      <div class="post-content">
+        {{ post.Content }}
+      </div>
+
+    </div>
+
+  </div>
+  </div>

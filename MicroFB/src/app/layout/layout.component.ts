@@ -2,7 +2,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
-
+import { SocketService } from '../DataServices/socket.service';
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
@@ -10,8 +10,15 @@ import { Router } from '@angular/router';
 })
 export class LayoutComponent  {
 
-  constructor(private Auth: AuthService, private router: Router) { }
+  constructor(private Auth: AuthService, private router: Router,
+    private SocketService : SocketService) { }
 
+  logout()
+  {
+    this.SocketService.Logout(parseInt(localStorage.getItem("UserId")));
+    this.Auth.logOut();
+    this.router.navigate(['']);
+  }
   ngOnInit() {
   }
   get LoggedIn(){

@@ -11,6 +11,7 @@ export class UserDetails {
     public Street: string;
     public BuildingNumber: string;
     public Description: string;
+    public Id: number;
 
     constructor(obj : any)
     {
@@ -25,5 +26,6 @@ export class UserDetails {
         this.Street = obj.Street;
         this.BuildingNumber = obj.BuildingNumber;
         this.Description = obj.Description;
+        this.Id = obj.Id;
     }
 }
