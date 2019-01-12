@@ -48,6 +48,7 @@
         <EntityTypeShape EntityType="MicroFBModel.PostsLikes" Width="1.5" PointX="9.25" PointY="11.25" />
         <AssociationConnector Association="MicroFBModel.FK__PostsLike__PostI__76969D2E" />
         <AssociationConnector Association="MicroFBModel.FK__PostsLike__UserI__75A278F5" />
+        <EntityTypeShape EntityType="MicroFBModel.NotificationsView" Width="1.5" PointX="11.375" PointY="11.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

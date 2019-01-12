@@ -99,7 +99,9 @@ namespace MicroFacebookAPI.Controllers
             {
                 db.FriendInvitations.Add(invitation);
                 db.SaveChanges();
-                return Json(invitation);
+
+                var res = db.FriendInvitationsView.Where(x => x.Id == invitation.Id).FirstOrDefault();
+                return Json(res);
             }
             catch (Exception ex)
             {

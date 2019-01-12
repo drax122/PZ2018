@@ -45,5 +45,6 @@ namespace MicroFacebookAPI.DataModel
         public virtual DbSet<UserPosts> UserPosts { get; set; }
         public virtual DbSet<LikesView> LikesView { get; set; }
         public virtual DbSet<PostsLikes> PostsLikes { get; set; }
+        public virtual DbSet<NotificationsView> NotificationsView { get; set; }
     }
 }

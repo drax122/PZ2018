@@ -12,17 +12,16 @@ namespace MicroFacebookAPI.DataModel
     using System;
     using System.Collections.Generic;
     
-    public partial class Notifications
+    public partial class NotificationsView
     {
         public int Id { get; set; }
         public int SourcePersonId { get; set; }
+        public string SourcePersonFirstName { get; set; }
+        public string SourcePersonLastName { get; set; }
         public int TargetPersonId { get; set; }
         public int Type { get; set; }
         public string Description { get; set; }
-        public System.DateTime Date { get; set; }
         public bool Shown { get; set; }
-    
-        public virtual Users Users { get; set; }
-        public virtual Users Users1 { get; set; }
+        public System.DateTime Date { get; set; }
     }
 }

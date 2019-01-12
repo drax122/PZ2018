@@ -11,11 +11,9 @@ io.on("connection", socket => {
         // WYSLIJ INFO DO ODP KLIENTA ZE ZAPROSZENIE ZOSTALO ZAAKCEPTOWANE
         var sock = onlineUsers.filter(obj => {
             return obj.UserId === data.UserId;
-        })
-        if(sock){ // Tylko jeśli faktycznie jest zalogowany
-            io.to(sock.socketID).emit("AcceptedInvitation", data.TargetPersonId);
-        }
-
+        }).forEach(s=>{
+            io.to(s.socketID).emit("AcceptedInvitation", data.TargetPersonId);
+        });
     });
     socket.on("IMIN", UserId =>{
         onlineUsers.push({ "socketID" : socket.id, "UserId" : UserId});
@@ -48,7 +46,25 @@ io.on("connection", socket => {
             });
             console.log("User out: " + socket.id);
         }
-    })
+    });
+    // ZIOMEK WYSŁAŁ ZAPROSZENIE DO GRONA ZNAJOMYCH
+    socket.on("SendInvitation", data =>{
+        onlineUsers.filter(x=> {return x.UserId === data.TargetPersonId}).forEach(e=>{
+            socket.to(e.socketID).emit("InvitationSent", data);
+        });
+    });
+    // POWIADOMIENIA
+    socket.on("SendNotification", data =>{
+        // Wyemituj notyfikacje do targetu :)
+        onlineUsers.filter(x=> {return x.UserId === data.TargetPersonId}).forEach(e=>{
+            socket.to(e.socketID, data).emit("Notification", data);
+        })
+    });
+    // LIKES
+    socket.on("Like", data =>{
+        // Powiadom wszystkich poza wysyłającym 
+        socket.emit("Like", data);
+    });
 });
 
 http.listen(3200, () => {

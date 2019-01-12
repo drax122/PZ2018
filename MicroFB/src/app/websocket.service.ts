@@ -74,13 +74,55 @@ export class WebsocketService {
 
 Invitations(): Rx.Subject<MessageEvent>{
   let observable = new Observable(observer => {
-      this.socket.on('AcceptedInvitaiton', (data) =>{
+      this.socket.on('AcceptedInvitation', (data) =>{
       observer.next(data);
     })
   });
   let observer = {
     next: (data: Object) => {
       this.socket.emit('AcceptInv', JSON.stringify(data));
+    },
+  };
+  return Rx.Subject.create(observer, observable);
+}
+
+SendInvitation(): Rx.Subject<MessageEvent>{
+  let observable = new Observable(observer => {
+      this.socket.on('InvitationSent', (data) =>{
+      observer.next(data);
+    })
+  });
+  let observer = {
+    next: (data: Object) => {
+      this.socket.emit('SendInvitation', data);
+    },
+  };
+  return Rx.Subject.create(observer, observable);
+}
+
+Notifications(): Rx.Subject<MessageEvent>{
+  let observable = new Observable(observer => {
+      this.socket.on('Notification', (data) =>{
+      observer.next(data);
+    })
+  });
+  let observer = {
+    next: (data: Object) => {
+      this.socket.emit('SendNotification', data);
+    },
+  };
+  return Rx.Subject.create(observer, observable);
+}
+
+Likes(): Rx.Subject<MessageEvent>{
+  let observable = new Observable(observer => {
+      this.socket.on('Like', (data) =>{
+      observer.next(data);
+    })
+  });
+  let observer = {
+    next: (data: Object) => {
+      this.socket.emit('Like', data);
     },
   };
   return Rx.Subject.create(observer, observable);

@@ -59,6 +59,8 @@
           <Property Name="TargetPersonId" Type="int" Nullable="false" />
           <Property Name="Type" Type="int" Nullable="false" />
           <Property Name="Description" Type="varchar(max)" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="Shown" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="PostsLikes">
           <Key>
@@ -214,6 +216,30 @@ warning 6002: The table/view 'MicroFB.dbo.LikesView' does not have a primary key
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="FirstName" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="LastName" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'MicroFB.dbo.NotificationsView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="NotificationsView">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="SourcePersonId" />
+            <PropertyRef Name="SourcePersonFirstName" />
+            <PropertyRef Name="SourcePersonLastName" />
+            <PropertyRef Name="TargetPersonId" />
+            <PropertyRef Name="Type" />
+            <PropertyRef Name="Description" />
+            <PropertyRef Name="Shown" />
+            <PropertyRef Name="Date" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="SourcePersonId" Type="int" Nullable="false" />
+          <Property Name="SourcePersonFirstName" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="SourcePersonLastName" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="TargetPersonId" Type="int" Nullable="false" />
+          <Property Name="Type" Type="int" Nullable="false" />
+          <Property Name="Description" Type="varchar(max)" Nullable="false" />
+          <Property Name="Shown" Type="bit" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'MicroFB.dbo.PostsView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -593,6 +619,19 @@ warning 6002: The table/view 'MicroFB.dbo.UsersView' does not have a primary key
     [LikesView].[LastName] AS [LastName]
     FROM [dbo].[LikesView] AS [LikesView]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="NotificationsView" EntityType="Self.NotificationsView" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [NotificationsView].[Id] AS [Id], 
+    [NotificationsView].[SourcePersonId] AS [SourcePersonId], 
+    [NotificationsView].[SourcePersonFirstName] AS [SourcePersonFirstName], 
+    [NotificationsView].[SourcePersonLastName] AS [SourcePersonLastName], 
+    [NotificationsView].[TargetPersonId] AS [TargetPersonId], 
+    [NotificationsView].[Type] AS [Type], 
+    [NotificationsView].[Description] AS [Description], 
+    [NotificationsView].[Shown] AS [Shown], 
+    [NotificationsView].[Date] AS [Date]
+    FROM [dbo].[NotificationsView] AS [NotificationsView]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="PostsView" EntityType="Self.PostsView" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [PostsView].[Id] AS [Id], 
@@ -871,6 +910,7 @@ warning 6002: The table/view 'MicroFB.dbo.UsersView' does not have a primary key
             <End Role="Users" EntitySet="Users" />
             <End Role="PostsLikes" EntitySet="PostsLikes" />
           </AssociationSet>
+          <EntitySet Name="NotificationsView" EntityType="MicroFBModel.NotificationsView" />
         </EntityContainer>
         <EntityType Name="Friends">
           <Key>
@@ -1026,6 +1066,8 @@ warning 6002: The table/view 'MicroFB.dbo.UsersView' does not have a primary key
           <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Users" Relationship="MicroFBModel.FK__Notificat__Sourc__4F7CD00D" FromRole="Notifications" ToRole="Users" />
           <NavigationProperty Name="Users1" Relationship="MicroFBModel.FK__Notificat__Targe__5070F446" FromRole="Notifications" ToRole="Users" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Shown" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="UserConversations">
           <Key>
@@ -1403,6 +1445,28 @@ warning 6002: The table/view 'MicroFB.dbo.UsersView' does not have a primary key
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="NotificationsView">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="SourcePersonId" />
+            <PropertyRef Name="SourcePersonFirstName" />
+            <PropertyRef Name="SourcePersonLastName" />
+            <PropertyRef Name="TargetPersonId" />
+            <PropertyRef Name="Type" />
+            <PropertyRef Name="Description" />
+            <PropertyRef Name="Shown" />
+            <PropertyRef Name="Date" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="SourcePersonId" Type="Int32" Nullable="false" />
+          <Property Name="SourcePersonFirstName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="SourcePersonLastName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="TargetPersonId" Type="Int32" Nullable="false" />
+          <Property Name="Type" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Shown" Type="Boolean" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1530,6 +1594,8 @@ warning 6002: The table/view 'MicroFB.dbo.UsersView' does not have a primary key
           <EntitySetMapping Name="Notifications">
             <EntityTypeMapping TypeName="MicroFBModel.Notifications">
               <MappingFragment StoreEntitySet="Notifications">
+                <ScalarProperty Name="Shown" ColumnName="Shown" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Type" ColumnName="Type" />
                 <ScalarProperty Name="TargetPersonId" ColumnName="TargetPersonId" />
@@ -1645,6 +1711,21 @@ warning 6002: The table/view 'MicroFB.dbo.UsersView' does not have a primary key
               <MappingFragment StoreEntitySet="PostsLikes">
                 <ScalarProperty Name="PostId" ColumnName="PostId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NotificationsView">
+            <EntityTypeMapping TypeName="MicroFBModel.NotificationsView">
+              <MappingFragment StoreEntitySet="NotificationsView">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Shown" ColumnName="Shown" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="TargetPersonId" ColumnName="TargetPersonId" />
+                <ScalarProperty Name="SourcePersonLastName" ColumnName="SourcePersonLastName" />
+                <ScalarProperty Name="SourcePersonFirstName" ColumnName="SourcePersonFirstName" />
+                <ScalarProperty Name="SourcePersonId" ColumnName="SourcePersonId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

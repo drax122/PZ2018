@@ -26,6 +26,20 @@ namespace MicroFacebookAPI.Controllers
             return Json(nots);
         }
         #endregion
+        #region Save methods
+        [Authorize]
+        [HttpPost]
+        [Route("api/notifications/add")]
+        public IHttpActionResult Add([FromBody] Notifications not)
+        {
+            not.Date = DateTime.Now;
+            db.Notifications.Add(not);
+            db.SaveChanges();
+
+            var res = db.NotificationsView.Where(x => x.Id == not.Id).FirstOrDefault();
+            return Json(res);
+        }
+        #endregion
 
     }
 }
