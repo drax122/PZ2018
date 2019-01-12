@@ -41,6 +41,13 @@ export class FriendsListComponent implements OnInit {
     )
   }
 
+  follow(Friend:Friend){
+    this.FriendsListService.followFriend();
+  }
+  unfollow(Friend: Friend){
+    this.FriendsListService.unfollowFriend();
+  }
+
   trackStatusByUserIdAndStatus(index:number, friend:Friend): number{
     return friend.Id;
   }

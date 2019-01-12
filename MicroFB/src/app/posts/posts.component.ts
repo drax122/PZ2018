@@ -37,6 +37,8 @@ export class PostsComponent implements OnInit {
     
     this.postsService.savePost(post).subscribe(PostId => {
         this.getPost(PostId);
+        post.Id = parseInt(JSON.stringify(PostId));
+        this.socketService.SendNewPost(post);
     });
   }
 
@@ -60,7 +62,7 @@ export class PostsComponent implements OnInit {
       var control = this.FriendsList.filter(obj=> {return obj.Id === data.UserId});
         if(control.length > 0 ){
           var friend = control.pop();
-          if(friend.Observing === 1){ // Jeśli go obserwuję pobierz post 
+          if(friend.Observing === 1){ // Jeśli go obserwuję pobierz post jego nowy post :)
             this.getPost(data.PostId);
           }
         }

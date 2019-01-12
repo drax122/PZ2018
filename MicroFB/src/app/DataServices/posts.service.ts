@@ -4,13 +4,14 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import {Invitation } from '../Models/Invitation';
 import { Post } from '../Models/post';
 import { HomeComponent } from '../home/home.component';
+import { SocketService } from './socket.service';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class PostsService {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private socketService: SocketService) { }
 
   getUserBoard(Id) : Observable<Post[]>{
     return this.http.get<Array<Post>>("/api/posts/getboard/"+Id).map((entries:any[])=> entries.map(e=> new Post(e)));
@@ -21,7 +22,6 @@ export class PostsService {
   getPost(PostId): Observable<Post>{
     return this.http.get<Post>("/api/posts/getpost/"+PostId).map((res:Post) => new Post(res));
   }
-
   savePost(post : Post){ // Zwraca Id nowego posta, o którym warto powiadomić znajomych.
     return this.http.post("/api/posts/savepost", JSON.stringify(post));
   }
