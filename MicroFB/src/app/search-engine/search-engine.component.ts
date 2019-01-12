@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserDataServiceService } from '../DataServices/user-data-service.service';
 import { UserSearch } from '../Models/user-search';
 import { Router } from '@angular/router';
+import { SocketService } from '../DataServices/socket.service';
 
 @Component({
   selector: 'app-search-engine',
@@ -11,10 +12,13 @@ import { Router } from '@angular/router';
 export class SearchEngineComponent implements OnInit {
   SearchPhrase = "";
   SearchResults : Array<UserSearch> = [];
-  constructor(private UserDataService : UserDataServiceService, private router: Router ) { }
+  constructor(
+    private UserDataService : UserDataServiceService, 
+    private SocketService : SocketService,
+    private router: Router 
+    ) { }
 
   updateSearchString(e){
-    console.log(e);
     this.SearchPhrase = e.target.value;
     this.search();
   }
@@ -35,7 +39,7 @@ export class SearchEngineComponent implements OnInit {
   }
 
   inviteUser(TargetUserId){
-    this.UserDataService.inviteUser(localStorage.getItem("UserId"),TargetUserId).subscribe(
+    this.UserDataService.inviteUser(JSON.parse(localStorage.getItem("UserId")),TargetUserId).subscribe(
       (data) => {
         console.log("Server : invitation response:");
         console.log(data);

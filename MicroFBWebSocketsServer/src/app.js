@@ -22,16 +22,14 @@ io.on("connection", socket => {
         io.emit("UserLoggedIn", UserId);
         io.to(socket.id).emit("UsersOnline", onlineUsers);
 
-        console.log("User joined: " + socket.id);
+        console.log("User joined: " + socket.id + " / "+ UserId );
     });
     socket.on("IMOUT", data =>{ // data - UserId
-        console.dir(data);
         io.emit("UserLoggedOut", data);
         console.log("User out : "+ socket.id + " / " + data);
         onlineUsers = onlineUsers.filter(function(elem){
             return elem.UserId !== data;
         });
-        
     });
     socket.on("disconnect", ()=> {
         var i = onlineUsers.filter(obj => {

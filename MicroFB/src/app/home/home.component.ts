@@ -31,7 +31,6 @@ export class HomeComponent implements OnInit {
      ) 
   { 
     this.getUserData();
-    this.SocketService.Imonline(parseInt(localStorage.getItem("UserId")));
   }
   get LoggedIn()
   {
@@ -98,6 +97,6 @@ export class HomeComponent implements OnInit {
 
   ngOnInit()
   {
-    
+     this.SocketService.Imonline(parseInt(localStorage.getItem("UserId")));
   }
 }

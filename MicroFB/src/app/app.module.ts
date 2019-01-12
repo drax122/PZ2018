@@ -17,6 +17,7 @@ import { SearchEngineComponent } from './search-engine/search-engine.component';
 import { PostsComponent } from './posts/posts.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,

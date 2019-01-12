@@ -40,7 +40,7 @@ export class UserDataServiceService {
     inv.Status = 0;
     inv.TargetPersonId = targetUserId;
     inv.UserId = UserId;
-    return this.http.post("/api/users/sendinvitation", JSON.stringify(inv));
+    return this.http.post("/api/users/sendinvitation", JSON.stringify(inv)).map((r:Invitation) => new Invitation(r));
   }
   acceptInvitation(InvitationId, accept){ // accept ye/no
       return this.http.post("/api/users/makefriend", null, {

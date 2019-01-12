@@ -133,7 +133,7 @@ export class AuthService {
         localStorage.setItem('expiresAt', obj[".expires"]);
         localStorage.setItem('expiresIn', obj["expires_in"]);
         callback(obj.UserDisplayName);
-       
+        this.SocketService.Imonline(parseInt(localStorage.getItem("UserId")));
       },
       error =>
       {        

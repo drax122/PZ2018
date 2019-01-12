@@ -19,8 +19,7 @@ export class FriendsListComponent implements OnInit {
     private FriendsListService : FriendsListService,
     private SocketService : SocketService, 
     private router: Router) 
-  {
-
+  { // CTOR ACTION
     this.SocketService.Invitations.subscribe(data =>{ 
       console.log("Ziomuś zaakceptował zapro : " + data);
       this.UserDataService.getFriend(data).subscribe(f=>{
@@ -42,13 +41,17 @@ export class FriendsListComponent implements OnInit {
     )
   }
 
+  trackStatusByUserIdAndStatus(index:number, friend:Friend): number{
+    return friend.Id;
+  }
+
   ngOnInit() {
     const id = localStorage.getItem("UserId");
     this.FriendsListService.loadFriendsList(id);
 
     this.FriendsListService.FriendList.subscribe(fl =>{
       this.FriendsList = fl;
-      console.log("Komponent listy znajomych załadował do pamięci listę znajomych.");
+      console.log("Przeładowano listę znajomych");
       console.dir(fl);
     });
   }

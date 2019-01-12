@@ -1,4 +1,12 @@
-<p>
-  friends-list works!
-  <button (click)="test()"></button>
+<p>LISTA ZNAJOMYCH</p>
+<p *ngFor="let friend of FriendsList;trackBy:trackByUserId;">
+    {{friend.FirstName}}
+    {{friend.LastName}}
+    <span *ngIf="friend.Status === 1">
+        ONLINE
+    </span>
+    <span *ngIf="friend.Status === 0">
+        OFFLINE
+    </span>
 </p>
+

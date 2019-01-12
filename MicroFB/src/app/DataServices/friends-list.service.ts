@@ -25,25 +25,30 @@ export class FriendsListService {
           ids.push(parseInt(element.UserId));
         });
         ids.forEach(element => {
-          this.FriendsStatusList.push(element);          
+          if(this.FriendsStatusList.indexOf(element) < 0){
+            this.FriendsStatusList.push(element);         
+          } 
         });
         if(this.local.length >0){
-        this.applyStatusToFriendList();
+          this.applyStatusToFriendList();
         }
     });
     // odbiera event UserLoggedIn przekazując w data UserId -- jeśli UserId jest w mojej liście znajomych zmień jego status zalogowania
     this.SocketService.Connect.subscribe(data=> {
+      if(this.FriendsStatusList.indexOf(data) < 0){
         this.FriendsStatusList.push(data);
-        if(this.local.length >0){
-        this.applyStatusToFriendList();
-        }
+      }
+      if(this.local.length >0){
+          this.applyStatusToFriendList();
+      }
     });
     // odbiera event UserLoggedOut ...
     this.SocketService.Disconnect.subscribe(data=>{
       this.FriendsStatusList.splice(this.FriendsStatusList.indexOf(data),1);
+      console.log("LOGOUT OF USER : "+ data)
       if(this.local.length >0){
-      this.applyStatusToFriendList();
-    }
+        this.applyStatusToFriendList();
+      }
     });
   }
 
@@ -59,12 +64,8 @@ export class FriendsListService {
   applyStatusToFriendList(){
     if(this.local.length >0){
       var changesCount = 0;
-      
         this.local.forEach(element => {
           var control = this.FriendsStatusList.indexOf(element.Id);
-          console.log("FriendListStatus");
-          console.dir(this.FriendsStatusList);
-          console.log("XD "+control);
           if(control >= 0){
             if(element.Status !== 1){
               element.Status = 1;
@@ -80,7 +81,7 @@ export class FriendsListService {
         });
         if(changesCount > 0){
           this.friendList.next(this.local);
-      }
+        }
     }
   }
 
