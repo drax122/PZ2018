@@ -4,8 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { RegisterComponent } from './register/register.component';
-
-
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
@@ -14,7 +12,14 @@ import { AuthGuard } from './auth.guard';
 import { InterceptorService } from './interceptor.service';
 import { SocketService } from './DataServices/socket.service';
 import { WebsocketService } from './websocket.service';
+
 import { LayoutComponent } from './layout/layout.component';
+
+import { FriendsListComponent } from './friends-list/friends-list.component';
+import { SearchEngineComponent } from './search-engine/search-engine.component';
+import { PostsComponent } from './posts/posts.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
+
 
 
 @NgModule({
@@ -23,7 +28,14 @@ import { LayoutComponent } from './layout/layout.component';
     RegisterComponent,
     LoginComponent,
     HomeComponent,
+
     LayoutComponent,
+
+    FriendsListComponent,
+    SearchEngineComponent,
+    PostsComponent,
+    UserProfileComponent,
+
   ],
   imports: [
     BrowserModule,

@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { UserDetails } from '../Models/user-details';
 import { UserSearch } from '../Models/user-search';
-
+import {Invitation } from '../Models/Invitation';
+import { Friend } from '../Models/friend';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { User } from '../Models/user';
 
 
 @Injectable({
@@ -11,19 +14,43 @@ import { UserSearch } from '../Models/user-search';
 export class UserDataServiceService {
   constructor(private http: HttpClient) { }
 
-  getUserData(Id){
-    return this.http.get<UserDetails>("/api/users/getusers/"+Id);
+  getUserData(Id) : Observable<UserDetails>{
+    return this.http.get<UserDetails>("/api/users/getusers/"+Id).map(res=> new UserDetails(res));
+  }
+  getUserFriends(Id) : Observable<Array<Friend>>{
+    return this.http.get<Friend[]>("/api/users/getfriends/"+Id).map((entries : any[]) => entries.map((e)=> new Friend(e)));
+  }
+  getFriend(UserId) : Observable<Friend>{
+    return this.http.get<Friend>("/api/users/getusers/"+UserId).map((res:Friend) => new Friend(res));
+  }
+  getUserFriendInvitations(Id) : Observable<Invitation[]>{
+    return this.http.get<Array<Invitation>>("/api/users/getinvitations/"+Id).map((entries:any[])=> entries.map(e => new Invitation(e)));
+  }
+  searchUsers(searchphrase) : Observable<UserSearch[]>{
+    return this.http.get<Array<UserSearch>>('/api/users/search',
+     {
+      headers: new HttpHeaders().set('Content-Type', 'application/json'),
+      params: { phrase : searchphrase }
+     }, 
+     ).map((entrise:UserSearch[])=> entrise.map(e=> new UserSearch(e)));
   }
 
-  searchUsers(searchphrase){
-    return this.http.get<UserSearch[]>("/api/users/search/"+searchphrase);
+  inviteUser(UserId, targetUserId){
+    var inv = new Invitation({});
+    inv.Status = 0;
+    inv.TargetPersonId = targetUserId;
+    inv.UserId = UserId;
+    return this.http.post("/api/users/sendinvitation", JSON.stringify(inv)).map((r:Invitation) => new Invitation(r));
+  }
+  acceptInvitation(InvitationId, accept){ // accept ye/no
+      return this.http.post("/api/users/makefriend", null, {
+        headers: new HttpHeaders().set('Content-Type', 'application/json'),
+        params: {
+          "InvitationId" : InvitationId,
+          "accept" : accept
+        }
+      });
   }
 
-  getUserFriends(Id){
-    return this.http.get("/api/users/getfriends/"+Id);
-  }
 
-  getUserBoard(Id){
-    return this.http.get("/api/posts/getboard/"+Id);
-  }
 }

@@ -20,20 +20,22 @@ namespace MicroFacebookAPI.Controllers
 
         #region GET METHODS        
         [Authorize]
-        [ResponseType(typeof(Users))]
+        [ResponseType(typeof(UsersView))]
+        [HttpGet]
         [Route("api/users/getusers/{Id}")]
         public IHttpActionResult GetUsers(int Id)
         {
-            Users users = db.Users.Where(x => x.Id == Id).FirstOrDefault();
-            if (users == null)
+            var user = db.UsersView.Where(x => x.Id == Id).FirstOrDefault();
+            if (user == null)
             {
                 return NotFound();
             }
-            return Json(users);
+            return Json(user);
         }
 
         [Authorize]
         [ResponseType(typeof(Users))]
+        [HttpGet]
         [Route("api/users/getfriends/{userId}")]
         public IHttpActionResult GetFriends(int userId)
         {
@@ -47,24 +49,27 @@ namespace MicroFacebookAPI.Controllers
 
         [Authorize]
         [ResponseType(typeof(Users))]
-        [Route("api/users/search/{phrase}")]
+        [HttpGet]
+        [Route("api/users/search")]
         public IHttpActionResult Search(string phrase)
         {
             var users = db.Users.Where(x=> 
                    x.FirstName.Contains(phrase)
                 || x.LastName.Contains(phrase)
                 || x.MiddleName.Contains(phrase)
-                || x.PhoneNumber.Contains(phrase)).ToList();
+                ).ToList();
+
             return Json(users);
         }
 
 
         [Authorize]
         [ResponseType(typeof(FriendInvitations))]
+        [HttpGet]
         [Route("api/users/getinvitations/{Id}")]
         public IHttpActionResult GetInvitations(int Id)
         {
-            var invs = db.FriendInvitations.Where(x => x.TargetPersonId == Id);
+            var invs = db.FriendInvitationsView.Where(x => x.TargetPersonId == Id && x.Status == 0);
             return Json(invs);
         }
 
@@ -86,6 +91,23 @@ namespace MicroFacebookAPI.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("api/users/sendinvitation")]
+        public IHttpActionResult SendInvitation([FromBody]FriendInvitations invitation)
+        {
+            try
+            {
+                db.FriendInvitations.Add(invitation);
+                db.SaveChanges();
+                return Json(invitation);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+
         [Authorize]
         [HttpPost]
         [Route("api/users/makefriend")]
@@ -94,8 +116,14 @@ namespace MicroFacebookAPI.Controllers
             try
             {
                 var inv = db.FriendInvitations.Where(x => x.Id == InvitationId).FirstOrDefault();
+                if(inv.Status == 1 || inv.Status == 2)
+                {
+                    // Nie akceptujemy 2 razy etc... w przypadku kilku kliknięć.
+                    return Ok();
+                }
                 if (accept)
                 {
+                    inv.Status = 1;
                     var tmp = new Friends
                     {
                         UserId = inv.UserId,
@@ -125,6 +153,7 @@ namespace MicroFacebookAPI.Controllers
                 }
                 else // Nie przyjął zaproszenia - usuń zaproszenie + dodaj powiadomienie na użytkownika, który je wysłał
                 {
+                    inv.Status = 2;
                     var not = new Notifications
                     {
                         SourcePersonId = inv.TargetPersonId,

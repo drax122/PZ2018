@@ -14,10 +14,23 @@ namespace MicroFacebookAPI.DataModel
     
     public partial class UserPosts
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public UserPosts()
+        {
+            this.UserPosts1 = new HashSet<UserPosts>();
+        }
+    
         public int Id { get; set; }
         public int AuthorId { get; set; }
         public string Content { get; set; }
+        public Nullable<int> TargetUserId { get; set; }
+        public System.DateTime PostDate { get; set; }
+        public Nullable<int> PrimaryPostId { get; set; }
     
         public virtual Users Users { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserPosts> UserPosts1 { get; set; }
+        public virtual UserPosts UserPosts2 { get; set; }
+        public virtual Users Users1 { get; set; }
     }
 }

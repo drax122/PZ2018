@@ -18,6 +18,7 @@ namespace MicroFacebookAPI.Controllers
         #region GET METHODS        
         [Authorize]
         [ResponseType(typeof(ConversationMessages))]
+        [HttpGet]
         [Route("api/messages/getmessages/{ConversationId}")]
         public IHttpActionResult GetMessages(int ConversationId)
         {

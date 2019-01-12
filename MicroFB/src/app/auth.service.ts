@@ -6,6 +6,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import { Router } from '@angular/router';
 import { routerNgProbeToken } from '@angular/router/src/router_module';
+import { SocketService } from './DataServices/socket.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class AuthService {
     return JSON.parse(localStorage.getItem("loggedIn")) || false;
   }
 
-  constructor(private http: HttpClient, private router : Router) { }
+  constructor(private http: HttpClient, private router : Router, private SocketService: SocketService) { }
 
   RefreshToken()
   {
@@ -125,7 +126,6 @@ export class AuthService {
     }).subscribe(data =>
       {
         let obj = JSON.parse(JSON.stringify(data));
-        console.dir(obj);
         this.setLoggedIn(true);
         localStorage.setItem('UserId', (JSON.parse(obj.User)).Id);
         localStorage.setItem('token', obj.access_token);
@@ -133,6 +133,7 @@ export class AuthService {
         localStorage.setItem('expiresAt', obj[".expires"]);
         localStorage.setItem('expiresIn', obj["expires_in"]);
         callback(obj.UserDisplayName);
+        this.SocketService.Imonline(parseInt(localStorage.getItem("UserId")));
       },
       error =>
       {        

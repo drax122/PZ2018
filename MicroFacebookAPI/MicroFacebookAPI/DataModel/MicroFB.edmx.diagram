@@ -12,7 +12,7 @@
         <EntityTypeShape EntityType="MicroFBModel.Client_RefreshTokens" Width="1.5" PointX="13.875" PointY="0.5" />
         <EntityTypeShape EntityType="MicroFBModel.RestfullAPI_Clients" Width="1.5" PointX="11.625" PointY="0.5" />
         <AssociationConnector Association="MicroFBModel.FK__Client_Re__Clien__1BFD2C07" />
-        <EntityTypeShape EntityType="MicroFBModel.FriendsView" Width="1.5" PointX="11.75" PointY="4" />
+        <EntityTypeShape EntityType="MicroFBModel.FriendsView" Width="1.5" PointX="11.5" PointY="3.75" />
         <EntityTypeShape EntityType="MicroFBModel.ConversationMessages" Width="1.5" PointX="9.125" PointY="2" />
         <EntityTypeShape EntityType="MicroFBModel.FriendInvitations" Width="1.5" PointX="6.875" PointY="8.5" />
         <EntityTypeShape EntityType="MicroFBModel.GroupPosts" Width="1.5" PointX="9.125" PointY="5.375" />
@@ -21,7 +21,6 @@
         <EntityTypeShape EntityType="MicroFBModel.Notifications" Width="1.5" PointX="6.875" PointY="20" />
         <EntityTypeShape EntityType="MicroFBModel.UserConversations" Width="1.5" PointX="6.875" PointY="5.5" />
         <EntityTypeShape EntityType="MicroFBModel.UserFollows" Width="1.5" PointX="6.875" PointY="17.25" />
-        <EntityTypeShape EntityType="MicroFBModel.UserPosts" Width="1.5" PointX="6.875" PointY="23.125" />
         <AssociationConnector Association="MicroFBModel.FK__Conversat__Autho__4222D4EF" />
         <AssociationConnector Association="MicroFBModel.FK__Conversat__Conve__412EB0B6" />
         <AssociationConnector Association="MicroFBModel.FK__FriendInv__Targe__49C3F6B7" />
@@ -37,9 +36,14 @@
         <AssociationConnector Association="MicroFBModel.FK__UserConve__UserI__3B75D760" />
         <AssociationConnector Association="MicroFBModel.FK__UserFollo__Follo__36B12243" />
         <AssociationConnector Association="MicroFBModel.FK__UserFollo__UserI__35BCFE0A" />
-        <AssociationConnector Association="MicroFBModel.FK__UserPosts__Autho__30F848ED" />
-        <EntityTypeShape EntityType="MicroFBModel.PostsView" Width="1.5" PointX="13.375" PointY="4" />
-        <EntityTypeShape EntityType="MicroFBModel.ConversationMessagesView" Width="1.5" PointX="13.375" PointY="6.125" />
+        <EntityTypeShape EntityType="MicroFBModel.PostsView" Width="1.5" PointX="13.5" PointY="3.25" />
+        <EntityTypeShape EntityType="MicroFBModel.ConversationMessagesView" Width="1.5" PointX="13.5" PointY="8.25" />
+        <EntityTypeShape EntityType="MicroFBModel.FriendInvitationsView" Width="1.5" PointX="11.75" PointY="8.125" />
+        <EntityTypeShape EntityType="MicroFBModel.UsersView" Width="1.5" PointX="3.375" PointY="3.75" />
+        <EntityTypeShape EntityType="MicroFBModel.UserPosts" Width="1.5" PointX="3" PointY="8.625" />
+        <AssociationConnector Association="MicroFBModel.FK__UserPosts__Autho__6EF57B66" />
+        <AssociationConnector Association="MicroFBModel.FK__UserPosts__Prima__6FE99F9F" />
+        <AssociationConnector Association="MicroFBModel.FK__UserPosts__Targe__70DDC3D8" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

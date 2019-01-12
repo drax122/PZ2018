@@ -1,7 +1,13 @@
-<!--<p><a routerLink="/register">Register</a></p>
-<p><a routerLink="/login">Login</a></p>
--->
 <div *ngIf="LoggedIn">
-<p> HELLO {{UserData.FirstName}} </p>
-<button (click)="logout()">LOGOUT</button>
+    <p> HELLO {{UserData?.FirstName}} </p>
+    <app-search-engine></app-search-engine>
+    
+    <br/>
+    <button (click)="acceptInvitation()">Zaakceptuj zaproszenie</button>
+    <button (click)="logout()">LOGOUT</button>
+
+    <app-posts #board></app-posts>
+
+    <app-friends-list #friendsList></app-friends-list>
 </div>
+

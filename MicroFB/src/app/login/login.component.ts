@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {DataProviderService } from '../data-provider.service';
 import {AuthService} from '../auth.service';
 import {User} from '../Models/user';
 import { AppRoutingModule } from '../app-routing.module';
@@ -13,7 +12,11 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
   userModel = new User('','');
   ErrorMessage = '';
+
   constructor(private data: DataProviderService, private Auth: AuthService, private router: Router)
+
+  constructor(private Auth: AuthService, private router: Router) 
+
   {
   }
 

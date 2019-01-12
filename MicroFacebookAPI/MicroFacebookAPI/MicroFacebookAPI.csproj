@@ -223,6 +223,9 @@
     <Compile Include="DataModel\FriendInvitations.cs">
       <DependentUpon>MicroFB.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataModel\FriendInvitationsView.cs">
+      <DependentUpon>MicroFB.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataModel\Friends.cs">
       <DependentUpon>MicroFB.tt</DependentUpon>
     </Compile>
@@ -262,6 +265,7 @@
     <Compile Include="DataModel\RestfullAPI_Clients.cs">
       <DependentUpon>MicroFB.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataModel\SharedPost.cs" />
     <Compile Include="DataModel\UserConversations.cs">
       <DependentUpon>MicroFB.tt</DependentUpon>
     </Compile>
@@ -272,6 +276,9 @@
       <DependentUpon>MicroFB.tt</DependentUpon>
     </Compile>
     <Compile Include="DataModel\Users.cs">
+      <DependentUpon>MicroFB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\UsersView.cs">
       <DependentUpon>MicroFB.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />

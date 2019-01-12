@@ -32,6 +32,7 @@ namespace MicroFacebookAPI.DataModel
             this.UserFollows = new HashSet<UserFollows>();
             this.UserFollows1 = new HashSet<UserFollows>();
             this.UserPosts = new HashSet<UserPosts>();
+            this.UserPosts1 = new HashSet<UserPosts>();
         }
     
         public int Id { get; set; }
@@ -78,5 +79,7 @@ namespace MicroFacebookAPI.DataModel
         public virtual ICollection<UserFollows> UserFollows1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserPosts> UserPosts { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserPosts> UserPosts1 { get; set; }
     }
 }
