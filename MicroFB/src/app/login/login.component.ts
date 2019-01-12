@@ -1,17 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import {AuthService} from '../auth.service';
-import {User} from '../Models/user';
-import { AppRoutingModule } from '../app-routing.module';
-import { routerNgProbeToken } from '@angular/router/src/router_module';
-import { Router } from '@angular/router';
+import { Component, OnInit } from "@angular/core";
+import { AuthService } from "../auth.service";
+import { User } from "../Models/user";
+import { AppRoutingModule } from "../app-routing.module";
+import { routerNgProbeToken } from "@angular/router/src/router_module";
+import { Router } from "@angular/router";
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  selector: "app-login",
+  templateUrl: "./login.component.html",
+  styleUrls: ["./login.component.css"]
 })
 export class LoginComponent implements OnInit {
-  userModel = new User('','');
-  ErrorMessage = '';
+  userModel = new User("", "");
+  ErrorMessage = "";
+
 
   constructor(private Auth: AuthService, private router: Router) 
   {
@@ -30,7 +31,8 @@ export class LoginComponent implements OnInit {
       else
       {
         this.router.navigate(["/home"]);
+
       }
-    });
+    );
   }
 }

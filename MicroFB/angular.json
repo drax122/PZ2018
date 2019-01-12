@@ -20,6 +20,8 @@
             "tsConfig": "src/tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
+              "src/green.ico",
+              "src/red.ico",
               "src/assets"
             ],
             "styles": [
@@ -83,6 +85,8 @@
             "scripts": [],
             "assets": [
               "src/favicon.ico",
+              "src/green.ico",
+              "src/red.ico",
               "src/assets"
             ]
           }
@@ -109,7 +113,7 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "MicroFB:serve"            
+            "devServerTarget": "MicroFB:serve"
           },
           "configurations": {
             "production": {

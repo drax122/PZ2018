@@ -12,7 +12,7 @@ import { SocketService } from './DataServices/socket.service';
   providedIn: 'root'
 })
 export class AuthService {
-  
+
   get IsLogged()
   {
     return JSON.parse(localStorage.getItem("loggedIn")) || false;
@@ -29,7 +29,7 @@ export class AuthService {
     .set('client_id', "Angular")
     .set('client_secret', "smile")
 
-    return this.http.post('/api/authenticate', 
+    return this.http.post('/api/authenticate',
     body.toString(),
     {
       headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')
@@ -41,7 +41,7 @@ export class AuthService {
     localStorage.setItem('loggedIn', value.toString());
   }
   isLoggedIn():Observable<boolean>
-  {    
+  {
     if(JSON.parse(localStorage.getItem('loggedIn')))
     {
       // CHECK IF TOKEN IS VALID AND NOT EXPRIRED - IF EXPIRED REFRESH TOKEN - IF CANT REDIRECT TO LOGIN
@@ -73,7 +73,7 @@ export class AuthService {
         return of(true);
       }
     }
-    else 
+    else
     {
       this.setLoggedIn(false);
       return of(false);
@@ -92,7 +92,7 @@ export class AuthService {
 
   Register(user : UserDetails, callback)
   {
-    this.http.post('/api/users/RegisterUser', 
+    this.http.post('/api/users/RegisterUser',
     JSON.stringify(user),
     {
       headers: new HttpHeaders().set('Content-Type', 'application/json')
@@ -104,7 +104,7 @@ export class AuthService {
         callback(obj.UserDisplayName);
       },
       error =>
-      {        
+      {
         callback(error.error);
       }
     )
@@ -118,8 +118,8 @@ export class AuthService {
     .set('grant_type', "password")
     .set('client_id', "Angular")
     .set('client_secret', "smile")
-    
-    this.http.post('/api/authenticate', 
+
+    this.http.post('/api/authenticate',
     body.toString(),
     {
       headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')
@@ -136,7 +136,7 @@ export class AuthService {
         this.SocketService.Imonline(parseInt(localStorage.getItem("UserId")));
       },
       error =>
-      {        
+      {
         callback(error.error);
       }
     )
