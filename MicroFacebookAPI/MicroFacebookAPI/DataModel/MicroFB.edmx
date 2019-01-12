@@ -183,12 +183,14 @@ warning 6002: The table/view 'MicroFB.dbo.FriendsView' does not have a primary k
             <PropertyRef Name="FriendId" />
             
             
+            <PropertyRef Name="Observing" />
           </Key>
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="FriendId" Type="int" Nullable="false" />
           <Property Name="FirstName" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="LastName" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="ConversationId" Type="int" />
+          <Property Name="Observing" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'MicroFB.dbo.PostsView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -530,7 +532,8 @@ warning 6002: The table/view 'MicroFB.dbo.UsersView' does not have a primary key
     [FriendsView].[FriendId] AS [FriendId], 
     [FriendsView].[FirstName] AS [FirstName], 
     [FriendsView].[LastName] AS [LastName], 
-    [FriendsView].[ConversationId] AS [ConversationId]
+    [FriendsView].[ConversationId] AS [ConversationId], 
+    [FriendsView].[Observing] AS [Observing]
     FROM [dbo].[FriendsView] AS [FriendsView]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="PostsView" EntityType="Self.PostsView" store:Type="Views" store:Schema="dbo">
@@ -871,12 +874,14 @@ warning 6002: The table/view 'MicroFB.dbo.UsersView' does not have a primary key
           <Key>
             <PropertyRef Name="UserId" />
             <PropertyRef Name="FriendId" />
+            <PropertyRef Name="Observing" />
           </Key>
           <Property Name="UserId" Type="Int32" Nullable="false" />
           <Property Name="FriendId" Type="Int32" Nullable="false" />
           <Property Name="FirstName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="LastName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="ConversationId" Type="Int32" />
+          <Property Name="Observing" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="ConversationMessages">
           <Key>
@@ -1339,6 +1344,7 @@ warning 6002: The table/view 'MicroFB.dbo.UsersView' does not have a primary key
           <EntitySetMapping Name="FriendsView">
             <EntityTypeMapping TypeName="MicroFBModel.FriendsView">
               <MappingFragment StoreEntitySet="FriendsView">
+                <ScalarProperty Name="Observing" ColumnName="Observing" />
                 <ScalarProperty Name="ConversationId" ColumnName="ConversationId" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />

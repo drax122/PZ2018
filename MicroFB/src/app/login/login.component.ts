@@ -13,21 +13,25 @@ export class LoginComponent implements OnInit {
   userModel = new User("", "");
   ErrorMessage = "";
 
-  constructor(private Auth: AuthService, private router: Router) {}
 
-  ngOnInit() {}
+  constructor(private Auth: AuthService, private router: Router) 
+  {
+  }
 
-  logIn() {
-    this.Auth.loginUser(
-      this.userModel.username,
-      this.userModel.password,
-      message => {
-        // callback
-        if (message.error !== undefined) {
-          this.ErrorMessage = message.error_description;
-        } else {
-          this.router.navigate(["/home"]);
-        }
+  ngOnInit() {
+  }
+
+  logIn(){
+    this.Auth.loginUser(this.userModel.username,this.userModel.password, (message) =>{
+      // callback
+      if(message.error !== undefined)
+      {
+        this.ErrorMessage = message.error_description;
+      }
+      else
+      {
+        this.router.navigate(["/home"]);
+
       }
     );
   }

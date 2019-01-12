@@ -85,6 +85,29 @@ export class FriendsListService {
     }
   }
 
+  unfollowFriend(Friend:Friend, id){
+    this.UserDataService.changefollowFriend(Friend, id, false).subscribe(()=>{ // PO CALLU DO API - ZMIEN W LOKALNEJ LISCIE
+      this.changeFollowStatusInFriendList(Friend.Id, 0);
+    });
+
+  }
+  followFriend(Friend:Friend, id){
+    this.UserDataService.changefollowFriend(Friend, id, true).subscribe(()=>{ // PO CALLU DO API - ZMIEN W LOKALNEJ LISCIE
+      this.changeFollowStatusInFriendList(Friend.Id, 1);
+    });
+  }
+  changeFollowStatusInFriendList(FriendId:number, status:number){
+    this.local.filter(obj => { return obj.Id == FriendId}).forEach(obj=>{
+      if(obj.Status === 0){
+        obj.Status = 1;
+      }
+      else{
+        obj.Status = 0;
+      }
+    });
+    this.friendList.next(this.local);
+  }
+
   addFriend(Friend:Friend){
     Friend.Status = 2; // new user status to verify - if logged
     this.local.push(Friend);

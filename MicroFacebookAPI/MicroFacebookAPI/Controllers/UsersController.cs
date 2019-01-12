@@ -195,35 +195,15 @@ namespace MicroFacebookAPI.Controllers
         }
         [Authorize]
         [HttpPost]
-        [Route("api/users/unfollowfriend")]
-        public IHttpActionResult UnfollowFriend(int userId, int friendId)
+        [Route("api/users/changefollowstatus")]
+        public IHttpActionResult ChangeFollowStatus(int FriendId, int UserId, bool Follow)
         {
             try
             {
-                var friend = db.Friends.Where(x => x.UserId == userId && x.FriendId == friendId).FirstOrDefault();
+                var friend = db.Friends.Where(x => x.UserId == UserId && x.FriendId == FriendId).FirstOrDefault();
                 if (friend != null)
                 {
-                    friend.IsObserving = false;
-                    db.SaveChanges();
-                }
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return InternalServerError(ex);
-            }
-        }
-        [Authorize]
-        [HttpPost]
-        [Route("api/users/Followfriend")]
-        public IHttpActionResult FollowFriend(int userId, int friendId)
-        {
-            try
-            {
-                var friend = db.Friends.Where(x => x.UserId == userId && x.FriendId == friendId).FirstOrDefault();
-                if (friend != null)
-                {
-                    friend.IsObserving = true;
+                    friend.IsObserving = Follow;
                     db.SaveChanges();
                 }
                 return Ok();
