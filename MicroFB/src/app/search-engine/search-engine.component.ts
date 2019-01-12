@@ -13,9 +13,9 @@ export class SearchEngineComponent implements OnInit {
   SearchPhrase = "";
   SearchResults : Array<UserSearch> = [];
   constructor(
-    private UserDataService : UserDataServiceService, 
+    private UserDataService : UserDataServiceService,
     private SocketService : SocketService,
-    private router: Router 
+    private router: Router
     ) { }
 
   updateSearchString(e){
