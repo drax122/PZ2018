@@ -7,31 +7,29 @@
       <input type="submit"  name="post-submit" id="post-submit" tabindex="4" class="btn btn-info" style="margin-right: 5px;" value="SUBMIT">
     </div>
   </form>
-  </div>
+
 
   <div class="posts">
 
     <div class="post" *ngFor= "let post of BoardData">
       <div class="post-header row">
         <div class="col-sm-4">
-          <img class="post-header-avatar" src="https://dhqbrvplips7x.cloudfront.net/webchat/1.0.23/agent-e202505f.png" alt="">
+          <img class="post-header-avatar" src="https://dhqbrvplips7x.cloudfront.net/webchat/1.0.23/agent-e202505f.png" alt="" width="25px;">
         </div>
         <div class="post-header-author col-sm-4">
-          <div>{{ post.FirstName }} {{ post.LastName }}</div>
-          <div class="post-header-avatar-username">
-            {{ post.FirstName }}
-          </div>
-        </div>
-        <div class="post-header-timestamp col-sm-4">
-          {{ post.PrimaryPostDate }}
+          <div>{{ post.AuthorFirstName }} {{ post.AuthorLastName }}</div>
         </div>
       </div>
+      <div class="post-header-timestamp col-sm-4" >
+          {{ post.PostDate | date: 'yyyy-mm-dd hh:mm' }}
+        </div>
       <div class="post-content">
+        {{ post.Content }}
       </div>
 
     </div>
 
   </div>
-
+</div>
 
 
