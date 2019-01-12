@@ -1,26 +1,64 @@
-<form (submit)="RegisterUser($event)">
-    <input name="Username" type="text" placeholder="Username" [(ngModel)]="registerModel.Username"/>
-    <br/>
-  <input name="Email" type="text" placeholder="Email" [(ngModel)]="registerModel.Email"/>
-  <br/>
-  <input name="Password" type="password" placeholder="Password" [(ngModel)]="registerModel.Password"/>
-  <br/>
-  <input  name="FirstName" type="text" placeholder="FirstName" [(ngModel)]="registerModel.FirstName"/>
-  <br/>
-  <input name="LastName" type="text" placeholder="LastName" [(ngModel)]="registerModel.LastName"/>
-  <br/>
-  <input name="MiddleName" type="text" placeholder="MiddleName" [(ngModel)]="registerModel.MiddleName"/>
-  <br/>
-  <input name="City" type="text" placeholder="City" [(ngModel)]="registerModel.City"/>
-  <br/>
-  <input name="Street" type="text" placeholder="Street" [(ngModel)]="registerModel.Street"/>
-  <br/>
-  <input name="BuildingNumber" type="text" placeholder="BuildingNumber" [(ngModel)]="registerModel.BuildingNumber"/>
-  <br/>
-  <input name="Description" type="text" placeholder="Description" [(ngModel)]="registerModel.Description"/>
-  <br/>
-  <input name="PhoneNumber" type="text" placeholder="PhoneNumber" [(ngModel)]="registerModel.PhoneNumber">
-  <br/>
-  <input name="" type="submit" value="Zarejestruj"/>
-</form>
-  
+<div class="container" right="-20px" margin-right="1000px">
+  <div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <div class="panel panel-login">
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-lg-12">
+
+            <form (submit)="RegisterUser($event)" id="register-form"  method="post" role="form" #registerForm="ngForm">
+              <div class="form-group">
+                <input type="text" name="UserName" id="userName" tabindex="1" class="form-control" placeholder="User name"  #userName="ngModel" value="" [(ngModel)]="registerModel.Username" required>
+                <div [hidden]="userName.valid || userName.pristine"class="alert alert-danger"> UserName is required</div>
+              </div>
+              <div class="form-group">
+                <input type="text" name="FirstName" id="firstName" tabindex="1" class="form-control" placeholder="First name"  #firstName="ngModel" value="" [(ngModel)]="registerModel.FirstName" required>
+                <div [hidden]="firstName.valid || firstName.pristine"class="alert alert-danger"> FirstName is required</div>
+              </div>
+              <div class="form-group">
+                <input type="text" name="lastName" id="lastName" tabindex="1" class="form-control" placeholder="Last name" #lastName="ngModel" value="" [(ngModel)]="registerModel.LastName" required>
+                <div [hidden]="lastName.valid || lastName.pristine"class="alert alert-danger"> LastName is required</div>
+              </div>
+              <div class="form-group">
+                <input type="text" name="City" id="city" tabindex="1" class="form-control" placeholder="City"  #city="ngModel" value="" [(ngModel)]="registerModel.City" required>
+                <div [hidden]="city.valid || city.pristine"class="alert alert-danger"> City is required</div>
+              </div>
+              <div class="form-group">
+                <input type="text" name="Street" id="street" tabindex="1" class="form-control" placeholder="Street"  #street="ngModel" value="" [(ngModel)]="registerModel.Street" required>
+                <div [hidden]="street.valid || street.pristine"class="alert alert-danger"> Street is required</div>
+              </div>
+              <div class="form-group">
+                <input type="text" name="BuildingNumber" id="buildingNumber" tabindex="1" class="form-control" placeholder="BuildingNumber"  #buildingNumber="ngModel" value="" [(ngModel)]="registerModel.BuildingNumber" required>
+                <div [hidden]="buildingNumber.valid || buildingNumber.pristine"class="alert alert-danger"> BuildingNumber is required</div>
+              </div>
+              <div class="form-group">
+                <input type="text" name="Description" id="description" tabindex="1" class="form-control" placeholder="Description"  #description="ngModel" value="" [(ngModel)]="registerModel.Description" required>
+                <div [hidden]="description.valid || description.pristine"class="alert alert-danger"> Description is required</div>
+              </div>
+              <div class="form-group">
+                <input type="tel" name="PhoneNumber" id="phoneNumber" tabindex="1" class="form-control" placeholder="PhoneNumber"  #phone="ngModel" value="" [(ngModel)]="registerModel.PhoneNumber" required >
+                <div [hidden]="phone.valid || phone.pristine"class="alert alert-danger"> PhoneNuber is required</div>
+              </div>
+              <div class="form-group">
+                <input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="Email Address" #email="ngModel" value="" [(ngModel)]="registerModel.Email" required email>
+                <div [hidden]="email.valid || email.pristine"class="alert alert-danger"> Email is wrong</div>
+              </div>
+              <div class="form-group">
+                <input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Password" #password="ngModel" [(ngModel)]="registerModel.Password" required>
+                <div [hidden]="password.valid || password.pristine"class="alert alert-danger"> Password is required</div>
+              </div>
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-sm-6 col-sm-offset-3">
+                    <input type="submit" [disabled]="!registerForm.valid" name="register-submit" id="register-submit" tabindex="4" class="form-control btn btn-info" value="Register Now">
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule }   from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { RegisterComponent } from './register/register.component';
@@ -14,6 +14,7 @@ import { AuthGuard } from './auth.guard';
 import { InterceptorService } from './interceptor.service';
 import { SocketService } from './DataServices/socket.service';
 import { WebsocketService } from './websocket.service';
+import { LayoutComponent } from './layout/layout.component';
 
 
 @NgModule({
@@ -22,6 +23,7 @@ import { WebsocketService } from './websocket.service';
     RegisterComponent,
     LoginComponent,
     HomeComponent,
+    LayoutComponent,
   ],
   imports: [
     BrowserModule,
@@ -29,12 +31,12 @@ import { WebsocketService } from './websocket.service';
     AppRoutingModule,
     HttpClientModule
   ],
-  providers: 
+  providers:
   [
-    AuthService, 
+    AuthService,
     SocketService,
     WebsocketService,
-    AuthGuard, 
+    AuthGuard,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: InterceptorService,
