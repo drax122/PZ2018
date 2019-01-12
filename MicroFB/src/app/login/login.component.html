@@ -1,7 +1,31 @@
-<form #loginForm="ngForm" (ngSubmit)="logIn()">
-<input id="email" name="email" type="text" placeholder="Login" [(ngModel)]="userModel.username"/>
-<input id="password" name="pwd" type="password" placeholder="Password" [(ngModel)]="userModel.password">
-<input type="submit" value="Zaloguj">
-</form>
-<br/>
-{{ErrorMessage}}
+<div class="container" margin-top="40px;">
+  <div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <div class="panel panel-login">
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-lg-12">
+            <form id="login-form"  #loginForm="ngForm" (ngSubmit)="logIn()"  style="display: block;" #loginForm="ngForm">
+              <div class="form-group">
+                <input type="text" name="userName2" id="userName2" tabindex="1" class="form-control" placeholder="UserName" value="" #userName2="ngModel" [(ngModel)]="userModel.username" required >
+                <div [hidden]="userName2.valid || userName2.pristine"class="alert alert-danger"> UserName is required</div>
+              </div>
+              <div class="form-group">
+                <input type="password" name="password2" id="password2" tabindex="2" class="form-control" placeholder="Password" #password2="ngModel" [(ngModel)]="userModel.password" required>
+                <div [hidden]="password2.valid || password2.pristine"class="alert alert-danger"> Password is required</div>
+              </div>
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-sm-6 col-sm-offset-3">
+                    <input type="submit" [disabled]="!loginForm.valid" name="login-submit" id="login-submit" tabindex="4" class="form-control btn btn-success" value="Log In">
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

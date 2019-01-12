@@ -12,16 +12,20 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
   userModel = new User('','');
   ErrorMessage = '';
+
+  constructor(private data: DataProviderService, private Auth: AuthService, private router: Router)
+
   constructor(private Auth: AuthService, private router: Router) 
+
   {
   }
 
   ngOnInit() {
   }
 
-  logIn(){    
+  logIn(){
     this.Auth.loginUser(this.userModel.username,this.userModel.password, (message) =>{
-      // callback 
+      // callback
       if(message.error !== undefined)
       {
         this.ErrorMessage = message.error_description;
