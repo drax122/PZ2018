@@ -56,11 +56,14 @@ export class PostsComponent implements OnInit {
       this.FriendsList = fl;
     });
     this.socketService.Posts.subscribe(data => {
+      data = JSON.parse(data);
       if(data.UserId){
       var control = this.FriendsList.filter(obj=> {return obj.Id === data.UserId});
         if(control.length > 0 ){
           var friend = control.pop();
-          if(friend.Observing === 1){ // Jeśli go obserwuję pobierz post jego nowy post :)
+          console.dir(friend);
+          if(friend.Observing === true){ // Jeśli go obserwuję pobierz post jego nowy post :)
+            console.log("test");
             this.getPost(data.PostId);
           }
         }

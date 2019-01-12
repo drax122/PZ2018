@@ -4,7 +4,7 @@ export class Friend {
     public FirstName: string;
     public LastName: string;
     public Status: number; // 0 - OFFLINE, 1 - ONLINE
-    public Observing : number;
+    public Observing : boolean;
     constructor(obj : any)
     {
         this.Id = obj.FriendId;
