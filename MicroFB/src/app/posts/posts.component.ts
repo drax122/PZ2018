@@ -13,11 +13,12 @@ import { Friend } from '../Models/friend';
 export class PostsComponent implements OnInit {
   FriendsList : Array<Friend> = [];
   BoardData : Array<Post> = []; // Tutaj przechowywane są posty z mojej lub aktualnie przeglądanego użytkownika tablicy!
-  
+  postModel = new Post(new Object());
+
   constructor(
-    private postsService : PostsService, 
+    private postsService : PostsService,
     private socketService : SocketService,
-    private FriendsListService : FriendsListService) 
+    private FriendsListService : FriendsListService)
   {
     // LOAD POSTS
     this.postsService.getUserBoard(this.getUserId).subscribe(data=>{
@@ -32,7 +33,7 @@ export class PostsComponent implements OnInit {
     var post = new Post({});
     post.AuthorId = this.getUserId;
     post.Content = msg;
-    
+
     this.postsService.savePost(post).subscribe(PostId => {
         this.getPost(PostId);
         post.Id = parseInt(JSON.stringify(PostId));
