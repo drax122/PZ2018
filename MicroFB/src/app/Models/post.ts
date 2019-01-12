@@ -1,3 +1,4 @@
+import {Like} from './like'
 export class Post {
     public Id: number; // PostId
     public AuthorId: number; // UserId
@@ -10,7 +11,7 @@ export class Post {
     public PrimaryPostAuthorFirstName: string;
     public PrimaryPostAuthorLastName: string;
     public PrimaryPostDate: string;
-
+    public Likes: Array<Like>;
 
     public Content: string; 
 
@@ -28,5 +29,10 @@ export class Post {
         this.PrimaryPostAuthorLastName = obj.PrimaryPostAuthorLastName;
         this.PrimaryPostDate = obj.PrimaryPostDate;
         this.PostDate = obj.PostDate;
+        if(obj.Likes){
+            var z = JSON.stringify(obj.Likes);
+            var j = JSON.parse(z);
+            this.Likes = j.map((objz:any) => new Like(objz));
+        }
     }
 }

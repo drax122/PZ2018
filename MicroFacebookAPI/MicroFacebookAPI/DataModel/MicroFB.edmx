@@ -60,6 +60,14 @@
           <Property Name="Type" Type="int" Nullable="false" />
           <Property Name="Description" Type="varchar(max)" Nullable="false" />
         </EntityType>
+        <EntityType Name="PostsLikes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="PostId" Type="int" />
+        </EntityType>
         <EntityType Name="UserConversations">
           <Key>
             <PropertyRef Name="Id" />
@@ -191,6 +199,21 @@ warning 6002: The table/view 'MicroFB.dbo.FriendsView' does not have a primary k
           <Property Name="LastName" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="ConversationId" Type="int" />
           <Property Name="Observing" Type="bit" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'MicroFB.dbo.LikesView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="LikesView">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="FirstName" />
+            <PropertyRef Name="LastName" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="PostId" Type="int" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="LastName" Type="varchar" MaxLength="255" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'MicroFB.dbo.PostsView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -408,6 +431,30 @@ warning 6002: The table/view 'MicroFB.dbo.UsersView' does not have a primary key
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__PostsLike__PostI__76969D2E">
+          <End Role="UserPosts" Type="Self.UserPosts" Multiplicity="0..1" />
+          <End Role="PostsLikes" Type="Self.PostsLikes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserPosts">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PostsLikes">
+              <PropertyRef Name="PostId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PostsLike__UserI__75A278F5">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="PostsLikes" Type="Self.PostsLikes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PostsLikes">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__UserConve__Frien__3C69FB99">
           <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
           <End Role="UserConversations" Type="Self.UserConversations" Multiplicity="*" />
@@ -499,6 +546,7 @@ warning 6002: The table/view 'MicroFB.dbo.UsersView' does not have a primary key
           <EntitySet Name="Groups" EntityType="Self.Groups" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GroupUsers" EntityType="Self.GroupUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Notifications" EntityType="Self.Notifications" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PostsLikes" EntityType="Self.PostsLikes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserConversations" EntityType="Self.UserConversations" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserFollows" EntityType="Self.UserFollows" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserPosts" EntityType="Self.UserPosts" Schema="dbo" store:Type="Tables" />
@@ -535,6 +583,15 @@ warning 6002: The table/view 'MicroFB.dbo.UsersView' does not have a primary key
     [FriendsView].[ConversationId] AS [ConversationId], 
     [FriendsView].[Observing] AS [Observing]
     FROM [dbo].[FriendsView] AS [FriendsView]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="LikesView" EntityType="Self.LikesView" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [LikesView].[Id] AS [Id], 
+    [LikesView].[PostId] AS [PostId], 
+    [LikesView].[UserId] AS [UserId], 
+    [LikesView].[FirstName] AS [FirstName], 
+    [LikesView].[LastName] AS [LastName]
+    FROM [dbo].[LikesView] AS [LikesView]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="PostsView" EntityType="Self.PostsView" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -625,6 +682,14 @@ warning 6002: The table/view 'MicroFB.dbo.UsersView' does not have a primary key
             <End Role="Users" EntitySet="Users" />
             <End Role="Notifications" EntitySet="Notifications" />
           </AssociationSet>
+          <AssociationSet Name="FK__PostsLike__PostI__76969D2E" Association="Self.FK__PostsLike__PostI__76969D2E">
+            <End Role="UserPosts" EntitySet="UserPosts" />
+            <End Role="PostsLikes" EntitySet="PostsLikes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PostsLike__UserI__75A278F5" Association="Self.FK__PostsLike__UserI__75A278F5">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="PostsLikes" EntitySet="PostsLikes" />
+          </AssociationSet>
           <AssociationSet Name="FK__UserConve__Frien__3C69FB99" Association="Self.FK__UserConve__Frien__3C69FB99">
             <End Role="Users" EntitySet="Users" />
             <End Role="UserConversations" EntitySet="UserConversations" />
@@ -691,6 +756,7 @@ warning 6002: The table/view 'MicroFB.dbo.UsersView' does not have a primary key
           <NavigationProperty Name="UserFollows1" Relationship="MicroFBModel.FK__UserFollo__UserI__35BCFE0A" FromRole="Users" ToRole="UserFollows" />
           <NavigationProperty Name="UserPosts" Relationship="MicroFBModel.FK__UserPosts__Autho__6EF57B66" FromRole="Users" ToRole="UserPosts" />
           <NavigationProperty Name="UserPosts1" Relationship="MicroFBModel.FK__UserPosts__Targe__70DDC3D8" FromRole="Users" ToRole="UserPosts" />
+          <NavigationProperty Name="PostsLikes" Relationship="MicroFBModel.FK__PostsLike__UserI__75A278F5" FromRole="Users" ToRole="PostsLikes" />
           </EntityType>
         <EntityContainer Name="MicroFBEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Users" EntityType="Self.Users" />
@@ -794,6 +860,16 @@ warning 6002: The table/view 'MicroFB.dbo.UsersView' does not have a primary key
           <AssociationSet Name="FK__UserPosts__Targe__70DDC3D8" Association="MicroFBModel.FK__UserPosts__Targe__70DDC3D8">
             <End Role="Users" EntitySet="Users" />
             <End Role="UserPosts" EntitySet="UserPosts" />
+          </AssociationSet>
+          <EntitySet Name="LikesView" EntityType="MicroFBModel.LikesView" />
+          <EntitySet Name="PostsLikes" EntityType="MicroFBModel.PostsLikes" />
+          <AssociationSet Name="FK__PostsLike__PostI__76969D2E" Association="MicroFBModel.FK__PostsLike__PostI__76969D2E">
+            <End Role="UserPosts" EntitySet="UserPosts" />
+            <End Role="PostsLikes" EntitySet="PostsLikes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PostsLike__UserI__75A278F5" Association="MicroFBModel.FK__PostsLike__UserI__75A278F5">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="PostsLikes" EntitySet="PostsLikes" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Friends">
@@ -1242,6 +1318,7 @@ warning 6002: The table/view 'MicroFB.dbo.UsersView' does not have a primary key
           <NavigationProperty Name="UserPosts1" Relationship="MicroFBModel.FK__UserPosts__Prima__6FE99F9F" FromRole="UserPosts" ToRole="UserPosts1" />
           <NavigationProperty Name="UserPosts2" Relationship="MicroFBModel.FK__UserPosts__Prima__6FE99F9F" FromRole="UserPosts1" ToRole="UserPosts" />
           <NavigationProperty Name="Users1" Relationship="MicroFBModel.FK__UserPosts__Targe__70DDC3D8" FromRole="UserPosts" ToRole="Users" />
+          <NavigationProperty Name="PostsLikes" Relationship="MicroFBModel.FK__PostsLike__PostI__76969D2E" FromRole="UserPosts" ToRole="PostsLikes" />
         </EntityType>
         <Association Name="FK__UserPosts__Autho__6EF57B66">
           <End Type="MicroFBModel.Users" Role="Users" Multiplicity="1" />
@@ -1276,6 +1353,53 @@ warning 6002: The table/view 'MicroFB.dbo.UsersView' does not have a primary key
             </Principal>
             <Dependent Role="UserPosts">
               <PropertyRef Name="TargetUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="LikesView">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="FirstName" />
+            <PropertyRef Name="LastName" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="PostId" Type="Int32" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="PostsLikes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="PostId" Type="Int32" />
+          <NavigationProperty Name="UserPosts" Relationship="MicroFBModel.FK__PostsLike__PostI__76969D2E" FromRole="PostsLikes" ToRole="UserPosts" />
+          <NavigationProperty Name="Users" Relationship="MicroFBModel.FK__PostsLike__UserI__75A278F5" FromRole="PostsLikes" ToRole="Users" />
+        </EntityType>
+        <Association Name="FK__PostsLike__PostI__76969D2E">
+          <End Type="MicroFBModel.UserPosts" Role="UserPosts" Multiplicity="0..1" />
+          <End Type="MicroFBModel.PostsLikes" Role="PostsLikes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserPosts">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PostsLikes">
+              <PropertyRef Name="PostId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PostsLike__UserI__75A278F5">
+          <End Type="MicroFBModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="MicroFBModel.PostsLikes" Role="PostsLikes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PostsLikes">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1501,6 +1625,26 @@ warning 6002: The table/view 'MicroFB.dbo.UsersView' does not have a primary key
                 <ScalarProperty Name="TargetUserId" ColumnName="TargetUserId" />
                 <ScalarProperty Name="Content" ColumnName="Content" />
                 <ScalarProperty Name="AuthorId" ColumnName="AuthorId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LikesView">
+            <EntityTypeMapping TypeName="MicroFBModel.LikesView">
+              <MappingFragment StoreEntitySet="LikesView">
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="PostId" ColumnName="PostId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PostsLikes">
+            <EntityTypeMapping TypeName="MicroFBModel.PostsLikes">
+              <MappingFragment StoreEntitySet="PostsLikes">
+                <ScalarProperty Name="PostId" ColumnName="PostId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

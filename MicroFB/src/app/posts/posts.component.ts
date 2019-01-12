@@ -4,6 +4,7 @@ import { SocketService } from '../DataServices/socket.service';
 import { Post } from '../Models/post';
 import { FriendsListService } from '../DataServices/friends-list.service';
 import { Friend } from '../Models/friend';
+import { Like } from '../Models/like';
 
 @Component({
   selector: 'app-posts',
@@ -46,9 +47,25 @@ export class PostsComponent implements OnInit {
       this.BoardData.push(post);
     })
   }
-
   get getUserId(){
     return parseInt(localStorage.getItem("UserId"));
+  }
+
+  likePost(postId){
+    this.postsService.likePost(postId, this.getUserId).subscribe(((x: Like)=>{
+        this.BoardData.filter(obj => {return obj.Id === x.PostId } ).forEach(o => {
+          o.Likes.push(x);
+          // SEND SOCKET SERVER INFO ABOUT LIKE TO OTHER PPL
+          // SEND NOTIFICATION TO AUTHOR
+        });
+    }));
+  }
+  unlikePost(postId){
+    var like = this.BoardData.find(x=> x.Id === postId).Likes.find(z=> z.UserId == this.getUserId); // Znajdz mojego lajka
+    this.postsService.unlikePost(like.Id).subscribe(()=>{
+      let x = this.BoardData.find(x=> x.Id === postId);
+      x.Likes.filter(x=> {return x.Id !== like.Id }); // usuń z lokalnej listy
+    });
   }
 
   ngOnInit() {

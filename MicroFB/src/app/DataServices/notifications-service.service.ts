@@ -11,4 +11,9 @@ export class NotificationsServiceService {
   getUserNotifications(Id){
     return this.http.get("/api/notifications/getusernotifications/"+Id);
   }
+
+  sendNotification(not:Notification){
+    
+  }
+
 }

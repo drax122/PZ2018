@@ -5,12 +5,14 @@ import {Invitation } from '../Models/Invitation';
 import { Post } from '../Models/post';
 import { HomeComponent } from '../home/home.component';
 import { SocketService } from './socket.service';
+import { Like } from '../Models/like';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class PostsService {
+  
   constructor(private http: HttpClient, private socketService: SocketService) { }
 
   getUserBoard(Id) : Observable<Post[]>{
@@ -35,6 +37,24 @@ export class PostsService {
       params: {
         "UserId" : UserId,
         "PostId" : PostId
+      }
+    });
+  }
+  likePost(postId: any, getUserId: number): Observable<Like> {
+    return this.http.post("/api/posts/likepost", null, { // Zwraca ID nowego posta, o któym warto powiadomić znajomych
+      headers: new HttpHeaders().set('Content-Type', 'application/json'),
+      params: {
+        "UserId" : JSON.stringify(postId),
+        "PostId" : JSON.stringify(getUserId)
+      }
+    }).map((x:any) => new Like(x));
+  }
+  unlikePost(likeId){
+    return this.http.post("/api/posts/savepost", null, 
+    {
+      headers: new HttpHeaders().set('Content-Type', 'application/json'),
+      params: {
+        "LikeId" : likeId,
       }
     });
   }

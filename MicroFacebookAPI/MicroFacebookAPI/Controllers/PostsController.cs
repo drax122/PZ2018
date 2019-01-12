@@ -25,6 +25,8 @@ namespace MicroFacebookAPI.Controllers
         {
             // Pobieram posty moje / wpisane na moją tablicę / posty znajomych / posty udostępnione przeze mnie
             var post = db.PostsView.Where(x => x.Id == postId).FirstOrDefault();
+            var likes = db.LikesView.Where(x => x.PostId == post.Id).ToList();
+            post.Likes = likes;
             return Json(post);
         }
         
@@ -37,7 +39,10 @@ namespace MicroFacebookAPI.Controllers
             // Pobieram posty moje / wpisane na moją tablicę / posty znajomych / posty udostępnione przeze mnie
             var observedFriendsIds = db.Friends.Where(x => x.UserId == UserId && x.IsObserving).Select(z => z.FriendId);
             var board = db.PostsView.Where(x => (x.AuthorId == UserId || observedFriendsIds.Contains(x.AuthorId)) || x.TargetUserId == UserId).ToList();
-
+            foreach(var i in board)
+            {
+                i.Likes = db.LikesView.Where(x => x.PostId == i.Id).ToList();
+            }
             board = board.OrderByDescending(x => x.PostDate).ToList();
 
             return Json(board);
@@ -48,7 +53,11 @@ namespace MicroFacebookAPI.Controllers
         [Route("api/posts/getuserboard/{UserId}")]
         public IHttpActionResult GetUserBoard(int UserId)
         {
-            var board = db.PostsView.Where(x => x.AuthorId == UserId);
+            var board = db.PostsView.Where(x => x.AuthorId == UserId || x.TargetUserId == UserId);
+            foreach (var i in board)
+            {
+                i.Likes = db.LikesView.Where(x => x.PostId == i.Id).ToList();
+            }
             return Json(board);
         }
         #endregion
@@ -100,6 +109,38 @@ namespace MicroFacebookAPI.Controllers
             {
                 return InternalServerError(ex);
             }
+        }
+
+        [Authorize]
+        [HttpPost]
+        [Route("api/posts/likepost")]
+        public IHttpActionResult LikePost(int UserId, int PostId)
+        {
+            try
+            {
+                var like = new PostsLikes{
+                    PostId = PostId,
+                    UserId = UserId
+                };
+                db.PostsLikes.Add(like);
+                db.SaveChanges();
+                var res = db.LikesView.Where(x => x.Id == like.Id).FirstOrDefault();
+                return Json(res);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+        public IHttpActionResult UnlikePost(int LikeId)
+        {
+            var like = db.PostsLikes.Where(x => x.Id == LikeId).FirstOrDefault();
+            if(like != null)
+            {
+                db.PostsLikes.Remove(like);
+                db.SaveChanges();
+            }
+            return Ok();
         }
         #endregion
     }

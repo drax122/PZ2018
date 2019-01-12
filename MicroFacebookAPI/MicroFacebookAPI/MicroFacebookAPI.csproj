@@ -241,6 +241,9 @@
     <Compile Include="DataModel\GroupUsers.cs">
       <DependentUpon>MicroFB.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataModel\LikesView.cs">
+      <DependentUpon>MicroFB.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataModel\MicroFB.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -257,6 +260,10 @@
       <DependentUpon>MicroFB.edmx</DependentUpon>
     </Compile>
     <Compile Include="DataModel\Notifications.cs">
+      <DependentUpon>MicroFB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\PartialPostView.cs" />
+    <Compile Include="DataModel\PostsLikes.cs">
       <DependentUpon>MicroFB.tt</DependentUpon>
     </Compile>
     <Compile Include="DataModel\PostsView.cs">
