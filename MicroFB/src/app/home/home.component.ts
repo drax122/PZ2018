@@ -98,5 +98,8 @@ export class HomeComponent implements OnInit {
   ngOnInit()
   {
      this.SocketService.Imonline(parseInt(localStorage.getItem("UserId")));
+     
+
+
   }
 }

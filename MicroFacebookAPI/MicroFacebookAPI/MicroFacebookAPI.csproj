@@ -262,6 +262,9 @@
     <Compile Include="DataModel\Notifications.cs">
       <DependentUpon>MicroFB.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataModel\NotificationsView.cs">
+      <DependentUpon>MicroFB.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataModel\PartialPostView.cs" />
     <Compile Include="DataModel\PostsLikes.cs">
       <DependentUpon>MicroFB.tt</DependentUpon>

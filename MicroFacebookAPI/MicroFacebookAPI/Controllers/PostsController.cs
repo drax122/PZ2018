@@ -132,6 +132,9 @@ namespace MicroFacebookAPI.Controllers
                 return InternalServerError(ex);
             }
         }
+        [Authorize]
+        [HttpPost]
+        [Route("api/posts/unlikepost")]
         public IHttpActionResult UnlikePost(int LikeId)
         {
             var like = db.PostsLikes.Where(x => x.Id == LikeId).FirstOrDefault();
