@@ -44,7 +44,6 @@ export class PostsComponent implements OnInit {
 
   getPost(PostId){
     this.postsService.getPost(PostId).subscribe(post=>{
-      console.log("GOT NEW POST FROM DB BC SOCKET INFORMED ME OF IT AND IM OBSERVIN THIS USER");
       this.BoardData.push(post);
     })
   }

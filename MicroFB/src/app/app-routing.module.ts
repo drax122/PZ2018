@@ -6,6 +6,7 @@ import { HomeComponent } from './home/home.component';
 import { AuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { MessagesComponent } from './messages/messages.component';
 
 const routes: Routes = 
 [
@@ -31,6 +32,11 @@ const routes: Routes =
     path: 'profile/:id',
     component: UserProfileComponent,
     canActivate : [AuthGuard]
+  },
+  {
+    path: 'messages/:id',
+    component: MessagesComponent,
+    canActivate: [AuthGuard]
   }
 ];
 

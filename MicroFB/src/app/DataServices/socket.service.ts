@@ -35,6 +35,8 @@ export class SocketService {
     });
   }
 
+  
+
   SendNewPost(Post:Post){
     this.Posts.next({"PostId": Post.Id, "UserId": Post.AuthorId});
   }

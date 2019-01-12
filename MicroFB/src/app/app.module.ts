@@ -19,8 +19,7 @@ import { FriendsListComponent } from './friends-list/friends-list.component';
 import { SearchEngineComponent } from './search-engine/search-engine.component';
 import { PostsComponent } from './posts/posts.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
-
-
+import { MessagesComponent } from './messages/messages.component';
 
 @NgModule({
   declarations: [
@@ -28,13 +27,12 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
     RegisterComponent,
     LoginComponent,
     HomeComponent,
-
     LayoutComponent,
-
     FriendsListComponent,
     SearchEngineComponent,
     PostsComponent,
     UserProfileComponent,
+    MessagesComponent,
 
   ],
   imports: [

@@ -86,5 +86,18 @@ Invitations(): Rx.Subject<MessageEvent>{
   return Rx.Subject.create(observer, observable);
 }
 
+Posts(): Rx.Subject<MessageEvent>{
+  let observable = new Observable(observer => {
+      this.socket.on('NewPost', (data) =>{
+      observer.next(data);
+    })
+  });
+  let observer = {
+    next: (data: Object) => {
+      this.socket.emit('SendPost', JSON.stringify(data));
+    },
+  };
+  return Rx.Subject.create(observer, observable);
+}
   
 }

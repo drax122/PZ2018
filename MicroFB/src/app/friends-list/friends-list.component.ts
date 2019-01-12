@@ -42,10 +42,12 @@ export class FriendsListComponent implements OnInit {
   }
 
   follow(Friend:Friend){
-    this.FriendsListService.followFriend();
+    const id = localStorage.getItem("UserId");
+    this.FriendsListService.followFriend(Friend, id);
   }
   unfollow(Friend: Friend){
-    this.FriendsListService.unfollowFriend();
+    const id = localStorage.getItem("UserId");
+    this.FriendsListService.unfollowFriend(Friend, id);
   }
 
   trackStatusByUserIdAndStatus(index:number, friend:Friend): number{
