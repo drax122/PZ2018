@@ -25,8 +25,6 @@ export class PostsComponent implements OnInit {
       console.log("BOARD LOADED:");
       console.dir(this.BoardData);
     });
-    // TO DO
-    // SOCKETY Z NOWYMI POSTAMI ZNAJOMYCH/MOIMI I ICH POBIERANIEM
 
   }
 

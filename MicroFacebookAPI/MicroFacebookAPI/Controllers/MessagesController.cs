@@ -32,7 +32,8 @@ namespace MicroFacebookAPI.Controllers
         public IHttpActionResult SavePost([FromBody]ConversationMessages m)
         {
             try
-            {                
+            {
+                m.Date = DateTime.Now;
                 db.ConversationMessages.Add(m);
 
                 var conv = db.UserConversations.Where(x => x.Id == m.ConversationId).FirstOrDefault();
