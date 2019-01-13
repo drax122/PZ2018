@@ -1,6 +1,6 @@
 <form class="form-inline my-2 my-lg-0 search" >
     <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" [value]="SearchPhrase" (input)="updateSearchString($event)">
     <div class="results" *ngIf="SearchResults.length!=0">
-        <p *ngFor="let s of SearchResults">{{s.FirstName}}</p>
+        <p *ngFor="let s of SearchResults" (click)="navigateTo(s.Id)">{{s.FirstName}}</p>
       </div>
   </form>

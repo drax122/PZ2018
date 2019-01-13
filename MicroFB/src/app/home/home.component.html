@@ -1,10 +1,27 @@
 <div *ngIf="LoggedIn">
 
     <br/>
-    <button (click)="acceptInvitation()">Zaakceptuj zaproszenie</button>
+    <div class="posts">
+      <h6>INVITATIONS</h6>
+      <div class="post"  *ngFor= "let inv of Invitations">
+        <div class="post-header row">
+
+          <div class="post-header-author col-sm-4">
+            <div>{{ inv.FirstName}} {{ inv.LastName }}</div>
+          </div>
+
+        </div>
+
+        <div class="post-controls">
+
+          <button  type="button"  (click)="acceptInvitation(inv.Id, true)"  class="btn btn-info"  style="margin-right: 5px;">ACCEPT</button>
+
+        </div>
+      </div>
+
+    </div>
 
     <app-posts #board></app-posts>
-    <app-messages></app-messages>
 
     <app-friends-list #friendsList></app-friends-list>
 </div>
