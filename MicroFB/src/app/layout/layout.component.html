@@ -10,25 +10,12 @@
           <a class="navbar-brand" href="/">MicroFB</a>
         </div>
         <div *ngIf="LoggedIn">
+        <app-search-engine></app-search-engine></div>
+        <div *ngIf="LoggedIn">
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
               <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Posts</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">User</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Invites</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Find friends</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Messenger</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" (click)="logout()" >Logout</a>
@@ -36,8 +23,6 @@
           </ul>
         </div>
 </div>
-
-  <app-search-engine></app-search-engine>
 
       </div>
     </nav>
