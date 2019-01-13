@@ -16,8 +16,12 @@
       </div>
     </div>
   </div>
-  <button (click)="invite()">INVITE</button>
+  <div *ngIf="_IsFriend===false">
+  <button (click)="invite()">INVITE</button></div>
   </div>
+  Jest kumpel : {{_IsFriend}}
+<div *ngIf="_IsFriend===false"> TROLOLO </div>
+
 
 
 

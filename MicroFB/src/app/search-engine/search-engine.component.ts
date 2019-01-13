@@ -38,6 +38,10 @@ export class SearchEngineComponent implements OnInit {
     this.router.navigate(['/profile', User.Id]);
   }
 
+  navigateTo(Id: number){
+    this.router.navigate(['/profile', Id]);
+  }
+
   inviteUser(TargetUserId){
     this.UserDataService.inviteUser(JSON.parse(localStorage.getItem("UserId")),TargetUserId).subscribe(
       (data) => {

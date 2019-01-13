@@ -17,7 +17,7 @@ export class LayoutComponent  {
   {
     this.SocketService.Logout(parseInt(localStorage.getItem("UserId")));
     this.Auth.logOut();
-    this.router.navigate(['']);
+    this.router.navigate(['/']);
   }
   ngOnInit() {
   }
