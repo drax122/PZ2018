@@ -17,12 +17,12 @@ const routes: Routes =
   {
     path: 'home',
     component: HomeComponent,
-    canActivate : [AuthGuard]
+    //canActivate : [AuthGuard]
   },
   {
     path: '',
     component: HomeComponent,
-    canActivate : [AuthGuard]
+    //canActivate : [AuthGuard]
   },
   {
     path: 'login',
@@ -42,7 +42,7 @@ const routes: Routes =
 
 @NgModule({
   imports: [   
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes, {useHash:false})
   ],
   providers: [AuthService, AuthGuard],
   exports: [RouterModule]

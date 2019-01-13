@@ -25,7 +25,6 @@ export class UserProfileComponent implements OnInit {
     private postsService: PostsService)
   {
     this.friendslistService.FriendList.subscribe(x=>{
-      console.log(x.length);
       var control = x.filter(obj => {return obj.Id == this.getUserId});
       if(control.length === 1){
         this._IsFriend = true;

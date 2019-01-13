@@ -41,7 +41,7 @@ export class HomeComponent implements OnInit {
   {
     this.SocketService.Logout(parseInt(localStorage.getItem("UserId")));
     this.auth.logOut();
-    this.router.navigate(['']);
+    this.router.navigateByUrl('/home');
   }
   getUserData()
   {
