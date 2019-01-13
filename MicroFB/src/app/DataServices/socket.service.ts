@@ -62,7 +62,7 @@ export class SocketService {
     this.Posts.next({"PostId": Post.Id, "UserId": Post.AuthorId});
   }
 
-  AcceptInvitation(Invitation){
+  AcceptInvitation(Invitation:Invitation){
     this.Invitations.next(Invitation);
   }
   SendInv(Inv:Invitation){

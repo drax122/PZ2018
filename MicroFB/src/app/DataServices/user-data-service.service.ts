@@ -31,7 +31,7 @@ export class UserDataServiceService {
     return this.http.get<Array<UserSearch>>('/api/users/search',
      {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
-      params: { phrase : searchphrase }
+      params: { phrase : JSON.stringify(searchphrase) }
      },
      ).map((entrise:UserSearch[])=> entrise.map(e=> new UserSearch(e)));
   }

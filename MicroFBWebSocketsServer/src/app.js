@@ -2,18 +2,21 @@ const app = require('express')();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
-let onlineUsers = [];
-
-
+var onlineUsers = [];
 
 io.on("connection", socket => {
     socket.on("AcceptInv", data =>{
         // WYSLIJ INFO DO ODP KLIENTA ZE ZAPROSZENIE ZOSTALO ZAAKCEPTOWANE
-        var sock = onlineUsers.filter(obj => {
-            return obj.UserId === data.UserId;
-        }).forEach(s=>{
-            io.to(s.socketID).emit("AcceptedInvitation", data.TargetPersonId);
+        //console.log(data.);
+        console.log("ACCEPT INVITATION");
+        console.log("Send information to : " + data.UserId);
+        onlineUsers.filter(x=> {return x.UserId === data.UserId}).forEach(e=>{
+            socket.to(e.socketID).emit("AcceptedInvitation", data);
         });
+            //{
+             //   console.log("EMITTING DATA TO:" + s.UserId);
+              //  io.to(s.socketID).emit("AcceptedInvitation", data);
+            //});
     });
     socket.on("IMIN", UserId =>{
         onlineUsers.push({ "socketID" : socket.id, "UserId" : UserId});

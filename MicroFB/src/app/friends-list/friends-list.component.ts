@@ -58,7 +58,9 @@ export class FriendsListComponent implements OnInit {
     });
     // NASLUCHUJ NOWEGO ZIOMA
     this.SocketService.Invitations.subscribe((x:Invitation)=>{ // Odebrałem info, że ktoś zaakceptował moje zaproszenie
+      console.log("RECEIVED" + x);
       this.UserDataService.getFriend(x.TargetPersonId).subscribe((fr:Friend) =>{
+
         this.FriendsListService.addFriend(fr);
       });
    });

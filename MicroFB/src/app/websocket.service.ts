@@ -80,7 +80,7 @@ Invitations(): Rx.Subject<MessageEvent>{
   });
   let observer = {
     next: (data: Object) => {
-      this.socket.emit('AcceptInv', JSON.stringify(data));
+      this.socket.emit('AcceptInv', data);
     },
   };
   return Rx.Subject.create(observer, observable);

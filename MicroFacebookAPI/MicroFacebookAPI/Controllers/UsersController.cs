@@ -10,6 +10,7 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using MicroFacebookAPI.DataManager;
 using MicroFacebookAPI.DataModel;
+using Newtonsoft.Json;
 
 namespace MicroFacebookAPI.Controllers
 {
@@ -53,7 +54,8 @@ namespace MicroFacebookAPI.Controllers
         [Route("api/users/search")]
         public IHttpActionResult Search(string phrase)
         {
-            var users = db.Users.Where(x=> 
+            phrase = JsonConvert.DeserializeObject<string>(phrase);
+            var users = db.UsersView.Where(x=> 
                    x.FirstName.Contains(phrase)
                 || x.LastName.Contains(phrase)
                 || x.MiddleName.Contains(phrase)

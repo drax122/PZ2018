@@ -79,8 +79,9 @@ export class HomeComponent implements OnInit {
   acceptInvitation(InvitationId, accept){ // accept - "True" or "False" jako string lub obiekt js
     // Znajdź zaproszenie po Id
     accept=true;
-    InvitationId=this.Invitations.pop().Id;
+    InvitationId = 25;
     var Inv = this.Invitations.find(obj=> obj.Id === InvitationId);
+    console.dir(Inv);
     // Wyślij info do serwera, zapisz do bazy - przy zwrotce poinformuj socket server, że drugi typ, o ile jest online musi dodać do listy nowego ziomka :x
     this.UserDataService.acceptInvitation(Inv.Id, accept).subscribe(()=>{
       if(accept === true){
@@ -97,6 +98,8 @@ export class HomeComponent implements OnInit {
   {
      this.SocketService.Imonline(parseInt(localStorage.getItem("UserId")));
      this.SocketService.SendInvitation.subscribe((x:Invitation) =>{
+        console.log("GOT NEW INV ");
+        console.dir(x);
         this.Invitations.push(x);
      });
   }
