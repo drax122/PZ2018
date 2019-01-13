@@ -14,7 +14,7 @@ import { SocketService } from '../DataServices/socket.service';
 export class MessagesComponent implements OnInit {
   Messages: Array<Message> = [];
   messagerModel = new Message(new Object());
-
+  
   constructor(private messgesService : MessagesServiceService,  private route : ActivatedRoute, private SocketService : SocketService)
   {
 

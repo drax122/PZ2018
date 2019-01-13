@@ -98,8 +98,6 @@ export class HomeComponent implements OnInit {
   {
      this.SocketService.Imonline(parseInt(localStorage.getItem("UserId")));
      this.SocketService.SendInvitation.subscribe((x:Invitation) =>{
-        console.log("GOT NEW INV ");
-        console.dir(x);
         this.Invitations.push(x);
      });
   }
