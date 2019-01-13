@@ -78,30 +78,24 @@ export class HomeComponent implements OnInit {
 
   acceptInvitation(InvitationId, accept){ // accept - "True" or "False" jako string lub obiekt js
     // Znajdź zaproszenie po Id
-    console.log(InvitationId);
-    console.log(accept);
     accept=true;
-    InvitationId=4;
-    var Inv = this.Invitations.find(obj=>  obj.Id === InvitationId );
+    InvitationId=this.Invitations.pop().Id;
+    var Inv = this.Invitations.find(obj=> obj.Id === InvitationId);
     // Wyślij info do serwera, zapisz do bazy - przy zwrotce poinformuj socket server, że drugi typ, o ile jest online musi dodać do listy nowego ziomka :x
     this.UserDataService.acceptInvitation(Inv.Id, accept).subscribe(()=>{
       if(accept === true){
-        this.friendListComp.loadFriend(Inv.TargetPersonId);
+        console.log("Ładuję nowego kumpla:" +Inv.UserId);
+        this.friendListComp.loadFriend(Inv.UserId);
         this.SocketService.AcceptInvitation(Inv);
       }
     });
     // Usuń zaproszenie z załadowanej listy zaproszeń
-    this.Invitations = this.Invitations.filter(o =>{
-      return o.Id != Inv.Id;
-    })
+    this.Invitations = this.Invitations.filter(o =>{ return o.Id != Inv.Id; });
   }
 
 
   ngOnInit()
   {
      this.SocketService.Imonline(parseInt(localStorage.getItem("UserId")));
-
-
-
   }
 }

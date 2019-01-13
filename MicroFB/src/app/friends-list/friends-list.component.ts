@@ -34,7 +34,7 @@ export class FriendsListComponent implements OnInit {
 
   loadFriend(FriendId){
     const id = localStorage.getItem("UserId");
-    this.UserDataService.getFriend(id).subscribe(
+    this.UserDataService.getFriend(FriendId).subscribe(
       (data) => {
         this.FriendsListService.addFriend(data);
       }
