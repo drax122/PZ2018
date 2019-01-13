@@ -70,11 +70,11 @@ export class PostsComponent implements OnInit {
           n.Description = this.User.FirstName + " " + this.User.LastName + " polubił twój post.";
           this.notificationsService.sendNotification(n).subscribe((x:Notifications)=> {
               // SEND SOCKET SERVER INFO ABOUT NOTIFICATION
-              
+
               this.socketService.SendNotification(x);
           });
           // SEND SOCKET SERVER INFO ABOUT LIKE TO OTHER PPL
-          this.socketService.SendLike(like);          
+          this.socketService.SendLike(like);
         });
     }));
   }
@@ -82,7 +82,7 @@ export class PostsComponent implements OnInit {
     var like = this.BoardData.find(x=> x.Id === postId).Likes.find(z=> z.UserId == this.getUserId); // Znajdz mojego lajka
     this.postsService.unlikePost(like.Id).subscribe(()=>{
       let x = this.BoardData.find(x=> x.Id === postId);
-      x.Likes.filter(x=> {return x.Id !== like.Id }); // usuń z lokalnej listy
+      x.Likes = x.Likes.filter(x=> {return x.Id !== like.Id }); // usuń z lokalnej listy
     });
   }
 

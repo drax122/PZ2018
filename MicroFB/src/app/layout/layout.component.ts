@@ -68,6 +68,8 @@ export class LayoutComponent  {
     )
   }
   ngOnInit() {
+    this.getUserData();
+
   }
   get LoggedIn(){
     return this.Auth.IsLogged;

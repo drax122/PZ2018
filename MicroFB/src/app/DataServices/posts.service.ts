@@ -12,7 +12,7 @@ import { Like } from '../Models/like';
   providedIn: 'root'
 })
 export class PostsService {
-  
+
   constructor(private http: HttpClient, private socketService: SocketService) { }
 
   getUserBoard(Id) : Observable<Post[]>{
@@ -44,13 +44,13 @@ export class PostsService {
     return this.http.post("/api/posts/likepost", null, { // Zwraca ID nowego posta, o któym warto powiadomić znajomych
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
       params: {
-        "UserId" : JSON.stringify(postId),
-        "PostId" : JSON.stringify(getUserId)
+        "UserId" : JSON.stringify(getUserId),
+        "PostId" : JSON.stringify(postId)
       }
     }).map((x:any) => new Like(x));
   }
   unlikePost(likeId){
-    return this.http.post("/api/posts/savepost", null, 
+    return this.http.post("/api/posts/unlikepost", null,
     {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
       params: {
