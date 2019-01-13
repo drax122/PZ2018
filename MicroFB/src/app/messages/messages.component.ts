@@ -12,32 +12,35 @@ import { SocketService } from '../DataServices/socket.service';
   styleUrls: ['./messages.component.css']
 })
 export class MessagesComponent implements OnInit {
-  ConversationId : number;
   Messages: Array<Message> = [];
+  messagerModel = new Message(new Object());
 
-  constructor(private messgesService : MessagesServiceService,  private route : ActivatedRoute, private SocketService : SocketService) 
+  constructor(private messgesService : MessagesServiceService,  private route : ActivatedRoute, private SocketService : SocketService)
   {
-    this.ConversationId = parseInt(this.route.snapshot.paramMap.get('id'));
-    messgesService.getMessages(this.ConversationId).subscribe(data=>{
-      this.Messages = data;
-    });
+
   }
 
   sendMessage(msg:string){
     var m = new Message({});
     m.AuthorId = parseInt(localStorage.getItem("UserId"));
     m.Content = msg;
-    m.ConversationId = this.ConversationId;
+    m.ConversationId =this.getConvId;
     this.messgesService.sendMessage(m).subscribe(messageId =>{
       m.Id = parseInt(JSON.stringify(messageId));
       this.SocketService.SendMsg(m);
       this.Messages.push(m);
     });
   }
+  get getConvId(){
+    return parseInt(this.route.snapshot.paramMap.get('id'));
+ }
   ngOnInit() {
-    this.SocketService.Messages.subscribe(data=>{ 
+    this.messgesService.getMessages(this.getConvId).subscribe(data=>{
+      this.Messages = data;
+    });
+    this.SocketService.Messages.subscribe(data=>{
       var newMessage = new Message(data);
-      if(newMessage.ConversationId === this.ConversationId){
+      if(newMessage.ConversationId === this.getConvId){
           this.Messages.push(newMessage);
       }
     });

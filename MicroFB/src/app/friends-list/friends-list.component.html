@@ -1,9 +1,10 @@
 <div class="container">
   <div class = "friends">
     <ul>
-        <li *ngFor= "let friend of FriendsList" class="open-chat">
+        <li *ngFor= "let friend of FriendsList" (click)="navigateTo(friend.ConversationId)" class="open-chat">
         {{friend.FirstName}}
-        {{friend.LastName}}
+        {{friend.ConversationId}}
+
 
         <span *ngIf="friend.Status === 1">
             <img src="green.ico" class="grafika"/>

@@ -1,3 +1,24 @@
-<p>
-  messages works!
-</p>
+<div class="posts-container">
+  <form id="new-post">
+    <div class="new-post-content">
+      <textarea class="form-control" rows="3" cols="80" placeholder="Your message" id='inputMessage' #mes="ngModel" name="content" [(ngModel)]="messagerModel.Content"></textarea>
+    </div>
+    <div>
+      <button  type="button"  (click)="sendMessage(messagerModel)" data-user='' class="btn btn-info" id= 'sendMessage' style="margin-right: 5px;">SEND</button></div>
+  </form>
+  </div>
+
+
+  <ul id='messages'>
+
+
+<div style="border:2px solid #a1a1a1;" *ngFor="let mess of Messages">
+  <div style="font-weight:bold;" >
+    {{mess.FirstName }}
+  </div>
+<div>
+
+</div>
+</div>
+
+</ul>
