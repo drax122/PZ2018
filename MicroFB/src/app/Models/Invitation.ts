@@ -9,9 +9,9 @@ export class Invitation {
     
     constructor(obj : any)
     {
-        this.Id = obj.Name;
-        this.TargetPersonId = obj.Email;
-        this.UserId = obj.Password;
+        this.Id = obj.Id;
+        this.TargetPersonId = obj.TargetPersonId;
+        this.UserId = obj.UserId;
         this.Status = obj.Status;
         this.FirstName = obj.FirstName;
         this.LastName = obj.LastName
