@@ -12,7 +12,7 @@ import { User } from '../Models/user';
   providedIn: 'root'
 })
 export class UserDataServiceService {
-  
+
   constructor(private http: HttpClient) { }
 
   getUserData(Id) : Observable<UserDetails>{
@@ -32,7 +32,7 @@ export class UserDataServiceService {
      {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
       params: { phrase : searchphrase }
-     }, 
+     },
      ).map((entrise:UserSearch[])=> entrise.map(e=> new UserSearch(e)));
   }
   changefollowFriend(Friend: Friend, id: any, arg2: boolean): any {
@@ -58,8 +58,8 @@ export class UserDataServiceService {
       return this.http.post("/api/users/makefriend", null, {
         headers: new HttpHeaders().set('Content-Type', 'application/json'),
         params: {
-          "InvitationId" : InvitationId,
-          "accept" : accept
+          "InvitationId" : JSON.stringify(InvitationId),
+          "accept" : JSON.stringify(accept)
         }
       });
   }

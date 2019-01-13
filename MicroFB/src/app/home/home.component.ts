@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit {
   UserData = new UserDetails(new Object());
   Invitations : Array<Invitation> = [];
   Notifications = {};
-  
+
   @ViewChild('friendsList') friendListComp:FriendsListComponent;
   @ViewChild('board') postsComp:PostsComponent;
 
@@ -28,8 +28,8 @@ export class HomeComponent implements OnInit {
      private SocketService : SocketService,
      private UserDataService : UserDataServiceService,
      private NotificationsService : NotificationsServiceService
-     ) 
-  { 
+     )
+  {
     this.getUserData();
   }
   get LoggedIn()
@@ -47,13 +47,13 @@ export class HomeComponent implements OnInit {
   {
     const id = localStorage.getItem("UserId");
     if(localStorage.getItem("UserData") === null){
-      
-      this.UserDataService.getUserData(id).subscribe( (data) => 
+
+      this.UserDataService.getUserData(id).subscribe( (data) =>
       {
         this.UserData = data;
         localStorage.setItem("UserData", JSON.stringify(this.UserData));
       });
-      
+
     }
     else
     {
@@ -78,19 +78,21 @@ export class HomeComponent implements OnInit {
 
   acceptInvitation(InvitationId, accept){ // accept - "True" or "False" jako string lub obiekt js
     // Znajdź zaproszenie po Id
-    var Inv = this.Invitations.filter(obj=> {
-      return obj.Id === InvitationId;
-    })
+    console.log(InvitationId);
+    console.log(accept);
+    accept=true;
+    InvitationId=4;
+    var Inv = this.Invitations.find(obj=>  obj.Id === InvitationId );
     // Wyślij info do serwera, zapisz do bazy - przy zwrotce poinformuj socket server, że drugi typ, o ile jest online musi dodać do listy nowego ziomka :x
     this.UserDataService.acceptInvitation(Inv, accept).subscribe(()=>{
       if(accept === true){
-        this.friendListComp.loadFriend(Inv.pop().UserId);
-        this.SocketService.AcceptInvitation(Inv.pop());
+        this.friendListComp.loadFriend(Inv.UserId);
+        this.SocketService.AcceptInvitation(Inv);
       }
     });
     // Usuń zaproszenie z załadowanej listy zaproszeń
     this.Invitations = this.Invitations.filter(o =>{
-      return o.Id != Inv.pop().Id;
+      return o.Id != Inv.Id;
     })
   }
 
@@ -98,7 +100,7 @@ export class HomeComponent implements OnInit {
   ngOnInit()
   {
      this.SocketService.Imonline(parseInt(localStorage.getItem("UserId")));
-     
+
 
 
   }
