@@ -10,7 +10,7 @@ io.on("connection", socket => {
     socket.on("AcceptInv", data =>{
         // WYSLIJ INFO DO ODP KLIENTA ZE ZAPROSZENIE ZOSTALO ZAAKCEPTOWANE
         var sock = onlineUsers.filter(obj => {
-            return obj.TargetPersonId === data.TargetPersonId;
+            return obj.UserId === data.TargetPersonId;
         }).forEach(s=>{
             io.to(s.socketID).emit("AcceptedInvitation", data.UserId);
         });
