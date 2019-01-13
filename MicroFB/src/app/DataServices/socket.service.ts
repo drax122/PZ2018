@@ -31,7 +31,7 @@ export class SocketService {
       return response;
     });
     this.Invitations = <Subject<any>>ws.Invitations().map((response:any): any =>{
-      return response;
+      return new Invitation(response);
     });
     this.Disconnect = <Subject<any>>ws.disconnect().map((response:any): any =>{
       return response;

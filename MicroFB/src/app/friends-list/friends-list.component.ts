@@ -4,6 +4,7 @@ import { UserDataServiceService } from '../DataServices/user-data-service.servic
 import { SocketService } from '../DataServices/socket.service';
 import { Router } from '@angular/router';
 import { FriendsListService } from '../DataServices/friends-list.service';
+import { Invitation } from '../Models/Invitation';
 
 @Component({
   selector: 'app-friends-list',
@@ -12,7 +13,6 @@ import { FriendsListService } from '../DataServices/friends-list.service';
 })
 export class FriendsListComponent implements OnInit {
   FriendsList : Array<Friend> = [];
-  
 
   constructor( 
     private UserDataService : UserDataServiceService, 
@@ -20,12 +20,7 @@ export class FriendsListComponent implements OnInit {
     private SocketService : SocketService, 
     private router: Router) 
   { // CTOR ACTION
-    this.SocketService.Invitations.subscribe(data =>{ 
-      console.log("Ziomuś zaakceptował zapro : " + data);
-      this.UserDataService.getFriend(data).subscribe(f=>{
-        this.FriendsListService.addFriend(f);
-      })
-    });
+    
   }
 
   onShowProfile(User:Friend){
@@ -33,7 +28,6 @@ export class FriendsListComponent implements OnInit {
   }
 
   loadFriend(FriendId){
-    const id = localStorage.getItem("UserId");
     this.UserDataService.getFriend(FriendId).subscribe(
       (data) => {
         this.FriendsListService.addFriend(data);
@@ -56,12 +50,17 @@ export class FriendsListComponent implements OnInit {
 
   ngOnInit() {
     const id = localStorage.getItem("UserId");
+    // PRZY ODSWIEZENIU/ZALOGOWANIU INICJUJ LISTE ZNAJOMYCH
     this.FriendsListService.loadFriendsList(id);
-
+    // NASLUCHUJ ZMIAN W FRIENDLISCIE
     this.FriendsListService.FriendList.subscribe(fl =>{
       this.FriendsList = fl;
-      console.log("Przeładowano listę znajomych");
-      console.dir(fl);
     });
+    // NASLUCHUJ NOWEGO ZIOMA
+    this.SocketService.Invitations.subscribe((x:Invitation)=>{ // Odebrałem info, że ktoś zaakceptował moje zaproszenie
+      this.UserDataService.getFriend(x.TargetPersonId).subscribe((fr:Friend) =>{
+        this.FriendsListService.addFriend(fr);
+      });
+   });
   }
 }

@@ -84,7 +84,6 @@ export class HomeComponent implements OnInit {
     // Wyślij info do serwera, zapisz do bazy - przy zwrotce poinformuj socket server, że drugi typ, o ile jest online musi dodać do listy nowego ziomka :x
     this.UserDataService.acceptInvitation(Inv.Id, accept).subscribe(()=>{
       if(accept === true){
-        console.log("Ładuję nowego kumpla:" +Inv.UserId);
         this.friendListComp.loadFriend(Inv.UserId);
         this.SocketService.AcceptInvitation(Inv);
       }
@@ -97,5 +96,8 @@ export class HomeComponent implements OnInit {
   ngOnInit()
   {
      this.SocketService.Imonline(parseInt(localStorage.getItem("UserId")));
+     this.SocketService.SendInvitation.subscribe((x:Invitation) =>{
+        this.Invitations.push(x);
+     });
   }
 }
