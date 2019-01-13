@@ -24,6 +24,18 @@ export class UserProfileComponent implements OnInit {
     private socketService : SocketService,
     private postsService: PostsService)
   {
+    this.friendslistService.FriendList.subscribe(x=>{
+      console.log(x.length);
+      var control = x.filter(obj => {return obj.Id == this.getUserId});
+      if(control.length === 1){
+        this._IsFriend = true;
+      }
+      else{
+        this._IsFriend = false;
+      }
+    });
+
+
    // LOAD POSTS
    this.postsService.getFriendBoard(this.getUserId).subscribe(data=>{
     this.BoardData = data;
@@ -48,19 +60,10 @@ export class UserProfileComponent implements OnInit {
     });
   }
   ngOnInit() {
-    const Id = parseInt(this.route.snapshot.paramMap.get('id'));
-    this.userdataService.getUserData(Id).subscribe(data=>{
+   
+    this.userdataService.getUserData(this.getUserId).subscribe(data=>{
       console.dir(data);
       this.UserDetails = data;
     })
-    this.friendslistService.FriendList.subscribe(x=>{
-      var control = x.filter(obj => {return obj.Id == Id});
-      if(control.length === 1){
-        this._IsFriend = true;
-      }
-      else{
-        this._IsFriend = false;
-      }
-    });
   }
 }

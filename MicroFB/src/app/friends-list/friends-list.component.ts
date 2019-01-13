@@ -52,12 +52,8 @@ export class FriendsListComponent implements OnInit {
     return friend.Id;
   }
 
-
-
   ngOnInit() {
-    const id = localStorage.getItem("UserId");
     // PRZY ODSWIEZENIU/ZALOGOWANIU INICJUJ LISTE ZNAJOMYCH
-    this.FriendsListService.loadFriendsList(id);
     // NASLUCHUJ ZMIAN W FRIENDLISCIE
     this.FriendsListService.FriendList.subscribe(fl =>{
       this.FriendsList = fl;

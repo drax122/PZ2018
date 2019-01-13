@@ -19,6 +19,7 @@ export class FriendsListService {
   { 
         // Nasłuchiwanie na eventy z socketservera dotyczące tego komponentu
        // data to Id nowego ziomka - muszę go pobrać i dopisać do listy
+     this.loadFriendsList(parseInt(localStorage.getItem("UserId")));
      this.SocketService.Status.subscribe(data=> { 
         var ids = new Array<number>();
         data.forEach(element => {
@@ -97,7 +98,7 @@ export class FriendsListService {
     });
   }
   changeFollowStatusInFriendList(FriendId:number, status:number){
-    this.local.filter(obj => { return obj.Id == FriendId}).forEach(obj=>{
+    this.local.filter(obj => { return obj.Id === FriendId}).forEach(obj=>{
       if(obj.Status === 0){
         obj.Status = 1;
       }
