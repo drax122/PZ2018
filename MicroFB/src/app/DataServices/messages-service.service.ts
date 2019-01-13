@@ -11,9 +11,10 @@ export class MessagesServiceService {
   constructor(private http: HttpClient) {
     
   }
-  sendMessage(msg : Message){
-    return this.http.post("/api/messages/addmessage", JSON.stringify(msg));
+  sendMessage(msg : Message) : Observable<Message>{
+    return this.http.post("/api/messages/addmessage", JSON.stringify(msg)).map((mes:any) => new Message(mes));
   }
+
   getMessages(ConversationId : number): Observable<Message[]>{
     return this.http.get("/api/messages/getmessages/"+ConversationId).map((messages:any[]) => messages.map(m => new Message(m)));
   }

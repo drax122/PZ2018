@@ -20,5 +20,6 @@ namespace MicroFacebookAPI.DataModel
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public System.DateTime Date { get; set; }
+        public int Id { get; set; }
     }
 }

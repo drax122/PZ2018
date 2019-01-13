@@ -29,27 +29,16 @@ namespace MicroFacebookAPI.Controllers
         #region POST - SAVING DATA
         [HttpPost]
         [Route("api/messages/addmessage")]
-        public IHttpActionResult SavePost([FromBody]ConversationMessages m)
+        public IHttpActionResult AddMessage([FromBody]ConversationMessages m)
         {
             try
             {
                 m.Date = DateTime.Now;
                 db.ConversationMessages.Add(m);
-
-                var conv = db.UserConversations.Where(x => x.Id == m.ConversationId).FirstOrDefault();
-                var targetId = conv.FriendId == m.AuthorId ? conv.UserId : conv.FriendId;
-
-                var not = new Notifications
-                {
-                    Description = "Masz nową wiadomość od",
-                    SourcePersonId = m.AuthorId,
-                    TargetPersonId = targetId.Value,
-                    Type = 2,
-                };
-
-                db.Notifications.Add(not);
                 db.SaveChanges();
-                return Ok();
+
+                db.ConversationMessagesView.Where(x => x.Id == m.Id).FirstOrDefault();
+                return Json(m);
             }
             catch (Exception ex)
             {

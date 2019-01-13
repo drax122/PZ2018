@@ -153,6 +153,7 @@
 warning 6002: The table/view 'MicroFB.dbo.ConversationMessagesView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ConversationMessagesView">
           <Key>
+            <PropertyRef Name="Id" />
             <PropertyRef Name="AuthorId" />
             <PropertyRef Name="ConversationId" />
             <PropertyRef Name="Message" />
@@ -160,6 +161,7 @@ warning 6002: The table/view 'MicroFB.dbo.ConversationMessagesView' does not hav
             <PropertyRef Name="LastName" />
             <PropertyRef Name="Date" />
           </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="AuthorId" Type="int" Nullable="false" />
           <Property Name="ConversationId" Type="int" Nullable="false" />
           <Property Name="Message" Type="varchar(max)" Nullable="false" />
@@ -582,6 +584,7 @@ warning 6002: The table/view 'MicroFB.dbo.UsersView' does not have a primary key
           <EntitySet Name="Friends" EntityType="Self.Friends" Schema="Users" store:Type="Tables" />
           <EntitySet Name="ConversationMessagesView" EntityType="Self.ConversationMessagesView" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
+    [ConversationMessagesView].[Id] AS [Id], 
     [ConversationMessagesView].[AuthorId] AS [AuthorId], 
     [ConversationMessagesView].[ConversationId] AS [ConversationId], 
     [ConversationMessagesView].[Message] AS [Message], 
@@ -1300,6 +1303,7 @@ warning 6002: The table/view 'MicroFB.dbo.UsersView' does not have a primary key
             <PropertyRef Name="FirstName" />
             <PropertyRef Name="LastName" />
             <PropertyRef Name="Date" />
+            <PropertyRef Name="Id" />
           </Key>
           <Property Name="AuthorId" Type="Int32" Nullable="false" />
           <Property Name="ConversationId" Type="Int32" Nullable="false" />
@@ -1307,6 +1311,7 @@ warning 6002: The table/view 'MicroFB.dbo.UsersView' does not have a primary key
           <Property Name="FirstName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="LastName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Id" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="FriendInvitationsView">
           <Key>
@@ -1643,6 +1648,7 @@ warning 6002: The table/view 'MicroFB.dbo.UsersView' does not have a primary key
           <EntitySetMapping Name="ConversationMessagesView">
             <EntityTypeMapping TypeName="MicroFBModel.ConversationMessagesView">
               <MappingFragment StoreEntitySet="ConversationMessagesView">
+                <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
