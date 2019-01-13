@@ -14,17 +14,21 @@ import { Invitation } from '../Models/Invitation';
 export class FriendsListComponent implements OnInit {
   FriendsList : Array<Friend> = [];
 
-  constructor( 
-    private UserDataService : UserDataServiceService, 
+  constructor(
+    private UserDataService : UserDataServiceService,
     private FriendsListService : FriendsListService,
-    private SocketService : SocketService, 
-    private router: Router) 
+    private SocketService : SocketService,
+    private router: Router)
   { // CTOR ACTION
-    
+
   }
 
   onShowProfile(User:Friend){
     this.router.navigate(['/profile', User.Id]);
+  }
+
+  navigateTo(ConversationId: number){
+    this.router.navigate(['/messages', ConversationId]);
   }
 
   loadFriend(FriendId){
@@ -47,6 +51,8 @@ export class FriendsListComponent implements OnInit {
   trackStatusByUserIdAndStatus(index:number, friend:Friend): number{
     return friend.Id;
   }
+
+
 
   ngOnInit() {
     const id = localStorage.getItem("UserId");
