@@ -20,20 +20,18 @@ export class MessagesComponent implements OnInit {
 
   }
 
-  sendMessage(msg:string){
-    var m = new Message({});
-    m.AuthorId = parseInt(localStorage.getItem("UserId"));
-    m.Content = msg;
-    m.ConversationId =this.getConvId;
-    this.messgesService.sendMessage(m).subscribe(messageId =>{
-      m.Id = parseInt(JSON.stringify(messageId));
-      this.SocketService.SendMsg(m);
-      this.Messages.push(m);
+  sendMessage(e){
+    e.AuthorId = parseInt(localStorage.getItem("UserId"));
+    e.ConversationId = this.getConvId;
+    this.messgesService.sendMessage(e).subscribe((message:Message) =>{
+      this.SocketService.SendMsg(message);
+      this.Messages.push(message);
     });
   }
+
   get getConvId(){
     return parseInt(this.route.snapshot.paramMap.get('id'));
- }
+  }
   ngOnInit() {
     this.messgesService.getMessages(this.getConvId).subscribe(data=>{
       this.Messages = data;

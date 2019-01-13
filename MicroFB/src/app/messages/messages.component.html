@@ -1,7 +1,7 @@
 <div class="posts-container">
   <form id="new-post">
     <div class="new-post-content">
-      <textarea class="form-control" rows="3" cols="80" placeholder="Your message" id='inputMessage' #mes="ngModel" name="content" [(ngModel)]="messagerModel.Content"></textarea>
+      <textarea class="form-control" rows="3" cols="80" placeholder="Your message" id='inputMessage' #mes="ngModel" name="content" [(ngModel)]="messagerModel.Message"></textarea>
     </div>
     <div>
       <button  type="button"  (click)="sendMessage(messagerModel)" data-user='' class="btn btn-info" id= 'sendMessage' style="margin-right: 5px;">SEND</button></div>
@@ -22,3 +22,4 @@
 </div>
 
 </ul>
+<app-friends-list #friendsListMessages></app-friends-list>
