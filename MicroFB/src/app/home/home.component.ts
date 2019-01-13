@@ -84,9 +84,9 @@ export class HomeComponent implements OnInit {
     InvitationId=4;
     var Inv = this.Invitations.find(obj=>  obj.Id === InvitationId );
     // Wyślij info do serwera, zapisz do bazy - przy zwrotce poinformuj socket server, że drugi typ, o ile jest online musi dodać do listy nowego ziomka :x
-    this.UserDataService.acceptInvitation(Inv, accept).subscribe(()=>{
+    this.UserDataService.acceptInvitation(Inv.Id, accept).subscribe(()=>{
       if(accept === true){
-        this.friendListComp.loadFriend(Inv.UserId);
+        this.friendListComp.loadFriend(Inv.TargetPersonId);
         this.SocketService.AcceptInvitation(Inv);
       }
     });

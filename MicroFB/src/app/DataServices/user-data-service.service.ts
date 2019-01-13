@@ -58,8 +58,8 @@ export class UserDataServiceService {
       return this.http.post("/api/users/makefriend", null, {
         headers: new HttpHeaders().set('Content-Type', 'application/json'),
         params: {
-          "InvitationId" : JSON.stringify(InvitationId),
-          "accept" : JSON.stringify(accept)
+          "InvitationId" : InvitationId,
+          "accept" : "true"
         }
       });
   }

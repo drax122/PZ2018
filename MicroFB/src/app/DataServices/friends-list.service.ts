@@ -109,8 +109,9 @@ export class FriendsListService {
   }
 
   addFriend(Friend:Friend){
-    Friend.Status = 2; // new user status to verify - if logged
-    this.local.push(Friend);
+    Friend.Status = 0; // new user status to verify - if logged
     this.applyStatusToFriendList();
+    this.local.push(Friend);
+    this.friendList.next(this.local);  
   }
 }
