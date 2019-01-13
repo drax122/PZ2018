@@ -78,8 +78,6 @@ export class HomeComponent implements OnInit {
 
   acceptInvitation(InvitationId, accept){ // accept - "True" or "False" jako string lub obiekt js
     // Znajdź zaproszenie po Id
-    accept=true;
-    InvitationId = 25;
     var Inv = this.Invitations.find(obj=> obj.Id === InvitationId);
     console.dir(Inv);
     // Wyślij info do serwera, zapisz do bazy - przy zwrotce poinformuj socket server, że drugi typ, o ile jest online musi dodać do listy nowego ziomka :x
