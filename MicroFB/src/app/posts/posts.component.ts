@@ -1,7 +1,7 @@
+import { Post } from './../Models/post';
 import { Component, OnInit } from '@angular/core';
 import { PostsService } from '../DataServices/posts.service';
 import { SocketService } from '../DataServices/socket.service';
-import { Post } from '../Models/post';
 import { FriendsListService } from '../DataServices/friends-list.service';
 import { Friend } from '../Models/friend';
 import { Like } from '../Models/like';
@@ -33,6 +33,7 @@ export class PostsComponent implements OnInit {
 
   }
 
+
   saveNewPost(e){
     var post = new Post({});
     post.AuthorId = this.getUserId;
@@ -56,6 +57,13 @@ export class PostsComponent implements OnInit {
   get User(){
     return JSON.parse(localStorage.getItem("UserData"));
   }
+
+  getFilter(Likes : Like[]){
+    return Likes.filter(hero => hero.UserId == this.getUserId);
+
+  }
+
+
 
   likePost(postId){
     this.postsService.likePost(postId, this.getUserId).subscribe(((like: Like)=>{
@@ -85,6 +93,8 @@ export class PostsComponent implements OnInit {
       x.Likes = x.Likes.filter(x=> {return x.Id !== like.Id }); // usuń z lokalnej listy
     });
   }
+
+
 
   ngOnInit() {
     this.FriendsListService.FriendList.subscribe(fl =>{
